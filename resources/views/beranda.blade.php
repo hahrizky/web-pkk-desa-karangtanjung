@@ -118,19 +118,28 @@
             <!-- Grid 4 Kartu Kegiatan -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 @foreach ($kegiatan as $kg)
-                    <div class="bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 flex flex-col">
-                        <!-- Gambar / Ilustrasi Header Kegiatan -->
-                        <div class="h-44 bg-gradient-to-br from-emerald-50 via-teal-50 to-gray-50 flex items-center justify-center border-b border-gray-100 relative">
-                            <div class="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center text-emerald-700 text-2xl">
-                                <i class="fa-solid fa-people-roof"></i>
-                            </div>
-                            <span class="absolute top-3 left-3 text-xs font-medium px-2.5 py-1 rounded-full {{ $kg['badge_color'] }}">
+                    <div class="group h-full bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col">
+                        <!-- Gambar / Foto Header Kegiatan -->
+                        <div class="h-48 overflow-hidden relative bg-gray-100 border-b border-gray-100">
+                            @if (!empty($kg['gambar']))
+                                <img src="{{ asset('images/' . $kg['gambar']) }}" 
+                                     alt="{{ $kg['judul'] }}" 
+                                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+                                <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-60"></div>
+                            @else
+                                <div class="w-full h-full bg-gradient-to-br from-emerald-50 via-teal-50 to-gray-50 flex items-center justify-center">
+                                    <div class="w-16 h-16 rounded-2xl bg-white shadow-sm flex items-center justify-center text-emerald-700 text-2xl">
+                                        <i class="fa-solid fa-people-roof"></i>
+                                    </div>
+                                </div>
+                            @endif
+                            <span class="absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full {{ $kg['badge_color'] }} shadow-sm backdrop-blur-md">
                                 {{ $kg['kategori'] }}
                             </span>
                         </div>
 
                         <!-- Konten Kartu -->
-                        <div class="p-5 flex-1 flex flex-col justify-between">
+                        <div class="p-5 flex-1 flex flex-col">
                             <div>
                                 <!-- Tanggal Kegiatan -->
                                 <div class="flex items-center gap-2 text-xs text-gray-500 mb-2.5">
@@ -139,7 +148,7 @@
                                 </div>
 
                                 <!-- Judul Kegiatan -->
-                                <h3 class="font-bold text-gray-900 text-base leading-snug mb-2 hover:text-emerald-700 transition-colors">
+                                <h3 class="font-bold text-gray-900 text-base leading-snug mb-2 group-hover:text-emerald-700 transition-colors">
                                     <a href="#">{{ $kg['judul'] }}</a>
                                 </h3>
 
@@ -150,7 +159,7 @@
                             </div>
 
                             <!-- Tombol Selengkapnya -->
-                            <a href="#" class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-600 hover:text-white transition-all duration-200">
+                            <a href="#" class="mt-auto inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold text-emerald-700 bg-emerald-50 hover:bg-emerald-600 hover:text-white transition-all duration-200">
                                 <span>Selengkapnya</span>
                                 <i class="fa-solid fa-angle-right text-xs"></i>
                             </a>
@@ -175,7 +184,7 @@
             </div>
 
             <!-- Grid 4 Kartu Pokja -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
                 @foreach ($pokja as $pk)
                     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between">
                         <div>

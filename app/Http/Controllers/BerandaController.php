@@ -40,28 +40,32 @@ class BerandaController extends Controller
                 'tanggal' => '17 Des 2024',
                 'ringkasan' => 'Pemeriksaan rutin kesehatan balita, penimbangan berat badan, imunisasi, dan penyuluhan gizi seimbang untuk pencegahan stunting.',
                 'kategori' => 'Kesehatan',
-                'badge_color' => 'bg-emerald-100 text-emerald-800'
+                'badge_color' => 'bg-emerald-100 text-emerald-800',
+                'gambar' => '1.webp'
             ],
             [
                 'judul' => 'Pertemuan Rutin TP. PKK Desa Karangtanjung',
                 'tanggal' => '10 Des 2024',
                 'ringkasan' => 'Evaluasi program kerja bulanan bersama kader dasawisma dan koordinasi persiapan kegiatan bakti sosial warga.',
                 'kategori' => 'Organisasi',
-                'badge_color' => 'bg-amber-100 text-amber-800'
+                'badge_color' => 'bg-amber-100 text-amber-800',
+                'gambar' => '2.webp'
             ],
             [
                 'judul' => 'Kegiatan Pemberdayaan Keluarga',
                 'tanggal' => '28 Nov 2024',
                 'ringkasan' => 'Pelatihan keterampilan tata boga dan olahan pangan lokal guna mendorong Usaha Peningkatan Pendapatan Keluarga (UP2K).',
                 'kategori' => 'Pemberdayaan',
-                'badge_color' => 'bg-blue-100 text-blue-800'
+                'badge_color' => 'bg-blue-100 text-blue-800',
+                'gambar' => '3.webp'
             ],
             [
                 'judul' => 'Kegiatan Sosial Masyarakat',
                 'tanggal' => '15 Nov 2024',
                 'ringkasan' => 'Aksi gotong royong kebersihan lingkungan desa, penanaman apotek hidup (AKU HATINYA PKK), dan bantuan sosial.',
                 'kategori' => 'Sosial',
-                'badge_color' => 'bg-purple-100 text-purple-800'
+                'badge_color' => 'bg-purple-100 text-purple-800',
+                'gambar' => '4.webp'
             ]
         ];
 
