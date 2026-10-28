@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'TP PKK Desa Karangtanjung')</title>
 
-    <!-- Google Fonts: Plus Jakarta Sans -->
+    <!-- Google Fonts: Poppins -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -18,7 +18,7 @@
 
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
     </style>
 </head>
@@ -30,16 +30,16 @@
             <div class="flex items-center justify-between h-20">
 
                 <!-- Logo & Identitas Desa -->
-                <div class="flex items-center gap-3">
+                <a href="{{ route('beranda') }}" class="flex items-center gap-3 group">
                     <!-- Logo PKK -->
                     <img src="{{ asset('images/logo-pkk.png') }}"
                          alt="Logo TP PKK"
-                         class="w-11 h-11 object-contain drop-shadow-sm hover:scale-105 transition-transform">
+                         class="w-11 h-11 object-contain drop-shadow-sm group-hover:scale-105 transition-transform">
 
                     <!-- Logo Kabupaten Sidoarjo -->
                     <img src="{{ asset('images/logo-kabupaten.png') }}"
                          alt="Logo Kabupaten Sidoarjo"
-                         class="w-11 h-11 object-contain drop-shadow-sm hover:scale-105 transition-transform">
+                         class="w-11 h-11 object-contain drop-shadow-sm group-hover:scale-105 transition-transform">
 
                     <div class="hidden sm:block pl-2 border-l-2 border-gray-200">
                         <span class="block font-bold text-emerald-800 text-sm md:text-base leading-tight">
@@ -49,17 +49,17 @@
                             Desa Karangtanjung
                         </span>
                     </div>
-                </div>
+                </a>
 
                 <!-- Menu Navigasi Desktop -->
                 <div class="hidden md:flex items-center gap-2">
-                    <a href="#beranda" class="px-4 py-2 rounded-lg text-sm font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition-colors">
+                    <a href="{{ route('beranda') }}" class="px-4 py-2 rounded-lg text-sm {{ request()->routeIs('beranda') ? 'font-semibold text-emerald-800 bg-emerald-100' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-emerald-50' }} transition-colors">
                         Beranda
                     </a>
-                    <a href="#profil" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-emerald-800 hover:bg-emerald-50 transition-colors">
+                    <a href="{{ route('profil') }}" class="px-4 py-2 rounded-lg text-sm {{ request()->routeIs('profil') ? 'font-semibold text-emerald-800 bg-emerald-100' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-emerald-50' }} transition-colors">
                         Profil
                     </a>
-                    <a href="#pokja" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-emerald-800 hover:bg-emerald-50 transition-colors">
+                    <a href="{{ route('beranda') }}#pokja" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-emerald-800 hover:bg-emerald-50 transition-colors">
                         Pokja
                     </a>
                     <a href="#kontak" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-emerald-800 hover:bg-emerald-50 transition-colors">
@@ -81,13 +81,13 @@
 
         <!-- Menu Navigasi Mobile -->
         <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white px-4 pt-2 pb-4 space-y-1 shadow-lg">
-            <a href="#beranda" class="block px-3 py-2 rounded-md text-base font-semibold text-emerald-800 bg-emerald-50">
+            <a href="{{ route('beranda') }}" class="block px-3 py-2 rounded-md text-base {{ request()->routeIs('beranda') ? 'font-semibold text-emerald-800 bg-emerald-50' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50' }}">
                 Beranda
             </a>
-            <a href="#profil" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50">
+            <a href="{{ route('profil') }}" class="block px-3 py-2 rounded-md text-base {{ request()->routeIs('profil') ? 'font-semibold text-emerald-800 bg-emerald-50' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50' }}">
                 Profil
             </a>
-            <a href="#pokja" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50">
+            <a href="{{ route('beranda') }}#pokja" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50">
                 Pokja
             </a>
             <a href="#kontak" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50">
@@ -143,25 +143,25 @@
                     </h4>
                     <ul class="space-y-3 text-sm text-emerald-100/80">
                         <li>
-                            <a href="#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('beranda') }}#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
                                 <span><strong>Pokja 1:</strong> Penghayatan & Gotong Royong</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('beranda') }}#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
                                 <span><strong>Pokja 2:</strong> Pendidikan, Keterampilan & UP2K</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('beranda') }}#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
                                 <span><strong>Pokja 3:</strong> Pangan, Sandang & Tata Laksana</span>
                             </a>
                         </li>
                         <li>
-                            <a href="#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('beranda') }}#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
                                 <span><strong>Pokja 4:</strong> Kesehatan & Lingkungan Hidup</span>
                             </a>
@@ -177,7 +177,7 @@
                     <ul class="space-y-3 text-sm text-emerald-100/80">
                         <li class="flex items-start gap-3">
                             <i class="fa-solid fa-location-dot text-amber-400 mt-1"></i>
-                            <span>Kantor Balai Desa Karangtanjung, Jl. Raya Candi, Kec. Candi, Kab. Sidoarjo, Jawa Timur</span>
+                            <span>Jl. Sunan Giri No.1 Desa Karangtanjung, Kec. Candi, Kab. Sidoarjo, Jawa Timur</span>
                         </li>
                         <li class="flex items-center gap-3">
                             <i class="fa-solid fa-phone text-amber-400"></i>
