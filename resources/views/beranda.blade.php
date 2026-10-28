@@ -7,7 +7,7 @@
     <!-- ================= 1. HERO SECTION ================= -->
     <section id="beranda" class="relative min-h-[580px] lg:min-h-[640px] flex items-center justify-center overflow-hidden bg-emerald-950">
         <!-- Foto Dokumentasi Pelantikan PKK -->
-        <img src="{{ asset('images/hero-bg.jpg') }}"
+        <img src="{{ asset('images/5.webp') }}"
              alt="Dokumentasi TP PKK Desa Karangtanjung"
              class="absolute inset-0 w-full h-full object-cover object-top filter brightness-[0.55] contrast-[1.05]">
 
@@ -34,7 +34,7 @@
                     <i class="fa-solid fa-calendar-days"></i>
                     <span>Lihat Kegiatan</span>
                 </a>
-                <a href="#profil" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-white bg-white/15 hover:bg-white hover:text-emerald-900 border border-white/40 backdrop-blur-md shadow-lg transition-all duration-200 hover:-translate-y-0.5">
+                <a href="{{ route('profil') }}" class="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-white bg-white/15 hover:bg-white hover:text-emerald-900 border border-white/40 backdrop-blur-md shadow-lg transition-all duration-200 hover:-translate-y-0.5">
                     <i class="fa-solid fa-circle-info"></i>
                     <span>Profil PKK</span>
                 </a>
