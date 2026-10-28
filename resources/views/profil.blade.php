@@ -60,11 +60,11 @@
             <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(16,185,129,0.25),_transparent_60%)] pointer-events-none"></div>
             <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(5,150,105,0.2),_transparent_60%)] pointer-events-none"></div>
             <div class="relative z-10">
-                <span class="inline-block px-5 py-1.5 rounded-full text-xs font-extrabold tracking-widest uppercase bg-white/15 text-emerald-100 border border-white/20 mb-6">
+                <h2 class="text-2xl sm:text-3xl font-bold text-white mb-4">
                     VISI
-                </span>
-                <p class="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white leading-relaxed max-w-4xl mx-auto">
-                    "{{ $visi }}"
+                </h2>
+                <p class="text-base sm:text-lg font-medium text-emerald-50 leading-relaxed max-w-3xl mx-auto">
+                    {{ $visi }}
                 </p>
             </div>
         </div>
