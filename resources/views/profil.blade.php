@@ -59,11 +59,14 @@
         <div class="relative rounded-2xl bg-emerald-800 text-white p-10 sm:p-14 text-center overflow-hidden mb-14">
             <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_rgba(16,185,129,0.25),_transparent_60%)] pointer-events-none"></div>
             <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_rgba(5,150,105,0.2),_transparent_60%)] pointer-events-none"></div>
-            <div class="relative z-10">
-                <h2 class="text-2xl sm:text-3xl font-bold text-white mb-4">
+            <div class="flex flex-col items-center text-center mb-5">
+                <h2 class="text-2xl sm:text-3xl font-bold text-[#B8DCC8] mb-2">
                     VISI
                 </h2>
-                <p class="text-base sm:text-lg font-medium text-emerald-50 leading-relaxed max-w-3xl mx-auto">
+                <div class="w-10 h-1 bg-emerald-600 rounded-full"></div>
+            </div>
+            <div class="relative z-10">
+                <p class="text-base sm:text-lg font-bold text-white leading-relaxed max-w-2xl mx-auto">
                     {{ $visi }}
                 </p>
             </div>

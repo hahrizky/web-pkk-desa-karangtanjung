@@ -59,7 +59,7 @@
                     <a href="{{ route('profil') }}" class="px-4 py-2 rounded-lg text-sm {{ request()->routeIs('profil') ? 'font-semibold text-emerald-800 bg-emerald-100' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-emerald-50' }} transition-colors">
                         Profil
                     </a>
-                    <a href="{{ route('beranda') }}#pokja" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-emerald-800 hover:bg-emerald-50 transition-colors">
+                    <a href="{{ route('pokja') }}" class="px-4 py-2 rounded-lg text-sm {{ request()->routeIs('pokja') ? 'font-semibold text-emerald-800 bg-emerald-100' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-emerald-50' }} transition-colors">
                         Pokja
                     </a>
                     <a href="#kontak" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-emerald-800 hover:bg-emerald-50 transition-colors">
@@ -87,7 +87,7 @@
             <a href="{{ route('profil') }}" class="block px-3 py-2 rounded-md text-base {{ request()->routeIs('profil') ? 'font-semibold text-emerald-800 bg-emerald-50' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50' }}">
                 Profil
             </a>
-            <a href="{{ route('beranda') }}#pokja" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50">
+            <a href="{{ route('pokja') }}" class="block px-3 py-2 rounded-md text-base {{ request()->routeIs('pokja') ? 'font-semibold text-emerald-800 bg-emerald-50' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50' }}">
                 Pokja
             </a>
             <a href="#kontak" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50">
