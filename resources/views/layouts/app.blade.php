@@ -143,27 +143,27 @@
                     </h4>
                     <ul class="space-y-3 text-sm text-emerald-100/80">
                         <li>
-                            <a href="{{ route('beranda') }}#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja I']) }}" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
-                                <span><strong>Pokja 1:</strong> Penghayatan & Gotong Royong</span>
+                                <span><strong>Pokja I:</strong> Penghayatan &amp; Gotong Royong</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('beranda') }}#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja II']) }}" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
-                                <span><strong>Pokja 2:</strong> Pendidikan, Keterampilan & UP2K</span>
+                                <span><strong>Pokja II:</strong> Pendidikan, Keterampilan &amp; UP2K</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('beranda') }}#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja III']) }}" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
-                                <span><strong>Pokja 3:</strong> Pangan, Sandang & Tata Laksana</span>
+                                <span><strong>Pokja III:</strong> Pangan, Sandang &amp; Tata Laksana</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('beranda') }}#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja IV']) }}" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
-                                <span><strong>Pokja 4:</strong> Kesehatan & Lingkungan Hidup</span>
+                                <span><strong>Pokja IV:</strong> Kesehatan &amp; Lingkungan Hidup</span>
                             </a>
                         </li>
                     </ul>
