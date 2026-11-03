@@ -86,6 +86,9 @@
                         <div>
                             <span class="block text-gray-400 text-[11px] uppercase tracking-wider">Penyelenggara</span>
                             <strong class="text-gray-800 font-semibold">{{ $agenda['penyelenggara'] }}</strong>
+                            <a href="{{ route('pokja') }}" class="block text-[11px] font-semibold text-[#075B3C] hover:underline mt-0.5">
+                                Lihat Rincian Tugas Pokja &rarr;
+                            </a>
                         </div>
                     </div>
                 </div>

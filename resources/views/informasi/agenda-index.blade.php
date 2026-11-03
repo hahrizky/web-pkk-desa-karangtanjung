@@ -97,9 +97,17 @@
                             </div>
 
                             <!-- Deskripsi Singkat -->
-                            <p class="text-xs text-[#64748B] leading-relaxed line-clamp-3 mt-1 mb-4">
+                            <p class="text-xs text-[#64748B] leading-relaxed line-clamp-3 mt-1 mb-2">
                                 {{ $agenda['deskripsi'] }}
                             </p>
+
+                            <!-- Pelaksana & Link Pokja -->
+                            <div class="text-[11px] text-gray-500 flex items-center justify-between pb-3">
+                                <span>Pelaksana: <strong class="text-gray-700">{{ $agenda['pokja_label'] }}</strong></span>
+                                <a href="{{ route('pokja') }}" class="text-[#075B3C] font-semibold hover:underline">
+                                    Info Pokja &rarr;
+                                </a>
+                            </div>
                         </div>
 
                         <!-- Footer Kartu -->

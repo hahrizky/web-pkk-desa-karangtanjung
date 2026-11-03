@@ -63,6 +63,29 @@
                 </p>
             </div>
 
+            <!-- Kotak Keterhubungan Program Kerja Desa -->
+            <div class="mb-10 p-5 rounded-2xl bg-[#F3FBF6] border border-[#075B3C]/20 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-[#075B3C] flex items-center justify-center text-lg flex-shrink-0 mt-0.5">
+                        <i class="fa-solid fa-hands-holding-circle"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs sm:text-sm font-bold text-gray-900">Program Kerja TP. PKK Desa Karangtanjung</h4>
+                        <p class="text-xs text-gray-600 leading-relaxed mt-0.5">
+                            Kegiatan ini dinaungi oleh kepengurusan resmi desa. Pelajari tupoksi bidang di halaman Pokja atau kenali susunan pengurus di halaman Profil.
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <a href="{{ route('pokja') }}" class="px-3.5 py-2 rounded-lg text-xs font-bold text-[#075B3C] bg-white border border-[#075B3C]/30 hover:bg-[#075B3C] hover:text-white transition-all shadow-2xs">
+                        Lihat Pokja &rarr;
+                    </a>
+                    <a href="{{ route('profil') }}" class="px-3.5 py-2 rounded-lg text-xs font-bold text-gray-700 bg-white border border-gray-300 hover:bg-gray-100 transition-all shadow-2xs">
+                        Profil Pengurus
+                    </a>
+                </div>
+            </div>
+
             <!-- Tags Berita -->
             <div class="pt-6 border-t border-gray-200 flex flex-wrap items-center justify-between gap-4 mb-12">
                 <div class="flex items-center gap-2">

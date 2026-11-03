@@ -139,23 +139,30 @@
                                         <h4 class="text-xs sm:text-sm font-bold text-[#1F2937] leading-snug">
                                             {{ $info['judul'] }}
                                         </h4>
-                                        <p class="text-[11px] sm:text-xs text-[#64748B] leading-relaxed mt-0.5">
+                                        <p class="text-[11px] sm:text-xs text-[#64748B] leading-relaxed mt-0.5 mb-1">
                                             {{ $info['deskripsi'] }}
                                         </p>
+                                        <a href="{{ route($info['route']) }}" class="inline-flex items-center gap-1 text-[11px] font-bold text-[#075B3C] hover:underline">
+                                            <span>{{ $info['link_label'] }}</span>
+                                            <i class="fa-solid fa-angle-right text-[9px]"></i>
+                                        </a>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
 
-                        <!-- Kotak Informasi Layanan Kader -->
+                        <!-- Kotak Informasi Layanan Kader & Profil -->
                         <div class="mt-6 pt-4 border-t border-gray-100 bg-[#E8F7EF]/60 rounded-xl p-3.5 border border-[#075B3C]/15">
                             <div class="flex items-start gap-2.5">
                                 <i class="fa-solid fa-circle-info text-[#075B3C] text-sm mt-0.5"></i>
                                 <div>
                                     <span class="block text-xs font-bold text-[#075B3C]">Sekretariat PKK Desa</span>
-                                    <p class="text-[11px] text-[#475569] leading-relaxed mt-0.5">
+                                    <p class="text-[11px] text-[#475569] leading-relaxed mt-0.5 mb-2">
                                         Pemberitahuan tertulis dan formulir kegiatan dapat dikoordinasikan langsung ke kantor Balai Desa Karangtanjung.
                                     </p>
+                                    <a href="{{ route('profil') }}" class="inline-flex items-center gap-1 text-xs font-bold text-[#075B3C] hover:underline">
+                                        <span>Buka Profil &amp; Pengurus Desa &rarr;</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
