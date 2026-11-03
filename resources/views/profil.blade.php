@@ -112,7 +112,7 @@
             <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                 Struktur Organisasi TP. PKK Desa Karangtanjung
             </h2>
-            <p class="text-sm text-gray-500">Pengurus Inti TP PKK Periode Aktif</p>
+            <p class="text-sm text-gray-500">Pengurus Inti TP PKK Periode Aktif {{ date('Y') }}</p>
         </div>
 
         {{-- ── Bagan Org ── --}}
@@ -120,7 +120,7 @@
 
             {{-- LEVEL 1: PEMBINA --}}
             <div class="flex flex-col items-center w-full">
-                <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl px-6 py-3 text-center shadow-sm min-w-[200px]">
+                <div class="bg-amber-100 border-2 border-amber-300 rounded-2xl px-6 py-3 text-center shadow-sm min-w-[200px]">
                     <p class="text-[10px] font-bold uppercase tracking-widest text-amber-600 mb-1">{{ $struktur['pembina']['jabatan'] }}</p>
                     <p class="text-sm font-bold text-gray-800">{{ $struktur['pembina']['nama'] }}</p>
                     <p class="text-xs text-gray-500">{{ $struktur['pembina']['sub'] }}</p>
@@ -141,33 +141,37 @@
             </div>
 
             {{-- LEVEL 3: WAKIL KETUA --}}
-            <div class="flex flex-col items-center w-full">
+            <div class="flex flex-col items-center w-full relative">
                 @php $wakil = $struktur['pengurus_inti'][1]; @endphp
-                <div class="bg-emerald-50 border border-emerald-200 rounded-2xl px-6 py-3 text-center shadow-sm min-w-[200px]">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-700 mb-1">{{ $wakil['jabatan'] }}</p>
-                    <p class="text-sm font-semibold text-gray-800">{{ $wakil['nama'] }}</p>
+
+                <div class="bg-emerald-100 border border-emerald-200 rounded-2xl px-6 py-3 text-center shadow-sm min-w-[200px]">
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-700 mb-1">
+                        {{ $wakil['jabatan'] }}
+                    </p>
+                    <p class="text-sm font-semibold text-gray-800">
+                        {{ $wakil['nama'] }}
+                    </p>
                 </div>
-                {{-- konektor horizontal ke Sekretaris & Bendahara --}}
-                <div class="w-[2px] h-8 bg-gray-300"></div>
+
+                {{-- Garis vertikal utama menuju Pokja --}}
+                <div class="absolute top-full left-1/2 -translate-x-1/2 w-[2px] h-[215px] bg-gray-300"></div>
+
             </div>
 
             {{-- LEVEL 4: KONEKTOR SEKRETARIS DAN BENDAHARA --}}
             <div class="w-full max-w-3xl">
 
                 {{-- Garis dari Wakil Ketua menuju Sekretaris dan Bendahara --}}
-                <div class="relative h-6">
-
-                    {{-- Garis vertikal dari Wakil Ketua --}}
-                    <div class="absolute left-1/2 -top-4 h-49.5 w-[2px] -translate-x-1/2 bg-gray-300"></div>
+                <div class="relative h-14">
 
                     {{-- Garis horizontal --}}
-                    <div class="absolute left-1/4 right-1/4 top-3 h-[2px] bg-gray-300"></div>
+                    <div class="absolute left-1/4 right-1/4 top-8 h-[2px] bg-gray-300"></div>
 
                     {{-- Garis turun ke Sekretaris --}}
-                    <div class="absolute left-1/4 top-3 h-3 w-[2px] -translate-x-1/2 bg-gray-300"></div>
+                    <div class="absolute left-1/4 top-8 h-6 w-[2px] -translate-x-1/2 bg-gray-300"></div>
 
                     {{-- Garis turun ke Bendahara --}}
-                    <div class="absolute right-1/4 top-3 h-3 w-[2px] translate-x-1/2 bg-gray-300"></div>
+                    <div class="absolute right-1/4 top-8 h-6 w-[2px] translate-x-1/2 bg-gray-300"></div>
 
                 </div>
 
@@ -176,7 +180,7 @@
 
                     <div class="flex flex-col gap-3">
                         @foreach (array_slice($struktur['pengurus_inti'], 2, 2) as $sek)
-                        <div class="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-center">
+                        <div class="bg-blue-200 border border-blue-200 rounded-xl px-4 py-3 text-center">
                             <p class="text-[10px] font-bold uppercase tracking-widest text-blue-700 mb-1">
                                 {{ $sek['jabatan'] }}
                             </p>
@@ -189,7 +193,7 @@
 
                     <div class="flex flex-col gap-3">
                         @foreach (array_slice($struktur['pengurus_inti'], 4, 2) as $ben)
-                        <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-center">
+                        <div class="bg-amber-100 border border-amber-200 rounded-xl px-4 py-3 text-center">
                             <p class="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-1">
                                 {{ $ben['jabatan'] }}
                             </p>
@@ -269,7 +273,7 @@
             };
             @endphp
             <div class="bg-white rounded-2xl p-6 border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 flex flex-col">
-                <div class="w-10 h-10 rounded-full {{ $iconBg }} text-white flex items-center justify-center text-base mb-4 flex-shrink-0">
+                <div class="w-10 h-10 rounded-full {{ $iconBg }} text-white flex items-center justify-center text-base mb-2 flex-shrink-0">
                     <i class="{{ $item['icon'] }}"></i>
                 </div>
                 <h3 class="text-base font-bold text-gray-900 mb-2 leading-snug">
