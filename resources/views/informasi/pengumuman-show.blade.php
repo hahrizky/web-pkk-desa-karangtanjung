@@ -61,11 +61,17 @@
             <div class="mt-8 pt-6 border-t border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-gray-500">
                 <div>
                     <span class="block font-semibold text-gray-700">Diterbitkan oleh:</span>
-                    <span>{{ $pengumuman['penulis'] }}</span>
+                    <span class="text-gray-800 font-medium">{{ $pengumuman['penulis'] }}</span>
+                    <a href="{{ route('pokja') }}" class="block text-[#075B3C] font-semibold hover:underline mt-0.5">
+                        Lihat Bidang Tugas Pokja &rarr;
+                    </a>
                 </div>
                 <div class="sm:text-right">
                     <span class="block font-semibold text-gray-700">Wilayah:</span>
                     <span>Desa Karangtanjung, Kec. Candi, Kab. Sidoarjo</span>
+                    <a href="{{ route('profil') }}" class="block text-[#075B3C] font-semibold hover:underline mt-0.5">
+                        Profil Pengurus Desa &rarr;
+                    </a>
                 </div>
             </div>
 

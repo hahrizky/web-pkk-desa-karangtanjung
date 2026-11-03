@@ -5,8 +5,18 @@
 @section('content')
 
     <!-- ================= 1. HERO SECTION & DESKRIPSI INFORMASI ================= -->
-    <section class="bg-[#E8F7EF] pt-10 pb-12 sm:pt-12 sm:pb-14 border-b border-[#D1D5DB]/40">
+    <section class="bg-[#E8F7EF] pt-8 pb-12 sm:pt-10 sm:pb-14 border-b border-[#D1D5DB]/40">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Breadcrumb Navigasi Penghubung ke Beranda -->
+            <nav class="flex items-center gap-2 text-xs text-gray-500 mb-3" aria-label="Breadcrumb">
+                <a href="{{ route('beranda') }}" class="hover:text-[#075B3C] transition-colors flex items-center gap-1.5">
+                    <i class="fa-solid fa-house text-[11px]"></i>
+                    <span>Beranda</span>
+                </a>
+                <span class="text-gray-400">/</span>
+                <span class="text-[#075B3C] font-semibold">Pusat Informasi &amp; Dokumentasi</span>
+            </nav>
 
             <!-- Judul Utama H1 -->
             <h1 class="text-2xl sm:text-[28px] lg:text-[32px] font-extrabold text-[#075B3C] tracking-tight leading-snug mb-3 text-left">
@@ -14,9 +24,22 @@
             </h1>
 
             <!-- Deskripsi Hero -->
-            <p class="text-sm sm:text-[15px] text-[#475569] leading-relaxed max-w-5xl mb-8 text-left">
+            <p class="text-sm sm:text-[15px] text-[#475569] leading-relaxed max-w-5xl mb-6 text-left">
                 Pusat rujukan informasi resmi seputar berita kegiatan pemberdayaan warga, agenda posyandu &amp; desa serta dokumen administrasi dasawisma di lingkungan Desa Karangtanjung, Kecamatan Candi, Kabupaten Sidoarjo.
             </p>
+
+            <!-- Tautan Pintas Cepat ke Profil & Pokja Desa -->
+            <div class="flex flex-wrap items-center gap-3 mb-6 text-xs text-emerald-900">
+                <span class="font-bold text-[#075B3C]">Navigasi Terkait:</span>
+                <a href="{{ route('profil') }}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/80 hover:bg-white text-[#075B3C] border border-[#075B3C]/20 shadow-2xs transition-all">
+                    <i class="fa-solid fa-id-card text-xs"></i>
+                    <span>Profil &amp; Struktur Pengurus</span>
+                </a>
+                <a href="{{ route('pokja') }}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/80 hover:bg-white text-[#075B3C] border border-[#075B3C]/20 shadow-2xs transition-all">
+                    <i class="fa-solid fa-layer-group text-xs"></i>
+                    <span>Tugas 4 Pokja PKK</span>
+                </a>
+            </div>
 
             <!-- ================= PANEL PENCARIAN & FILTER ================= -->
             <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-[#D1D5DB]/60">
@@ -73,23 +96,32 @@
 
                     </div>
 
-                    <!-- Baris Bawah: Filter Kategori Berbentuk Tombol Pill -->
-                    <div class="flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-1 sm:pb-0 pt-1 no-scrollbar">
-                        <input type="hidden" name="kategori" id="kategori-input" value="{{ request('kategori', 'Semua') }}">
+                    <!-- Baris Bawah: Filter Kategori Berbentuk Tombol Pill + Link ke Pokja -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-1">
+                        <div class="flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
+                            <input type="hidden" name="kategori" id="kategori-input" value="{{ request('kategori', 'Semua') }}">
 
-                        @foreach($kategoriList as $kat)
-                            @php
-                                $isActive = (request('kategori', 'Semua') === $kat);
-                            @endphp
-                            <button type="button"
-                                    onclick="filterByKategori('{{ $kat }}')"
-                                    class="category-pill whitespace-nowrap px-5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer
-                                    {{ $isActive 
-                                        ? 'bg-[#075B3C] text-white shadow-sm border border-[#075B3C]' 
-                                        : 'bg-white text-[#075B3C] border border-[#075B3C] hover:bg-emerald-50' }}">
-                                {{ $kat }}
-                            </button>
-                        @endforeach
+                            @foreach($kategoriList as $kat)
+                                @php
+                                    $isActive = (request('kategori', 'Semua') === $kat);
+                                @endphp
+                                <button type="button"
+                                        onclick="filterByKategori('{{ $kat }}')"
+                                        class="category-pill whitespace-nowrap px-4 sm:px-5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer
+                                        {{ $isActive 
+                                            ? 'bg-[#075B3C] text-white shadow-sm border border-[#075B3C]' 
+                                            : 'bg-white text-[#075B3C] border border-[#075B3C] hover:bg-emerald-50' }}">
+                                    {{ $kat }}
+                                </button>
+                            @endforeach
+                        </div>
+
+                        <div class="flex-shrink-0">
+                            <a href="{{ route('pokja') }}" class="text-xs font-semibold text-[#075B3C] hover:underline inline-flex items-center gap-1">
+                                <span>Lihat Rincian Program di Halaman Pokja</span>
+                                <i class="fa-solid fa-angle-right text-[10px]"></i>
+                            </a>
+                        </div>
                     </div>
 
                 </form>
@@ -314,9 +346,17 @@
                             </div>
 
                             <!-- Deskripsi Singkat Kegiatan -->
-                            <p class="text-xs text-[#64748B] leading-relaxed line-clamp-2 mt-1 mb-4">
+                            <p class="text-xs text-[#64748B] leading-relaxed line-clamp-2 mt-1 mb-2">
                                 {{ $agenda['deskripsi'] }}
                             </p>
+
+                            <!-- Keterangan Pelaksana Terhubung ke Pokja / Profil -->
+                            <div class="text-[11px] text-gray-500 flex items-center justify-between pb-2">
+                                <span>Pelaksana: <strong class="text-gray-700">{{ $agenda['pokja_label'] }}</strong></span>
+                                <a href="{{ route('pokja') }}" class="text-[#075B3C] font-semibold hover:underline">
+                                    Detail Pokja &rarr;
+                                </a>
+                            </div>
                         </div>
 
                         <!-- Bagian Bawah: Link Detail Agenda -->
@@ -397,12 +437,18 @@
                                     {{ $p['deskripsi'] }}
                                 </p>
 
-                                <!-- Link Baca Selengkapnya -->
-                                <a href="{{ route('informasi.pengumuman.show', $p['id']) }}"
-                                   class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#075B3C] group-hover:text-[#116B46] transition-colors">
-                                    <span>Baca selengkapnya</span>
-                                    <span class="text-base leading-none">&rarr;</span>
-                                </a>
+                                <div class="flex items-center justify-between pt-1">
+                                    <!-- Link Baca Selengkapnya -->
+                                    <a href="{{ route('informasi.pengumuman.show', $p['id']) }}"
+                                       class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#075B3C] group-hover:text-[#116B46] transition-colors">
+                                        <span>Baca selengkapnya</span>
+                                        <span class="text-base leading-none">&rarr;</span>
+                                    </a>
+
+                                    <span class="text-[11px] text-gray-400">
+                                        {{ $p['penulis'] }}
+                                    </span>
+                                </div>
                             </div>
 
                         </article>
@@ -418,7 +464,7 @@
                     </div>
                 </div>
 
-                <!-- KOLOM KANAN (35%): Panel Informasi Penting -->
+                <!-- KOLOM KANAN (35%): Panel Informasi Penting Terhubung ke Halaman Lain -->
                 <div class="lg:col-span-4">
                     <div class="bg-white rounded-2xl border border-[#E2E8F0] shadow-sm p-6 sticky top-24">
                         
@@ -437,7 +483,7 @@
                             Beberapa informasi yang perlu diperhatikan oleh kader dan masyarakat.
                         </p>
 
-                        <!-- Daftar 4 Informasi Ringkas -->
+                        <!-- Daftar 4 Informasi Ringkas dengan Link ke Pokja, Profil & Beranda -->
                         <div class="space-y-3.5">
                             @foreach($infoPenting as $info)
                                 <div class="flex items-start gap-3 pb-3.5 border-b border-gray-100 last:border-b-0 last:pb-0">
@@ -445,28 +491,35 @@
                                     <div class="w-7 h-7 rounded-lg bg-emerald-50 text-[#075B3C] flex items-center justify-center text-xs flex-shrink-0 mt-0.5">
                                         <i class="{{ $info['icon'] }}"></i>
                                     </div>
-                                    <!-- Judul & Deskripsi -->
+                                    <!-- Judul, Deskripsi & Link Penjelas -->
                                     <div class="flex-1 min-w-0">
                                         <h4 class="text-xs sm:text-sm font-bold text-[#1F2937] leading-snug">
                                             {{ $info['judul'] }}
                                         </h4>
-                                        <p class="text-[11px] sm:text-xs text-[#64748B] leading-relaxed mt-0.5">
+                                        <p class="text-[11px] sm:text-xs text-[#64748B] leading-relaxed mt-0.5 mb-1">
                                             {{ $info['deskripsi'] }}
                                         </p>
+                                        <a href="{{ route($info['route']) }}" class="inline-flex items-center gap-1 text-[11px] font-bold text-[#075B3C] hover:underline">
+                                            <span>{{ $info['link_label'] }}</span>
+                                            <i class="fa-solid fa-angle-right text-[9px]"></i>
+                                        </a>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
 
-                        <!-- Kotak Bantuan / Bimbingan Informasi Kader -->
+                        <!-- Kotak Informasi Profil & Sekretariat Desa -->
                         <div class="mt-6 pt-4 border-t border-gray-100 bg-[#E8F7EF]/60 rounded-xl p-3.5 border border-[#075B3C]/15">
                             <div class="flex items-start gap-2.5">
                                 <i class="fa-solid fa-circle-info text-[#075B3C] text-sm mt-0.5"></i>
                                 <div>
-                                    <span class="block text-xs font-bold text-[#075B3C]">Pusat Layanan Kader</span>
-                                    <p class="text-[11px] text-[#475569] leading-relaxed mt-0.5">
-                                        Untuk koordinasi langsung, hubungi sekretariat TP. PKK di Balai Desa Karangtanjung pada hari kerja.
+                                    <span class="block text-xs font-bold text-[#075B3C]">Mengenal TP. PKK Desa</span>
+                                    <p class="text-[11px] text-[#475569] leading-relaxed mt-0.5 mb-2">
+                                        Pelajari visi-misi, susunan kepengurusan periode aktif, dan 10 program pokok di halaman profil.
                                     </p>
+                                    <a href="{{ route('profil') }}" class="inline-flex items-center gap-1 text-xs font-bold text-[#075B3C] hover:underline">
+                                        <span>Buka Profil TP. PKK &rarr;</span>
+                                    </a>
                                 </div>
                             </div>
                         </div>
