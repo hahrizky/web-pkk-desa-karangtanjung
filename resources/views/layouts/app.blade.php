@@ -52,17 +52,17 @@
                 </a>
 
                 <!-- Menu Navigasi Desktop -->
-                <div class="hidden md:flex items-center gap-2">
-                    <a href="{{ route('beranda') }}" class="px-4 py-2 rounded-lg text-sm {{ request()->routeIs('beranda') ? 'font-semibold text-emerald-800 bg-emerald-100' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-emerald-50' }} transition-colors">
+                <div class="hidden md:flex items-center gap-1 sm:gap-2">
+                    <a href="{{ route('beranda') }}" class="px-3.5 py-2 rounded-lg text-sm font-medium transition-all {{ request()->routeIs('beranda') ? 'font-bold text-[#075B3C] border-b-2 border-[#075B3C] rounded-b-none' : 'text-gray-600 hover:text-[#075B3C] hover:bg-emerald-50' }}">
                         Beranda
                     </a>
-                    <a href="{{ route('profil') }}" class="px-4 py-2 rounded-lg text-sm {{ request()->routeIs('profil') ? 'font-semibold text-emerald-800 bg-emerald-100' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-emerald-50' }} transition-colors">
+                    <a href="{{ route('profil') }}" class="px-3.5 py-2 rounded-lg text-sm font-medium transition-all {{ request()->routeIs('profil') ? 'font-bold text-[#075B3C] border-b-2 border-[#075B3C] rounded-b-none' : 'text-gray-600 hover:text-[#075B3C] hover:bg-emerald-50' }}">
                         Profil
                     </a>
-                    <a href="{{ route('pokja') }}" class="px-4 py-2 rounded-lg text-sm {{ request()->routeIs('pokja') ? 'font-semibold text-emerald-800 bg-emerald-100' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-emerald-50' }} transition-colors">
+                    <a href="{{ route('pokja') }}" class="px-3.5 py-2 rounded-lg text-sm font-medium transition-all {{ request()->routeIs('pokja') ? 'font-bold text-[#075B3C] border-b-2 border-[#075B3C] rounded-b-none' : 'text-gray-600 hover:text-[#075B3C] hover:bg-emerald-50' }}">
                         Pokja
                     </a>
-                    <a href="#kontak" class="px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-emerald-800 hover:bg-emerald-50 transition-colors">
+                    <a href="{{ route('informasi.index') }}" class="px-3.5 py-2 rounded-lg text-sm font-medium transition-all {{ request()->routeIs('informasi.*') ? 'font-bold text-[#075B3C] border-b-2 border-[#075B3C] rounded-b-none' : 'text-gray-600 hover:text-[#075B3C] hover:bg-emerald-50' }}">
                         Informasi
                     </a>
                 </div>
@@ -81,16 +81,16 @@
 
         <!-- Menu Navigasi Mobile -->
         <div id="mobile-menu" class="hidden md:hidden border-t border-gray-100 bg-white px-4 pt-2 pb-4 space-y-1 shadow-lg">
-            <a href="{{ route('beranda') }}" class="block px-3 py-2 rounded-md text-base {{ request()->routeIs('beranda') ? 'font-semibold text-emerald-800 bg-emerald-50' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50' }}">
+            <a href="{{ route('beranda') }}" class="block px-3 py-2 rounded-md text-base {{ request()->routeIs('beranda') ? 'font-bold text-[#075B3C] bg-emerald-50 border-l-4 border-[#075B3C]' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50' }}">
                 Beranda
             </a>
-            <a href="{{ route('profil') }}" class="block px-3 py-2 rounded-md text-base {{ request()->routeIs('profil') ? 'font-semibold text-emerald-800 bg-emerald-50' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50' }}">
+            <a href="{{ route('profil') }}" class="block px-3 py-2 rounded-md text-base {{ request()->routeIs('profil') ? 'font-bold text-[#075B3C] bg-emerald-50 border-l-4 border-[#075B3C]' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50' }}">
                 Profil
             </a>
-            <a href="{{ route('pokja') }}" class="block px-3 py-2 rounded-md text-base {{ request()->routeIs('pokja') ? 'font-semibold text-emerald-800 bg-emerald-50' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50' }}">
+            <a href="{{ route('pokja') }}" class="block px-3 py-2 rounded-md text-base {{ request()->routeIs('pokja') ? 'font-bold text-[#075B3C] bg-emerald-50 border-l-4 border-[#075B3C]' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50' }}">
                 Pokja
             </a>
-            <a href="#kontak" class="block px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50">
+            <a href="{{ route('informasi.index') }}" class="block px-3 py-2 rounded-md text-base {{ request()->routeIs('informasi.*') ? 'font-bold text-[#075B3C] bg-emerald-50 border-l-4 border-[#075B3C]' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50' }}">
                 Informasi
             </a>
         </div>
@@ -143,27 +143,27 @@
                     </h4>
                     <ul class="space-y-3 text-sm text-emerald-100/80">
                         <li>
-                            <a href="{{ route('beranda') }}#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja I']) }}" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
-                                <span><strong>Pokja 1:</strong> Penghayatan & Gotong Royong</span>
+                                <span><strong>Pokja I:</strong> Penghayatan &amp; Gotong Royong</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('beranda') }}#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja II']) }}" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
-                                <span><strong>Pokja 2:</strong> Pendidikan, Keterampilan & UP2K</span>
+                                <span><strong>Pokja II:</strong> Pendidikan, Keterampilan &amp; UP2K</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('beranda') }}#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja III']) }}" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
-                                <span><strong>Pokja 3:</strong> Pangan, Sandang & Tata Laksana</span>
+                                <span><strong>Pokja III:</strong> Pangan, Sandang &amp; Tata Laksana</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('beranda') }}#pokja" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja IV']) }}" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
-                                <span><strong>Pokja 4:</strong> Kesehatan & Lingkungan Hidup</span>
+                                <span><strong>Pokja IV:</strong> Kesehatan &amp; Lingkungan Hidup</span>
                             </a>
                         </li>
                     </ul>

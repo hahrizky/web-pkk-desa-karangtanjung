@@ -8,42 +8,42 @@ class ProfilController extends Controller
 {
     public function index()
     {
-        // 1. Data Visi & Misi
-        $visi = "Terwujudnya Keluarga Karangtanjung yang Beriman, Berakhlak Mulia, Sehat, Sejahtera, Maju, dan Mandiri Berbasis Ketahanan Desa yang Berkelanjutan";
+        // 1. Data Visi & Misi TP. PKK Desa Karangtanjung
+        $visi = "Terwujudnya Keluarga Desa Karangtanjung yang Beriman, Berakhlak Mulia, Sehat, Sejahtera, dan Mandiri";
 
         $misi = [
             [
                 'nomor' => '01',
-                'judul' => 'Ketahanan Mental & Gotong Royong',
-                'deskripsi' => 'Meningkatkan kualitas keimanan, pengamalan nilai-nilai luhur Pancasila, pembinaan kesadaran bela negara, serta semangat gotong royong warga.',
+                'judul' => 'Pembinaan Karakter & Gotong Royong',
+                'deskripsi' => 'Meningkatkan keimanan, kerukunan antarwarga, serta membudayakan semangat gotong royong di seluruh rukun warga.',
                 'icon' => 'fa-solid fa-hand-holding-heart'
             ],
             [
                 'nomor' => '02',
-                'judul' => 'Kualitas Pendidikan & Pola Asuh Anak',
-                'deskripsi' => 'Meningkatkan akses dan kualitas pendidikan formal, non-formal, keterampilan keluarga, serta pola asuh anak dan remaja yang bijak.',
+                'judul' => 'Keterampilan & Usaha Ekonomi Keluarga',
+                'deskripsi' => 'Meningkatkan keterampilan ibu rumah tangga melalui pelatihan olahan pangan dan pembinaan kelompok UP2K.',
                 'icon' => 'fa-solid fa-graduation-cap'
             ],
             [
                 'nomor' => '03',
-                'judul' => 'Ketahanan Pangan & Kemandirian UP2K',
-                'deskripsi' => 'Mengembangkan ketahanan pangan keluarga lewat program AKU HATINYA PKK dan mendorong kemandirian ekonomi keluarga melalui UP2K.',
+                'judul' => 'Ketahanan Pangan & Rumah Sehat',
+                'deskripsi' => 'Mengoptimalkan pemanfaatan pekarangan rumah (HATINYA PKK) dan tata laksana hunian yang asri, bersih, dan sehat.',
                 'icon' => 'fa-solid fa-seedling'
             ],
             [
                 'nomor' => '04',
-                'judul' => 'Kesehatan Keluarga & Kelestarian Lingkungan',
-                'deskripsi' => 'Meningkatkan derajat kesehatan keluarga melalui pencegahan stunting, optimalisasi posyandu, PHBS, serta kelestarian lingkungan hidup.',
+                'judul' => 'Kesehatan Ibu, Balita & Cegah Stunting',
+                'deskripsi' => 'Menjaga kesehatan keluarga melalui posyandu balita dan lansia, pendampingan gizi, dan gerakan hidup bersih (PHBS).',
                 'icon' => 'fa-solid fa-heart-pulse'
             ],
         ];
 
-        // 2. Data Struktur Organisasi
+        // 2. Data Struktur Organisasi Pengurus Desa Asli
         $struktur = [
             'pembina' => [
                 'jabatan' => 'Pembina',
                 'nama'    => 'Atmo',
-                'sub'     => 'Kepala Desa Karang Tanjung',
+                'sub'     => 'Kepala Desa Karangtanjung',
             ],
             'pengurus_inti' => [
                 [
@@ -87,158 +87,132 @@ class ProfilController extends Controller
                 [
                     'kode'  => 'Pokja I',
                     'ketua' => 'Mutma\'innah, M.Pd.',
+                    'bidang'=> 'Karakter & Gotong Royong',
                 ],
                 [
                     'kode'  => 'Pokja II',
                     'ketua' => 'Resti Duwi Rohmawati',
+                    'bidang'=> 'Pendidikan & UP2K',
                 ],
                 [
                     'kode'  => 'Pokja III',
                     'ketua' => 'Jazil Laturohmah',
+                    'bidang'=> 'Pangan & Rumah Sehat',
                 ],
                 [
                     'kode'  => 'Pokja IV',
                     'ketua' => 'Lilik Mutammimah',
+                    'bidang'=> 'Kesehatan & Posyandu',
                 ],
             ],
         ];
 
-        // 3. 4 Pilar Peran Strategis TP. PKK Desa
-        $pilar = [
+        // 3. Fokus Aksi & Kegiatan Nyata Kader PKK di Desa Karangtanjung
+        $fokus_kegiatan = [
             [
                 'nomor' => '1',
-                'judul' => 'Pemberdayaan Keluarga',
-                'deskripsi' => 'Menggerakkan potensi keluarga agar berdaya mandiri melalui bimbingan hidup sehat, terampil, dan berpengetahuan.',
-                'icon' => 'fa-solid fa-users',
-                'color' => 'emerald'
+                'judul' => 'Layanan Kesehatan Posyandu & Gizi',
+                'deskripsi' => 'Pelayanan penimbangan rutin balita, pembagian vitamin A, imunisasi dasar, serta PMT bergizi untuk pencegahan stunting.',
+                'pokja' => 'Pokja IV',
+                'icon' => 'fa-solid fa-heart-pulse',
+                'kategori_filter' => 'Pokja IV'
             ],
             [
                 'nomor' => '2',
-                'judul' => 'Fasilitasi Pembangunan Desa',
-                'deskripsi' => 'Menjembatani aspirasi masyarakat desa khususnya kaum ibu & balita ke dalam Musrenbangdes dan program desa.',
-                'icon' => 'fa-solid fa-handshake-angle',
-                'color' => 'blue'
+                'judul' => 'Pemberdayaan Usaha Rumahan (UP2K)',
+                'deskripsi' => 'Pelatihan tata boga pangan lokal, kemasan produk higienis, dan pembukuan sederhana untuk menambah penghasilan keluarga.',
+                'pokja' => 'Pokja II',
+                'icon' => 'fa-solid fa-store',
+                'kategori_filter' => 'Pokja II'
             ],
             [
                 'nomor' => '3',
-                'judul' => 'Penggerak Partisipasi PKK',
-                'deskripsi' => 'Membangun kesadaran warga desa untuk aktif dalam kegiatan posyandu, posbindu, kebersihan lingkungan, dan dasawisma.',
-                'icon' => 'fa-solid fa-bullhorn',
-                'color' => 'amber'
+                'judul' => 'Pemanfaatan Pekarangan (HATINYA PKK)',
+                'deskripsi' => 'Penanaman sayuran pekarangan, kolam gizi, dan apotek hidup keluarga guna mendukung ketahanan pangan mandiri.',
+                'pokja' => 'Pokja III',
+                'icon' => 'fa-solid fa-seedling',
+                'kategori_filter' => 'Pokja III'
             ],
             [
                 'nomor' => '4',
-                'judul' => 'Mitra Strategis Pemerintah Desa',
-                'deskripsi' => 'Mendukung percepatan target SDGs Desa khususnya keluarga sehat, sejahtera, bebas stunting, dan lingkungan bersih.',
-                'icon' => 'fa-solid fa-building-columns',
-                'color' => 'teal'
+                'judul' => 'Kerja Bakti & Pembinaan Dasawisma',
+                'deskripsi' => 'Gerakan kebersihan lingkungan serentak, bakti sosial warga lansia, serta rekapitulasi data catatan keluarga di tiap RW.',
+                'pokja' => 'Pokja I',
+                'icon' => 'fa-solid fa-hand-holding-heart',
+                'kategori_filter' => 'Pokja I'
             ]
         ];
 
-        // 4. Tugas dan Fungsi TP. PKK
-        $tugas_fungsi = [
-            [
-                'tipe' => 'TUGAS 01',
-                'judul' => 'Penggerak Partisipasi Masyarakat',
-                'deskripsi' => 'Mendorong keikutsertaan aktif warga dalam setiap program pembangunan desa dan kegiatan kemasyarakatan.',
-                'icon' => 'fa-solid fa-clipboard-check'
-            ],
-            [
-                'tipe' => 'TUGAS 02',
-                'judul' => 'Koordinasi & Pelaksanaan Program Kerja',
-                'deskripsi' => 'Merumuskan serta merealisasikan rencana kerja 10 Program Pokok PKK secara konsisten dan terukur di Desa Karangtanjung.',
-                'icon' => 'fa-solid fa-gears'
-            ],
-            [
-                'tipe' => 'FUNGSI 01',
-                'judul' => 'Pemberdayaan Kaum Ibu & Perempuan',
-                'deskripsi' => 'Memfasilitasi peningkatan keahlian kaum wanita desa dalam kepemimpinan, parenting, dan ekonomi kreatif rumah tangga.',
-                'icon' => 'fa-solid fa-hand-holding-heart'
-            ],
-            [
-                'tipe' => 'FUNGSI 02',
-                'judul' => 'Monitoring Kesejahteraan Keluarga',
-                'deskripsi' => 'Memantau perkembangan gizi keluarga, pemetaan stunting, data dasawisma, dan perlindungan perempuan & anak.',
-                'icon' => 'fa-solid fa-shield-heart'
-            ],
-            [
-                'tipe' => 'FUNGSI 03',
-                'judul' => 'Sinergi Bersama Pemerintahan Desa',
-                'deskripsi' => 'Memberikan masukan program berbasis kebutuhan keluarga dan mengawal realisasi dana desa bidang pemberdayaan.',
-                'icon' => 'fa-solid fa-network-wired'
-            ]
-        ];
-
-        // 5. 10 Program Pokok PKK
+        // 4. 10 Program Pokok PKK (Landasan Resmi Nasional)
         $program_pokok = [
             [
                 'nomor' => '01',
                 'pokja' => 'Pokja I',
                 'judul' => 'Penghayatan dan Pengamalan Pancasila',
-                'deskripsi' => 'Menumbuhkan kesadaran beriman, bertakwa, berbudi pekerti luhur, dan cinta tanah air dalam kehidupan keluarga.',
+                'deskripsi' => 'Menumbuhkan kesadaran beriman, berbudi luhur, dan kerukunan dalam keluarga.',
                 'icon' => 'fa-solid fa-scale-balanced'
             ],
             [
                 'nomor' => '02',
                 'pokja' => 'Pokja I',
                 'judul' => 'Gotong Royong',
-                'deskripsi' => 'Menggalang kepedulian sosial, kebersamaan, bakti lingkungan, dan kearifan lokal warga desa.',
+                'deskripsi' => 'Menggalang kepedulian sosial, kebersihan lingkungan, dan kearifan lokal warga.',
                 'icon' => 'fa-solid fa-people-carry-box'
             ],
             [
                 'nomor' => '03',
                 'pokja' => 'Pokja III',
                 'judul' => 'Pangan',
-                'deskripsi' => 'Mewujudkan ketahanan pangan keluarga dengan konsumsi beragam, bergizi seimbang, dan aman melalui AKU HATINYA PKK.',
+                'deskripsi' => 'Mewujudkan ketahanan pangan keluarga bergizi seimbang lewat HATINYA PKK.',
                 'icon' => 'fa-solid fa-bowl-food'
             ],
             [
                 'nomor' => '04',
                 'pokja' => 'Pokja III',
                 'judul' => 'Sandang',
-                'deskripsi' => 'Mendorong kesadaran berbusana sopan, serasi, dan mencintai produk lokal/UMKM busana nusantara.',
+                'deskripsi' => 'Mendorong kesadaran berbusana sopan, serasi, dan mencintai produk lokal.',
                 'icon' => 'fa-solid fa-shirt'
             ],
             [
                 'nomor' => '05',
                 'pokja' => 'Pokja III',
                 'judul' => 'Perumahan & Tata Laksana',
-                'deskripsi' => 'Mewujudkan rumah sehat, layak huni, penataan ruang yang asri, serta pengelolaan sanitasi rumah tangga.',
+                'deskripsi' => 'Mewujudkan hunian sehat, layak huni, asri, dan sanitasi lingkungan yang baik.',
                 'icon' => 'fa-solid fa-house-chimney-window'
             ],
             [
                 'nomor' => '06',
                 'pokja' => 'Pokja II',
                 'judul' => 'Pendidikan & Keterampilan',
-                'deskripsi' => 'Meningkatkan mutu literasi keluarga, pelatihan keahlian praktis, dan pembinaan karakter anak sejak usia dini.',
+                'deskripsi' => 'Meningkatkan literasi keluarga dan pelatihan keterampilan praktis ibu rumah tangga.',
                 'icon' => 'fa-solid fa-book-open-reader'
             ],
             [
                 'nomor' => '07',
                 'pokja' => 'Pokja II',
-                'judul' => 'Kehidupan Berkoperasi',
-                'deskripsi' => 'Menggerakkan UP2K PKK dan kelompok pra-koperasi perempuan untuk memperkuat ketahanan ekonomi keluarga.',
+                'judul' => 'Pengembangan Kehidupan Berkoperasi',
+                'deskripsi' => 'Menggerakkan kelompok usaha UP2K guna meningkatkan pendapatan keluarga.',
                 'icon' => 'fa-solid fa-coins'
             ],
             [
                 'nomor' => '08',
                 'pokja' => 'Pokja IV',
                 'judul' => 'Kelestarian Lingkungan Hidup',
-                'deskripsi' => 'Membudayakan pengelolaan sampah mandiri, pemilahan organik, penanaman apotek hidup, dan lingkungan bersih.',
+                'deskripsi' => 'Pengelolaan kebersihan selokan, bebas jentik nyamuk, dan pemilahan sampah.',
                 'icon' => 'fa-solid fa-tree'
             ],
             [
                 'nomor' => '09',
                 'pokja' => 'Pokja IV',
                 'judul' => 'Perencanaan Sehat',
-                'deskripsi' => 'Mengatur kelahiran melalui KB, perencanaan keuangan keluarga, dan persiapan generasi sehat masa depan.',
+                'deskripsi' => 'Pengaturan keluarga berencana, pola hidup sehat, dan persiapan masa depan anak.',
                 'icon' => 'fa-solid fa-calendar-check'
             ],
             [
                 'nomor' => '10',
                 'pokja' => 'Pokja IV',
                 'judul' => 'Kesehatan',
-                'deskripsi' => 'Optimalisasi posyandu balita & lansia, pencegahan stunting terintegrasi, imunisasi, dan penerapan PHBS keluarga.',
+                'deskripsi' => 'Pelayanan posyandu balita & lansia, pencegahan stunting, dan penerapan PHBS.',
                 'icon' => 'fa-solid fa-heart-pulse'
             ]
         ];
@@ -247,8 +221,7 @@ class ProfilController extends Controller
             'visi',
             'misi',
             'struktur',
-            'pilar',
-            'tugas_fungsi',
+            'fokus_kegiatan',
             'program_pokok'
         ));
     }
