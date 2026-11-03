@@ -33,41 +33,26 @@ class BerandaController extends Controller
             ]
         ];
 
-        // Daftar Kegiatan PKK Terbaru
-        $kegiatan = [
-            [
-                'judul' => 'Kegiatan Posyandu Desa Karangtanjung',
-                'tanggal' => '17 Des 2024',
-                'ringkasan' => 'Pemeriksaan rutin kesehatan balita, penimbangan berat badan, imunisasi, dan penyuluhan gizi seimbang untuk pencegahan stunting.',
-                'kategori' => 'Kesehatan',
-                'badge_color' => 'bg-emerald-100 text-emerald-800',
-                'gambar' => '1.webp'
-            ],
-            [
-                'judul' => 'Pertemuan Rutin TP. PKK Desa Karangtanjung',
-                'tanggal' => '10 Des 2024',
-                'ringkasan' => 'Evaluasi program kerja bulanan bersama kader dasawisma dan koordinasi persiapan kegiatan bakti sosial warga.',
-                'kategori' => 'Organisasi',
-                'badge_color' => 'bg-amber-100 text-amber-800',
-                'gambar' => '2.webp'
-            ],
-            [
-                'judul' => 'Kegiatan Pemberdayaan Keluarga',
-                'tanggal' => '28 Nov 2024',
-                'ringkasan' => 'Pelatihan keterampilan tata boga dan olahan pangan lokal guna mendorong Usaha Peningkatan Pendapatan Keluarga (UP2K).',
-                'kategori' => 'Pemberdayaan',
-                'badge_color' => 'bg-blue-100 text-blue-800',
-                'gambar' => '3.webp'
-            ],
-            [
-                'judul' => 'Kegiatan Sosial Masyarakat',
-                'tanggal' => '15 Nov 2024',
-                'ringkasan' => 'Aksi gotong royong kebersihan lingkungan desa, penanaman apotek hidup (AKU HATINYA PKK), dan bantuan sosial.',
-                'kategori' => 'Sosial',
-                'badge_color' => 'bg-purple-100 text-purple-800',
-                'gambar' => '4.webp'
-            ]
+        // Daftar Kegiatan PKK Terbaru (Diambil langsung sama persis dengan Data Informasi / Berita)
+        $badgeColors = [
+            'Umum' => 'bg-amber-100 text-amber-800',
+            'Pokja I' => 'bg-purple-100 text-purple-800',
+            'Pokja II' => 'bg-blue-100 text-blue-800',
+            'Pokja III' => 'bg-teal-100 text-teal-800',
+            'Pokja IV' => 'bg-emerald-100 text-emerald-800',
         ];
+
+        $kegiatan = collect(InformasiController::getBeritaData())->map(function ($item) use ($badgeColors) {
+            return [
+                'id' => $item['id'],
+                'judul' => $item['judul'],
+                'tanggal' => $item['tanggal'],
+                'ringkasan' => $item['deskripsi'],
+                'kategori' => $item['kategori'],
+                'badge_color' => $badgeColors[$item['kategori']] ?? 'bg-emerald-100 text-emerald-800',
+                'gambar' => $item['gambar'],
+            ];
+        })->all();
 
         // 4 Kelompok Kerja (Pokja) PKK
         $pokja = [
@@ -99,12 +84,12 @@ class BerandaController extends Controller
 
         // Dokumentasi Galeri Kegiatan
         $galeri = [
-            ['judul' => 'Senam Sehat Bersama Kader', 'tag' => 'Kebugaran', 'icon' => 'fa-solid fa-person-running', 'bg' => 'bg-emerald-50 text-emerald-600'],
-            ['judul' => 'Rapat Koordinasi Pengurus PKK', 'tag' => 'Rakor Bulanan', 'icon' => 'fa-solid fa-users', 'bg' => 'bg-amber-50 text-amber-600'],
-            ['judul' => 'Pelatihan Memasak Olahan Pangan', 'tag' => 'UP2K', 'icon' => 'fa-solid fa-kitchen-set', 'bg' => 'bg-blue-50 text-blue-600'],
-            ['judul' => 'Pemanfaatan Pekarangan HATINYA PKK', 'tag' => 'Lingkungan', 'icon' => 'fa-solid fa-seedling', 'bg' => 'bg-green-50 text-green-600'],
-            ['judul' => 'Pelayanan Posyandu Balita & Lansia', 'tag' => 'Kesehatan', 'icon' => 'fa-solid fa-stethoscope', 'bg' => 'bg-rose-50 text-rose-600'],
-            ['judul' => 'Kerja Bakti Kebersihan Saluran Desa', 'tag' => 'Gotong Royong', 'icon' => 'fa-solid fa-broom', 'bg' => 'bg-teal-50 text-teal-600']
+            ['judul' => 'Senam Sehat Bersama Kader', 'tag' => 'Kebugaran', 'gambar' => '1.webp'],
+            ['judul' => 'Rapat Koordinasi Pengurus PKK', 'tag' => 'Rakor Bulanan', 'gambar' => '2.webp'],
+            ['judul' => 'Pelatihan Memasak Olahan Pangan', 'tag' => 'UP2K', 'gambar' => '3.webp'],
+            ['judul' => 'Pemanfaatan Pekarangan HATINYA PKK', 'tag' => 'Lingkungan', 'gambar' => '4.webp'],
+            ['judul' => 'Pelayanan Posyandu Balita & Lansia', 'tag' => 'Kesehatan', 'gambar' => '5.webp'],
+            ['judul' => 'Kerja Bakti Kebersihan Saluran Desa', 'tag' => 'Gotong Royong', 'gambar' => '1.webp']
         ];
 
         return view('beranda', compact('statistik', 'kegiatan', 'pokja', 'galeri'));

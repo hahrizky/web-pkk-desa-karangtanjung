@@ -55,28 +55,28 @@
             <!-- Grid Agenda (3 Kolom Desktop, 2 Kolom Tablet, 1 Kolom Mobile) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($agendas as $agenda)
-                    <div class="bg-white rounded-xl border border-[#E2E8F0] p-5 shadow-sm hover:shadow-md hover:border-[#116B46]/50 hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group">
+                    <div class="bg-[#14633F] rounded-xl border border-[#14633F] p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group">
                         <div>
                             <!-- Header Kartu Agenda -->
                             <div class="flex items-start gap-4 mb-4">
                                 <!-- Kotak Tanggal -->
-                                <div class="w-16 h-16 rounded-xl bg-[#E8F7EF] border border-[#075B3C]/20 flex flex-col items-center justify-center flex-shrink-0 text-center shadow-xs">
-                                    <span class="text-2xl font-extrabold text-[#075B3C] leading-none">{{ $agenda['tanggal'] }}</span>
-                                    <span class="text-[11px] font-bold text-[#075B3C] uppercase tracking-wider mt-1">{{ $agenda['bulan'] }}</span>
+                                <div class="w-16 h-16 rounded-xl bg-white/10 border border-white/20 flex flex-col items-center justify-center flex-shrink-0 text-center shadow-xs">
+                                    <span class="text-2xl font-extrabold text-white leading-none">{{ $agenda['tanggal'] }}</span>
+                                    <span class="text-[11px] font-bold text-emerald-200 uppercase tracking-wider mt-1">{{ $agenda['bulan'] }}</span>
                                 </div>
 
                                 <!-- Detail Kategori & Judul -->
                                 <div class="flex-1 min-w-0">
                                     <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
-                                        <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border {{ $agenda['badge_color'] }}">
+                                        <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/20 text-white border border-white/30">
                                             {{ $agenda['kategori'] }}
                                         </span>
-                                        <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-600 border border-gray-200">
+                                        <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium bg-white/10 text-emerald-100 border border-white/20">
                                             {{ $agenda['status'] }}
                                         </span>
                                     </div>
 
-                                    <h2 class="text-base font-bold text-[#1F2937] group-hover:text-[#075B3C] transition-colors leading-snug line-clamp-2">
+                                    <h2 class="text-base font-bold text-white hover:text-emerald-200 transition-colors leading-snug line-clamp-2">
                                         <a href="{{ route('informasi.agenda.show', $agenda['id']) }}">
                                             {{ $agenda['judul'] }}
                                         </a>
@@ -85,42 +85,37 @@
                             </div>
 
                             <!-- Waktu & Lokasi -->
-                            <div class="space-y-2 py-3 border-t border-gray-100 text-xs text-[#475569]">
+                            <div class="space-y-2 py-3 border-t border-white/15 text-xs text-emerald-100">
                                 <div class="flex items-center gap-2.5">
-                                    <i class="fa-regular fa-clock text-[#116B46] w-4 text-center"></i>
+                                    <i class="fa-regular fa-clock text-emerald-300 w-4 text-center"></i>
                                     <span>{{ $agenda['waktu'] }}</span>
                                 </div>
                                 <div class="flex items-center gap-2.5">
-                                    <i class="fa-solid fa-location-dot text-[#116B46] w-4 text-center"></i>
+                                    <i class="fa-solid fa-location-dot text-emerald-300 w-4 text-center"></i>
                                     <span class="truncate">{{ $agenda['lokasi'] }}</span>
                                 </div>
                             </div>
 
                             <!-- Deskripsi Singkat -->
-                            <p class="text-xs text-[#64748B] leading-relaxed line-clamp-3 mt-1 mb-2">
+                            <p class="text-xs text-emerald-100/90 leading-relaxed line-clamp-3 mt-1 mb-2">
                                 {{ $agenda['deskripsi'] }}
                             </p>
 
                             <!-- Pelaksana & Link Pokja -->
-                            <div class="text-[11px] text-gray-500 flex items-center justify-between pb-3">
-                                <span>Pelaksana: <strong class="text-gray-700">{{ $agenda['pokja_label'] }}</strong></span>
-                                <a href="{{ route('pokja') }}" class="text-[#075B3C] font-semibold hover:underline">
+                            <div class="text-[11px] text-emerald-200 flex items-center justify-between pb-3">
+                                <span>Pelaksana: <strong class="text-white">{{ $agenda['pokja_label'] }}</strong></span>
+                                <a href="{{ route('pokja') }}" class="text-emerald-200 hover:text-white hover:underline font-semibold transition-colors">
                                     Info Pokja &rarr;
                                 </a>
                             </div>
                         </div>
 
                         <!-- Footer Kartu -->
-                        <div class="pt-3 border-t border-gray-100 flex items-center justify-between">
+                        <div class="pt-3 border-t border-white/15">
                             <a href="{{ route('informasi.agenda.show', $agenda['id']) }}"
-                               class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#075B3C] group-hover:text-[#116B46] transition-colors">
-                                <span>Detail Agenda</span>
-                                <span class="text-base leading-none">&rarr;</span>
+                               class="inline-block text-center w-full px-4 py-2 rounded-lg text-xs font-bold text-[#14633F] bg-white hover:bg-emerald-50 active:scale-95 active:bg-emerald-100 transition-all duration-150 shadow-xs select-none">
+                                Detail Agenda
                             </a>
-
-                            <div class="w-8 h-8 rounded-full {{ $agenda['icon_bg'] }} {{ $agenda['icon_color'] }} flex items-center justify-center text-xs">
-                                <i class="{{ $agenda['icon'] }}"></i>
-                            </div>
                         </div>
                     </div>
                 @endforeach

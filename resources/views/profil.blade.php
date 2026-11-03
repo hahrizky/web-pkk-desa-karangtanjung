@@ -276,7 +276,7 @@
                 <div class="w-10 h-10 rounded-full {{ $iconBg }} text-white flex items-center justify-center text-base mb-2 flex-shrink-0">
                     <i class="{{ $item['icon'] }}"></i>
                 </div>
-                <h3 class="text-base font-bold text-gray-900 mb-2 leading-snug">
+                <h3 class="text-base font-bold text-gray-900 mb-2 leading-snug min-h-[3rem]">
                     {{ $item['nomor'] }}. {{ $item['judul'] }}
                 </h3>
                 <p class="text-sm text-gray-500 leading-relaxed">
@@ -315,7 +315,7 @@
                         {{ $item['tipe'] }}
                     </span>
                 </div>
-                <h4 class="text-base font-bold text-gray-900 mb-2 leading-snug">
+                <h4 class="text-base font-bold text-gray-900 mb-2 leading-snug min-h-[3rem]">
                     {{ $item['judul'] }}
                 </h4>
                 <p class="text-sm text-gray-500 leading-relaxed">
@@ -346,30 +346,35 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
             @foreach ($program_pokok as $item)
             <div class="group bg-white rounded-2xl p-5 border border-gray-100 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 flex flex-col">
+
                 {{-- Header: nomor + badge pokja --}}
                 <div class="flex items-center justify-between mb-3">
                     <span class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 text-xs font-extrabold flex items-center justify-center flex-shrink-0">
                         {{ $item['nomor'] }}
                     </span>
-                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider bg-gray-100 px-2 py-0.5 rounded-full">
+
+                    <span class="text-[10px] font-bold text-white uppercase tracking-wider bg-emerald-700 px-2 py-0.5 rounded-full">
                         {{ $item['pokja'] }}
                     </span>
                 </div>
 
-                <h4 class="text-sm font-bold text-gray-900 leading-snug mb-2 group-hover:text-emerald-700 transition-colors flex-1">
+                {{-- Judul --}}
+                <h4 class="text-sm font-bold text-gray-900 leading-snug mb-2 min-h-[2.5rem] group-hover:text-emerald-700 transition-colors">
                     {{ $item['judul'] }}
                 </h4>
 
+                {{-- Deskripsi --}}
                 <p class="text-xs text-gray-500 leading-relaxed mb-4">
                     {{ $item['deskripsi'] }}
                 </p>
 
                 {{-- Footer ikon --}}
-                <div class="pt-3 border-t border-gray-100 flex justify-end">
+                <div class="mt-auto pt-3 border-t border-gray-100 flex justify-end">
                     <div class="w-7 h-7 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center text-xs group-hover:bg-emerald-600 group-hover:text-white transition-colors">
                         <i class="{{ $item['icon'] }}"></i>
                     </div>
                 </div>
+
             </div>
             @endforeach
         </div>
