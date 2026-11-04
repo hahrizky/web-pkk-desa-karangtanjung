@@ -5,7 +5,7 @@
 @section('content')
 
     <!-- ================= BREADCRUMB & HERO HEADER ================= -->
-    <section class="bg-[#E8F7EF] py-8 sm:py-10 border-b border-[#D1D5DB]/40">
+    <section class="bg-[#E0F2E7] py-8 sm:py-10 border-b border-[#D1D5DB]/40">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Breadcrumb Nav -->
             <nav class="flex items-center gap-2 text-xs sm:text-sm text-gray-500 mb-4" aria-label="Breadcrumb">
@@ -43,14 +43,6 @@
     <!-- ================= DAFTAR LENGKAP AGENDA ================= -->
     <section class="py-12 bg-white">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            <!-- Banner Pemberitahuan Contoh Data -->
-            <div class="mb-8 p-4 rounded-xl bg-amber-50 border border-amber-200 flex items-start gap-3">
-                <i class="fa-solid fa-circle-exclamation text-amber-600 text-base mt-0.5"></i>
-                <div class="text-xs sm:text-sm text-amber-800 leading-relaxed">
-                    <strong class="font-semibold">Catatan Pengembangan:</strong> Tanggal dan jadwal kegiatan di bawah ini merupakan data contoh untuk tampilan pengembangan website TP. PKK Desa Karangtanjung dan belum menjadi jadwal resmi yang ditetapkan pemerintah desa.
-                </div>
-            </div>
 
             <!-- Grid Agenda (3 Kolom Desktop, 2 Kolom Tablet, 1 Kolom Mobile) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

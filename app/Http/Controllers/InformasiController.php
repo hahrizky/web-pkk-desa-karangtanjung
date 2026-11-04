@@ -2,17 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Berita;
+use App\Models\Agenda;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class InformasiController extends Controller
 {
     /**
-     * Data Master Informasi / Berita Kegiatan PKK
-     * Selaras dengan 4 Pokja dan Struktur Organisasi Desa Karangtanjung
+     * Data Master Informasi / Berita Kegiatan PKK (Database First)
      */
     public static function getBeritaData()
     {
+        try {
+            $dbBerita = Berita::where('status', 'published')->latest('tanggal')->get();
+            if ($dbBerita->isNotEmpty()) {
+                return $dbBerita->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'slug' => $item->slug,
+                        'judul' => $item->judul,
+                        'kategori' => $item->kategori,
+                        'pokja' => $item->kategori,
+                        'pokja_nama' => $item->kategori,
+                        'tanggal' => $item->tanggal_formatted,
+                        'bulan' => $item->tanggal ? $item->tanggal->format('m') : '01',
+                        'tahun' => $item->tanggal ? $item->tanggal->format('Y') : date('Y'),
+                        'deskripsi' => $item->ringkasan,
+                        'isi' => $item->konten,
+                        'gambar' => $item->gambar ?? '1.webp',
+                        'tags' => $item->tags ?? ['PKK', 'Kegiatan'],
+                        'penulis' => $item->penulis,
+                    ];
+                })->all();
+            }
+        } catch (\Exception $e) {
+            // fallback ke data statis jika belum migrate
+        }
+
         return [
             [
                 'id' => 1,
@@ -210,10 +237,41 @@ class InformasiController extends Controller
     }
 
     /**
-     * Data Master Agenda & Jadwal Kegiatan PKK
+     * Data Master Agenda & Jadwal Kegiatan PKK (Database First)
      */
     private function getAgendaData()
     {
+        try {
+            $dbAgenda = Agenda::orderBy('tanggal', 'asc')->get();
+            if ($dbAgenda->isNotEmpty()) {
+                return $dbAgenda->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'judul' => $item->judul,
+                        'kategori' => $item->kategori,
+                        'pokja_label' => $item->penyelenggara ?? $item->kategori,
+                        'tanggal' => $item->hari_tanggal,
+                        'bulan' => $item->bulan_singkat,
+                        'tahun' => $item->tanggal ? $item->tanggal->format('Y') : date('Y'),
+                        'tanggal_lengkap' => $item->tanggal_formatted,
+                        'hari' => $item->hari,
+                        'waktu' => $item->waktu,
+                        'lokasi' => $item->lokasi,
+                        'penyelenggara' => $item->penyelenggara ?? 'Sekretariat PKK',
+                        'deskripsi' => $item->deskripsi,
+                        'isi' => $item->isi ?? $item->deskripsi,
+                        'status' => $item->status,
+                        'icon' => 'fa-solid fa-calendar-check',
+                        'icon_color' => 'text-emerald-700',
+                        'icon_bg' => 'bg-emerald-50',
+                        'badge_color' => 'bg-emerald-50 text-emerald-800 border-emerald-200',
+                    ];
+                })->all();
+            }
+        } catch (\Exception $e) {
+            // fallback ke data statis jika belum migrate
+        }
+
         return [
             [
                 'id' => 1,
@@ -406,6 +464,22 @@ class InformasiController extends Controller
                 'route' => 'beranda',
             ],
         ];
+    }
+
+    /**
+     * Galeri Foto Dokumentasi yang diambil dari Seluruh Berita Kegiatan PKK
+     */
+    public static function getGaleriData()
+    {
+        return collect(self::getBeritaData())->map(function ($berita) {
+            return [
+                'id' => $berita['id'],
+                'gambar' => $berita['gambar'],
+                'judul' => $berita['judul'],
+                'kategori' => $berita['kategori'],
+                'tanggal' => $berita['tanggal'],
+            ];
+        })->all();
     }
 
     /**

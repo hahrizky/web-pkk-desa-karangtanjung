@@ -85,11 +85,6 @@
                                     <i class="fa-solid fa-calendar-days text-[#075B3C] w-4 text-center"></i>
                                     <span>Agenda Kegiatan</span>
                                 </a>
-                                <a href="{{ route('informasi.pengumuman.index') }}"
-                                   class="flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm font-medium transition-colors {{ request()->routeIs('informasi.pengumuman.*') ? 'bg-emerald-50 text-[#075B3C] font-bold' : 'text-gray-700 hover:bg-emerald-50 hover:text-[#075B3C]' }}">
-                                    <i class="fa-solid fa-bullhorn text-[#075B3C] w-4 text-center"></i>
-                                    <span>Pengumuman</span>
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -138,10 +133,6 @@
                     <a href="{{ route('informasi.agenda.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-sm {{ request()->routeIs('informasi.agenda.*') ? 'font-bold text-[#075B3C] bg-emerald-50/60' : 'text-gray-600 hover:text-[#075B3C] hover:bg-gray-50' }}">
                         <i class="fa-solid fa-calendar-days text-xs text-[#075B3C]"></i>
                         <span>Agenda Kegiatan</span>
-                    </a>
-                    <a href="{{ route('informasi.pengumuman.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-sm {{ request()->routeIs('informasi.pengumuman.*') ? 'font-bold text-[#075B3C] bg-emerald-50/60' : 'text-gray-600 hover:text-[#075B3C] hover:bg-gray-50' }}">
-                        <i class="fa-solid fa-bullhorn text-xs text-[#075B3C]"></i>
-                        <span>Pengumuman</span>
                     </a>
                 </div>
             </div>
