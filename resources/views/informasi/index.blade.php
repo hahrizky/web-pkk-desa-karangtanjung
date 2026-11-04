@@ -6,17 +6,7 @@
 
     <!-- ================= 1. HERO SECTION & DESKRIPSI INFORMASI ================= -->
     <section class="bg-[#E8F7EF] pt-8 pb-12 sm:pt-10 sm:pb-14 border-b border-[#D1D5DB]/40">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-
-            <!-- Breadcrumb Navigasi Penghubung ke Beranda -->
-            <nav class="flex items-center gap-2 text-xs text-gray-500 mb-3" aria-label="Breadcrumb">
-                <a href="{{ route('beranda') }}" class="hover:text-[#075B3C] transition-colors flex items-center gap-1.5">
-                    <i class="fa-solid fa-house text-[11px]"></i>
-                    <span>Beranda</span>
-                </a>
-                <span class="text-gray-400">/</span>
-                <span class="text-[#075B3C] font-semibold">Pusat Informasi &amp; Dokumentasi</span>
-            </nav>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <!-- Judul Utama H1 -->
             <h1 class="text-2xl sm:text-[28px] lg:text-[32px] font-extrabold text-[#075B3C] tracking-tight leading-snug mb-3 text-left">
@@ -28,28 +18,15 @@
                 Pusat rujukan informasi resmi seputar berita kegiatan pemberdayaan warga, agenda posyandu &amp; desa serta dokumen administrasi dasawisma di lingkungan Desa Karangtanjung, Kecamatan Candi, Kabupaten Sidoarjo.
             </p>
 
-            <!-- Tautan Pintas Cepat ke Profil & Pokja Desa -->
-            <div class="flex flex-wrap items-center gap-3 mb-6 text-xs text-emerald-900">
-                <span class="font-bold text-[#075B3C]">Navigasi Terkait:</span>
-                <a href="{{ route('profil') }}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/80 hover:bg-white text-[#075B3C] border border-[#075B3C]/20 shadow-2xs transition-all">
-                    <i class="fa-solid fa-id-card text-xs"></i>
-                    <span>Profil &amp; Struktur Pengurus</span>
-                </a>
-                <a href="{{ route('pokja') }}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/80 hover:bg-white text-[#075B3C] border border-[#075B3C]/20 shadow-2xs transition-all">
-                    <i class="fa-solid fa-layer-group text-xs"></i>
-                    <span>Tugas 4 Pokja PKK</span>
-                </a>
-            </div>
-
             <!-- ================= PANEL PENCARIAN & FILTER ================= -->
             <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-[#D1D5DB]/60">
                 <form id="filter-form" action="{{ route('informasi.index') }}" method="GET" class="space-y-4">
 
                     <!-- Baris Atas: Input Pencarian, Dropdown Bulan & Tahun -->
-                    <div class="grid grid-cols-1 md:grid-cols-12 gap-3 sm:gap-4 items-center">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-12 gap-3 sm:gap-4 items-center">
 
                         <!-- Input Pencarian (Cari berita, agenda, regulasi...) -->
-                        <div class="md:col-span-8 relative">
+                        <div class="sm:col-span-2 md:col-span-8 relative">
                             <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-gray-400">
                                 <i class="fa-solid fa-magnifying-glass text-sm"></i>
                             </div>
@@ -62,7 +39,7 @@
                         </div>
 
                         <!-- Filter Dropdown Bulan -->
-                        <div class="md:col-span-2 relative">
+                        <div class="sm:col-span-1 md:col-span-2 relative">
                             <select name="bulan"
                                     id="bulan-select"
                                     class="w-full appearance-none bg-white border border-gray-300 text-gray-700 text-sm rounded-xl py-2.5 px-3.5 pr-8 focus:outline-none focus:ring-2 focus:ring-[#116B46] focus:border-transparent cursor-pointer transition-all">
@@ -79,7 +56,7 @@
                         </div>
 
                         <!-- Filter Dropdown Tahun -->
-                        <div class="md:col-span-2 relative">
+                        <div class="sm:col-span-1 md:col-span-2 relative">
                             <select name="tahun"
                                     id="tahun-select"
                                     class="w-full appearance-none bg-white border border-gray-300 text-gray-700 text-sm rounded-xl py-2.5 px-3.5 pr-8 focus:outline-none focus:ring-2 focus:ring-[#116B46] focus:border-transparent cursor-pointer transition-all">
@@ -96,31 +73,46 @@
 
                     </div>
 
-                    <!-- Baris Bawah: Filter Kategori Berbentuk Tombol Pill + Link ke Pokja -->
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pt-1">
-                        <div class="flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-1 sm:pb-0 no-scrollbar">
-                            <input type="hidden" name="kategori" id="kategori-input" value="{{ request('kategori', 'Semua') }}">
+                    <!-- Baris Bawah: Filter Kategori (Dropdown di Mobile, Tombol Pill di Tablet & Desktop) -->
+                    <div class="pt-1">
+                        <input type="hidden" name="kategori" id="kategori-input" value="{{ request('kategori', 'Semua') }}">
 
+                        <!-- Tampilan Mobile (< 640px): Dropdown Select -->
+                        <div class="block sm:hidden">
+                            <label for="kategori-select-mobile" class="block text-xs font-semibold text-gray-600 mb-1.5">
+                                Kategori Informasi:
+                            </label>
+                            <div class="relative">
+                                <select id="kategori-select-mobile"
+                                        onchange="filterByKategori(this.value)"
+                                        class="w-full appearance-none bg-white border border-gray-300 text-gray-800 text-sm font-medium rounded-xl py-2.5 px-3.5 pr-8 focus:outline-none focus:ring-2 focus:ring-[#116B46] focus:border-transparent cursor-pointer transition-all">
+                                    @foreach($kategoriList as $kat)
+                                        <option value="{{ $kat }}" {{ request('kategori', 'Semua') === $kat ? 'selected' : '' }}>
+                                            {{ $kat === 'Semua' ? 'Semua Kategori' : $kat }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tampilan Tablet & Desktop (>= 640px): Tombol Pill Horizontal -->
+                        <div class="hidden sm:flex items-center gap-2 sm:gap-2.5 overflow-x-auto pb-1 scrollbar-thin scroll-smooth -mx-1 px-1">
                             @foreach($kategoriList as $kat)
                                 @php
                                     $isActive = (request('kategori', 'Semua') === $kat);
                                 @endphp
                                 <button type="button"
                                         onclick="filterByKategori('{{ $kat }}')"
-                                        class="category-pill whitespace-nowrap px-4 sm:px-5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer
+                                        class="category-pill whitespace-nowrap flex-shrink-0 px-4 sm:px-5 py-1.5 rounded-full text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer
                                         {{ $isActive 
                                             ? 'bg-[#075B3C] text-white shadow-sm border border-[#075B3C]' 
                                             : 'bg-white text-[#075B3C] border border-[#075B3C] hover:bg-emerald-50' }}">
                                     {{ $kat }}
                                 </button>
                             @endforeach
-                        </div>
-
-                        <div class="flex-shrink-0">
-                            <a href="{{ route('pokja') }}" class="text-xs font-semibold text-[#075B3C] hover:underline inline-flex items-center gap-1">
-                                <span>Lihat Rincian Program di Halaman Pokja</span>
-                                <i class="fa-solid fa-angle-right text-[10px]"></i>
-                            </a>
                         </div>
                     </div>
 
@@ -132,7 +124,20 @@
 
     <!-- ================= 2. DAFTAR BERITA DAN KEGIATAN ================= -->
     <section class="py-12 bg-white">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Header Section Berita -->
+            <div class="mb-8">
+                <span class="block text-xs sm:text-sm font-black tracking-widest text-[#075B3C] uppercase mb-1">
+                    KABAR &amp; DOKUMENTASI
+                </span>
+                <h2 class="text-xl sm:text-2xl lg:text-[26px] font-extrabold text-[#1F2937] tracking-tight">
+                    Kegiatan PKK
+                </h2>
+                <p class="text-xs sm:text-sm text-[#475569] leading-relaxed max-w-3xl mt-1.5">
+                    Kumpulan berita, liputan acara, dan dokumentasi program pemberdayaan TP. PKK Desa Karangtanjung.
+                </p>
+            </div>
 
             @if($beritaPaginated->count() > 0)
                 <!-- Grid Berita 2 Kolom (Desktop) & 1 Kolom (Mobile) -->
@@ -186,11 +191,13 @@
                                     </div>
 
                                     <!-- Tombol Baca Selengkapnya -->
-                                    <a href="{{ route('informasi.show', $b['id']) }}"
-                                       class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#075B3C] hover:text-[#116B46] hover:underline transition-all">
-                                        <span>Baca selengkapnya</span>
-                                        <span class="text-base leading-none">&rarr;</span>
-                                    </a>
+                                    <div class="pt-1">
+                                        <a href="{{ route('informasi.show', $b['id']) }}"
+                                           class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold text-[#075B3C] bg-[#E8F7EF] border border-[#075B3C]/20 hover:bg-[#075B3C] hover:text-white hover:border-transparent active:scale-95 transition-all duration-150 shadow-2xs select-none">
+                                            <span>Baca selengkapnya</span>
+                                            <span class="text-xs leading-none">&rarr;</span>
+                                        </a>
+                                    </div>
                                 </div>
 
                             </div>
@@ -199,30 +206,30 @@
                 </div>
 
                 <!-- ================= 3. PAGINATION ================= -->
-                <div class="mt-12 flex justify-center">
-                    <nav class="flex items-center gap-1.5 sm:gap-2" aria-label="Pagination Berita">
+                <div class="mt-12 flex justify-center overflow-x-auto pb-2 -mx-2 px-2">
+                    <nav class="flex items-center gap-1 sm:gap-2 flex-nowrap" aria-label="Pagination Berita">
 
                         {{-- Tombol Sebelumnya --}}
                         @if ($beritaPaginated->onFirstPage())
-                            <span class="px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-gray-400 bg-white border border-gray-200 cursor-not-allowed">
-                                &larr; Sebelumnya
+                            <span class="px-2.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-gray-400 bg-white border border-gray-200 cursor-not-allowed whitespace-nowrap">
+                                &larr; Prev
                             </span>
                         @else
                             <a href="{{ $beritaPaginated->previousPageUrl() }}"
-                               class="px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-gray-700 bg-white border border-[#D1D5DB] hover:bg-emerald-50 hover:text-[#075B3C] hover:border-[#075B3C] transition-colors">
-                                &larr; Sebelumnya
+                               class="px-2.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-gray-700 bg-white border border-[#D1D5DB] hover:bg-emerald-50 hover:text-[#075B3C] hover:border-[#075B3C] transition-colors whitespace-nowrap">
+                                &larr; Prev
                             </a>
                         @endif
 
                         {{-- Nomor Halaman (1, 2, 3...) --}}
                         @for ($page = 1; $page <= $beritaPaginated->lastPage(); $page++)
                             @if ($page == $beritaPaginated->currentPage())
-                                <span class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg text-xs sm:text-sm font-bold flex items-center justify-center bg-[#075B3C] text-white shadow-sm border border-[#075B3C]">
+                                <span class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg text-xs sm:text-sm font-bold flex items-center justify-center bg-[#075B3C] text-white shadow-sm border border-[#075B3C] flex-shrink-0">
                                     {{ $page }}
                                 </span>
                             @else
                                 <a href="{{ $beritaPaginated->url($page) }}"
-                                   class="w-9 h-9 sm:w-10 sm:h-10 rounded-lg text-xs sm:text-sm font-medium flex items-center justify-center text-gray-700 bg-white border border-[#D1D5DB] hover:bg-emerald-50 hover:text-[#075B3C] hover:border-[#075B3C] transition-colors">
+                                   class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg text-xs sm:text-sm font-medium flex items-center justify-center text-gray-700 bg-white border border-[#D1D5DB] hover:bg-emerald-50 hover:text-[#075B3C] hover:border-[#075B3C] transition-colors flex-shrink-0">
                                     {{ $page }}
                                 </a>
                             @endif
@@ -231,12 +238,12 @@
                         {{-- Tombol Berikutnya --}}
                         @if ($beritaPaginated->hasMorePages())
                             <a href="{{ $beritaPaginated->nextPageUrl() }}"
-                               class="px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-gray-700 bg-white border border-[#D1D5DB] hover:bg-emerald-50 hover:text-[#075B3C] hover:border-[#075B3C] transition-colors">
-                                Berikutnya &rarr;
+                               class="px-2.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-gray-700 bg-white border border-[#D1D5DB] hover:bg-emerald-50 hover:text-[#075B3C] hover:border-[#075B3C] transition-colors whitespace-nowrap">
+                                Next &rarr;
                             </a>
                         @else
-                            <span class="px-3.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-gray-400 bg-white border border-gray-200 cursor-not-allowed">
-                                Berikutnya &rarr;
+                            <span class="px-2.5 sm:px-4 py-2 rounded-lg text-xs sm:text-sm font-medium text-gray-400 bg-white border border-gray-200 cursor-not-allowed whitespace-nowrap">
+                                Next &rarr;
                             </span>
                         @endif
 
@@ -268,10 +275,10 @@
 
     <!-- ================= 4. SECTION AGENDA & JADWAL KEGIATAN PKK ================= -->
     <section class="py-14 bg-white border-t border-gray-100">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <!-- Header Section Agenda -->
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
                 <div>
                     <!-- Sub-judul Kecil -->
                     <span class="block text-xs sm:text-sm font-black tracking-widest text-[#075B3C] uppercase mb-1">
@@ -290,7 +297,7 @@
                 <!-- Tombol Lihat Semua Agenda -->
                 <div class="flex-shrink-0">
                     <a href="{{ route('informasi.agenda.index') }}"
-                       class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-[#075B3C] bg-[#E8F7EF] hover:bg-[#075B3C] hover:text-white border border-[#075B3C]/20 transition-all duration-200 shadow-sm">
+                       class="inline-flex items-center justify-center w-full sm:w-auto gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold text-[#075B3C] bg-[#E8F7EF] hover:bg-[#075B3C] hover:text-white border border-[#075B3C]/20 transition-all duration-200 shadow-sm">
                         <span>Lihat Semua Agenda</span>
                         <span class="text-base leading-none">&rarr;</span>
                     </a>
@@ -300,32 +307,28 @@
             <!-- Grid Kartu Agenda: 3 Kolom Desktop, 2 Tablet, 1 Mobile -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($agendaList as $agenda)
-                    <div class="bg-white rounded-xl border border-[#E2E8F0] p-5 shadow-sm hover:shadow-md hover:border-[#116B46]/50 hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group">
+                    <div class="bg-[#14633F] rounded-xl border border-[#14633F] p-5 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-200 flex flex-col justify-between group">
                         
                         <div>
                             <!-- Bagian Atas: Tanggal & Informasi Singkat -->
                             <div class="flex items-start gap-4 mb-4">
                                 <!-- Kotak Tanggal di Sebelah Kiri -->
-                                <div class="w-16 h-16 rounded-xl bg-[#E8F7EF] border border-[#075B3C]/20 flex flex-col items-center justify-center flex-shrink-0 text-center shadow-xs">
-                                    <span class="text-2xl font-extrabold text-[#075B3C] leading-none">{{ $agenda['tanggal'] }}</span>
-                                    <span class="text-[11px] font-bold text-[#075B3C] uppercase tracking-wider mt-1">{{ $agenda['bulan'] }}</span>
+                                <div class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-white/10 border border-white/20 flex flex-col items-center justify-center flex-shrink-0 text-center shadow-xs">
+                                    <span class="text-xl sm:text-2xl font-extrabold text-white leading-none">{{ $agenda['tanggal'] }}</span>
+                                    <span class="text-[10px] sm:text-[11px] font-bold text-emerald-200 uppercase tracking-wider mt-1">{{ $agenda['bulan'] }}</span>
                                 </div>
 
                                 <!-- Detail Kategori, Status & Nama Kegiatan -->
                                 <div class="flex-1 min-w-0">
                                     <div class="flex flex-wrap items-center gap-1.5 mb-1.5">
                                         <!-- Badge Kategori -->
-                                        <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border {{ $agenda['badge_color'] }}">
+                                        <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-white/20 text-white border border-white/30">
                                             {{ $agenda['kategori'] }}
-                                        </span>
-                                        <!-- Badge Status -->
-                                        <span class="inline-block px-2 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-600 border border-gray-200">
-                                            {{ $agenda['status'] }}
                                         </span>
                                     </div>
 
                                     <!-- Nama Kegiatan -->
-                                    <h3 class="text-base font-bold text-[#1F2937] group-hover:text-[#075B3C] transition-colors leading-snug line-clamp-2">
+                                    <h3 class="text-base font-bold text-white hover:text-emerald-200 transition-colors leading-snug line-clamp-2">
                                         <a href="{{ route('informasi.agenda.show', $agenda['id']) }}">
                                             {{ $agenda['judul'] }}
                                         </a>
@@ -334,42 +337,29 @@
                             </div>
 
                             <!-- Bagian Waktu & Lokasi -->
-                            <div class="space-y-2 py-3 border-t border-gray-100 text-xs text-[#475569]">
+                            <div class="space-y-2 py-3 border-t border-white/15 text-xs text-emerald-100">
                                 <div class="flex items-center gap-2.5">
-                                    <i class="fa-regular fa-clock text-[#116B46] w-4 text-center"></i>
-                                    <span>{{ $agenda['waktu'] }}</span>
+                                    <i class="fa-regular fa-clock text-emerald-300 w-4 text-center"></i>
+                                    <span class="font-medium">{{ $agenda['waktu'] }}</span>
                                 </div>
                                 <div class="flex items-center gap-2.5">
-                                    <i class="fa-solid fa-location-dot text-[#116B46] w-4 text-center"></i>
-                                    <span class="truncate">{{ $agenda['lokasi'] }}</span>
+                                    <i class="fa-solid fa-location-dot text-emerald-300 w-4 text-center"></i>
+                                    <span class="truncate font-medium">{{ $agenda['lokasi'] }}</span>
                                 </div>
                             </div>
-
-                            <!-- Deskripsi Singkat Kegiatan -->
-                            <p class="text-xs text-[#64748B] leading-relaxed line-clamp-2 mt-1 mb-2">
-                                {{ $agenda['deskripsi'] }}
-                            </p>
-
+                            
                             <!-- Keterangan Pelaksana Terhubung ke Pokja / Profil -->
-                            <div class="text-[11px] text-gray-500 flex items-center justify-between pb-2">
-                                <span>Pelaksana: <strong class="text-gray-700">{{ $agenda['pokja_label'] }}</strong></span>
-                                <a href="{{ route('pokja') }}" class="text-[#075B3C] font-semibold hover:underline">
-                                    Detail Pokja &rarr;
-                                </a>
+                            <div class="text-[11px] text-emerald-200 flex items-center justify-between pb-2">
+                                <span>Pelaksana: <strong class="text-white">{{ $agenda['pokja_label'] }}</strong></span>
                             </div>
                         </div>
 
                         <!-- Bagian Bawah: Link Detail Agenda -->
-                        <div class="pt-3 border-t border-gray-100 flex items-center justify-between">
+                        <div class="pt-3 border-t border-white/15">
                             <a href="{{ route('informasi.agenda.show', $agenda['id']) }}"
-                               class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#075B3C] group-hover:text-[#116B46] transition-colors">
-                                <span>Detail Agenda</span>
-                                <span class="text-base leading-none">&rarr;</span>
+                               class="inline-block text-center w-full px-4 py-2 rounded-lg text-xs font-bold text-[#14633F] bg-white hover:bg-emerald-50 active:scale-95 active:bg-emerald-100 transition-all duration-150 shadow-xs select-none">
+                                Detail Agenda
                             </a>
-
-                            <div class="w-8 h-8 rounded-full {{ $agenda['icon_bg'] }} {{ $agenda['icon_color'] }} flex items-center justify-center text-xs">
-                                <i class="{{ $agenda['icon'] }}"></i>
-                            </div>
                         </div>
 
                     </div>
@@ -381,7 +371,7 @@
 
     <!-- ================= 5. SECTION PENGUMUMAN & INFORMASI PENTING ================= -->
     <section class="py-14 bg-[#F3FBF6] border-t border-[#E2E8F0]">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             <!-- Header Section Pengumuman -->
             <div class="mb-8">
@@ -457,7 +447,7 @@
                     <!-- Tombol Lihat Semua Pengumuman -->
                     <div class="pt-3">
                         <a href="{{ route('informasi.pengumuman.index') }}"
-                           class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-[#075B3C] text-white hover:bg-[#116B46] transition-all shadow-sm">
+                           class="inline-flex items-center justify-center w-full sm:w-auto gap-2 px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-[#075B3C] text-white hover:bg-[#116B46] transition-all shadow-sm">
                             <span>Lihat Semua Pengumuman</span>
                             <span class="text-base leading-none">&rarr;</span>
                         </a>

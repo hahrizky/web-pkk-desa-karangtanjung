@@ -11,7 +11,7 @@ class InformasiController extends Controller
      * Data Master Informasi / Berita Kegiatan PKK
      * Selaras dengan 4 Pokja dan Struktur Organisasi Desa Karangtanjung
      */
-    private function getBeritaData()
+    public static function getBeritaData()
     {
         return [
             [
@@ -141,6 +141,70 @@ class InformasiController extends Controller
                 'gambar' => '3.webp',
                 'tags' => ['Dasawisma', 'Administrasi', 'Kader'],
                 'penulis' => 'Sekretariat TP. PKK Karangtanjung',
+            ],
+            [
+                'id' => 9,
+                'slug' => 'pembinaan-pola-asuh-anak-dan-remaja-paar',
+                'judul' => 'Sosialisasi Pola Asuh Anak & Remaja di Era Digital (PAAR)',
+                'kategori' => 'Pokja I',
+                'pokja' => 'Pokja I',
+                'pokja_nama' => 'Pokja I — Bidang Pembinaan Karakter & Gotong Royong',
+                'tanggal' => '04 Januari 2026',
+                'bulan' => '01',
+                'tahun' => '2026',
+                'deskripsi' => 'Edukasi peran orang tua dalam mendampingi tumbuh kembang emosional dan penggunaan gawai yang bijak bagi remaja.',
+                'isi' => 'Pokja I bekerjasama dengan psikolog keluarga menyelenggarakan seminar parenting mengenai pola asuh anak dan remaja (PAAR) dengan penuh cinta dan kasih sayang dalam keluarga. Peserta dibekali pemahaman cara membangun komunikasi terbuka dengan anak serta pencegahan bahaya kecanduan gawai dan pornografi digital.',
+                'gambar' => '4.webp',
+                'tags' => ['Pokja1', 'Parenting', 'PAAR', 'Keluarga'],
+                'penulis' => 'Pokja I TP. PKK Karangtanjung',
+            ],
+            [
+                'id' => 10,
+                'slug' => 'pembagian-bibit-sayur-dan-pupuk-organik',
+                'judul' => 'Penyaluran 500 Bibit Tanaman Produktif & Pupuk Organik',
+                'kategori' => 'Pokja III',
+                'pokja' => 'Pokja III',
+                'pokja_nama' => 'Pokja III — Bidang Ketahanan Pangan & Tata Laksana Rumah',
+                'tanggal' => '22 Desember 2025',
+                'bulan' => '12',
+                'tahun' => '2025',
+                'deskripsi' => 'Dukungan nyata penguatan ketahanan pangan keluarga lewat pembagian bibit cabai, terong, dan pupuk kompos ramah lingkungan.',
+                'isi' => 'Dalam rangka merealisasikan program Aku Hatinya PKK, Pokja III menyalurkan 500 bibit tanaman sayuran produktif dan paket pupuk organik cair kepada 10 kelompok dasawisma. Bantuan ini diharapkan mampu mencukupi kebutuhan sayuran sehat mandiri skala rumah tangga.',
+                'gambar' => '5.webp',
+                'tags' => ['Pokja3', 'BibitTanaman', 'PupukOrganik', 'Pangan'],
+                'penulis' => 'Pokja III TP. PKK Karangtanjung',
+            ],
+            [
+                'id' => 11,
+                'slug' => 'bimbingan-teknis-koperasi-wanita-dan-up2k',
+                'judul' => 'Bimtek Manajemen Keuangan Koperasi Wanita & Kelompok UP2K',
+                'kategori' => 'Pokja II',
+                'pokja' => 'Pokja II',
+                'pokja_nama' => 'Pokja II — Bidang Pendidikan & Peningkatan Ekonomi (UP2K)',
+                'tanggal' => '15 Desember 2025',
+                'bulan' => '12',
+                'tahun' => '2025',
+                'deskripsi' => 'Peningkatan kapasitas pengelolaan permodalan usaha simpan pinjam dan pembukuan transparan bagi kelompok wanita wirausaha.',
+                'isi' => 'Kelompok Kerja II melaksanakan pembinaan manajemen keuangan sederhana bagi pengurus koperasi wanita dan pelaku usaha mikro keluarga binaan PKK. Materi mencakup pemisahan keuangan usaha dan pribadi, penghitungan harga pokok produksi, dan literasi perbankan.',
+                'gambar' => '1.webp',
+                'tags' => ['Pokja2', 'Koperasi', 'Keuangan', 'UP2K'],
+                'penulis' => 'Pokja II TP. PKK Karangtanjung',
+            ],
+            [
+                'id' => 12,
+                'slug' => 'pemberian-makanan-tambahan-pmt-pemulihan-balita',
+                'judul' => 'Penyaluran Paket PMT Berbahan Pangan Lokal Bagi Balita',
+                'kategori' => 'Pokja IV',
+                'pokja' => 'Pokja IV',
+                'pokja_nama' => 'Pokja IV — Bidang Kesehatan & Lingkungan Hidup',
+                'tanggal' => '02 Desember 2025',
+                'bulan' => '12',
+                'tahun' => '2025',
+                'deskripsi' => 'Pemberian Makanan Tambahan (PMT) tinggi protein hewani selama 90 hari guna percepatan penurunan angka risiko stunting balita.',
+                'isi' => 'Sebagai wujud aksi nyata program percepatan penurunan stunting, kader Pokja IV mendistribusikan menu kudapan sehat bergizi seimbang berbahan baku ikan lokal dan telur bagi balita sasaran prioritas di setiap posyandu desa.',
+                'gambar' => '2.webp',
+                'tags' => ['Pokja4', 'PMT', 'GiziBalita', 'BebasStunting'],
+                'penulis' => 'Pokja IV TP. PKK Karangtanjung',
             ],
         ];
     }
