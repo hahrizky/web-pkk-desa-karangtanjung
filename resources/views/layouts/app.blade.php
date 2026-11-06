@@ -120,20 +120,9 @@
                             <p class="text-xs text-emerald-300">Kec. Candi, Kab. Sidoarjo</p>
                         </div>
                     </div>
-                    <p class="text-sm text-emerald-100/80 leading-relaxed mb-6">
+                    <p class="text-sm text-emerald-100/80 leading-relaxed">
                         Portal informasi kegiatan, program kerja, dan data statistik Dasawisma TP. PKK Desa Karangtanjung untuk mewujudkan keluarga yang sehat, mandiri, dan sejahtera.
                     </p>
-                    <div class="flex items-center gap-3">
-                        <a href="#" class="w-9 h-9 rounded-full bg-emerald-900/80 hover:bg-emerald-800 flex items-center justify-center text-emerald-200 hover:text-white transition-colors" title="Facebook">
-                            <i class="fa-brands fa-facebook-f text-sm"></i>
-                        </a>
-                        <a href="#" class="w-9 h-9 rounded-full bg-emerald-900/80 hover:bg-emerald-800 flex items-center justify-center text-emerald-200 hover:text-white transition-colors" title="Instagram">
-                            <i class="fa-brands fa-instagram text-sm"></i>
-                        </a>
-                        <a href="#" class="w-9 h-9 rounded-full bg-emerald-900/80 hover:bg-emerald-800 flex items-center justify-center text-emerald-200 hover:text-white transition-colors" title="YouTube">
-                            <i class="fa-brands fa-youtube text-sm"></i>
-                        </a>
-                    </div>
                 </div>
 
                 <!-- Kolom 2: Kelompok Kerja (Pokja) -->
@@ -178,14 +167,6 @@
                         <li class="flex items-start gap-3">
                             <i class="fa-solid fa-location-dot text-amber-400 mt-1"></i>
                             <span>Jl. Sunan Giri No.1 Desa Karangtanjung, Kec. Candi, Kab. Sidoarjo, Jawa Timur</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-phone text-amber-400"></i>
-                            <span>+62 812-3456-7890 (Sekretariat PKK)</span>
-                        </li>
-                        <li class="flex items-center gap-3">
-                            <i class="fa-solid fa-envelope text-amber-400"></i>
-                            <span>pkk.desakarangtanjung@gmail.com</span>
                         </li>
                         <li class="flex items-center gap-3">
                             <i class="fa-solid fa-clock text-amber-400"></i>
