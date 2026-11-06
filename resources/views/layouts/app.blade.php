@@ -169,6 +169,14 @@
                             <span>Jl. Sunan Giri No.1 Desa Karangtanjung, Kec. Candi, Kab. Sidoarjo, Jawa Timur</span>
                         </li>
                         <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-phone text-amber-400"></i>
+                            <span>-</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <i class="fa-solid fa-envelope text-amber-400"></i>
+                            <span>-</span>
+                        </li>
+                        <li class="flex items-center gap-3">
                             <i class="fa-solid fa-clock text-amber-400"></i>
                             <span>Jam Layanan: Senin - Jumat (08.00 - 15.00 WIB)</span>
                         </li>
