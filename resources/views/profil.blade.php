@@ -105,14 +105,14 @@
 {{-- ═══════════════════════════════════════════════
          3. STRUKTUR ORGANISASI (bagan hierarki)
     ═══════════════════════════════════════════════ --}}
-<section class="py-16 bg-white border-b border-gray-100">
+<section id="struktur" class="py-16 bg-white border-b border-gray-100">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="mb-10">
             <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                 Struktur Organisasi TP. PKK Desa Karangtanjung
             </h2>
-            <p class="text-sm text-gray-500">Pengurus Inti TP PKK Periode Aktif {{ date('Y') }}</p>
+            <p class="text-sm text-gray-500">Pengurus Inti TP. PKK Periode Aktif {{ $periode ?? '2024 - 2029' }}</p>
         </div>
 
         {{-- ── Bagan Org ── --}}
@@ -120,10 +120,21 @@
 
             {{-- LEVEL 1: PEMBINA --}}
             <div class="flex flex-col items-center w-full">
-                <div class="bg-amber-100 border-2 border-amber-300 rounded-2xl px-6 py-3 text-center shadow-sm min-w-[200px]">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-amber-600 mb-1">{{ $struktur['pembina']['jabatan'] }}</p>
-                    <p class="text-sm font-bold text-gray-800">{{ $struktur['pembina']['nama'] }}</p>
-                    <p class="text-xs text-gray-500">{{ $struktur['pembina']['sub'] }}</p>
+                <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl px-7 py-4 text-center shadow-sm min-w-[220px] max-w-xs hover:shadow-md transition-shadow">
+                    {{-- Pas Foto Pembina (Kotak formal pas foto) --}}
+                    <div class="w-20 h-24 sm:w-22 sm:h-28 rounded-lg mx-auto mb-2.5 overflow-hidden border-2 border-amber-400 shadow-sm bg-amber-100/70 flex items-center justify-center p-0.5">
+                        @if (!empty($struktur['pembina']['foto']) && file_exists(public_path('images/' . $struktur['pembina']['foto'])))
+                            <img src="{{ asset('images/' . $struktur['pembina']['foto']) }}" alt="{{ $struktur['pembina']['nama'] }}" class="w-full h-full object-cover rounded-md">
+                        @else
+                            <div class="w-full h-full flex flex-col items-center justify-center bg-amber-100/60 rounded-md text-amber-700">
+                                <i class="fa-solid fa-user-tie text-3xl mb-1"></i>
+                                <span class="text-[9px] font-bold uppercase tracking-wider opacity-60">Pas Foto</span>
+                            </div>
+                        @endif
+                    </div>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-0.5">{{ $struktur['pembina']['jabatan'] }}</p>
+                    <p class="text-sm font-bold text-gray-800 leading-snug">{{ $struktur['pembina']['nama'] }}</p>
+                    <p class="text-[11px] text-gray-500 mt-0.5">{{ $struktur['pembina']['sub'] }}</p>
                 </div>
                 {{-- konektor ke bawah --}}
                 <div class="w-[2px] h-8 bg-gray-300"></div>
@@ -132,9 +143,21 @@
             {{-- LEVEL 2: KETUA (full width card besar) --}}
             <div class="flex flex-col items-center w-full">
                 @php $ketua = $struktur['pengurus_inti'][0]; @endphp
-                <div class="bg-emerald-700 text-white rounded-2xl px-8 py-3 text-center shadow-md min-w-[220px]">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-200 mb-1">{{ $ketua['jabatan'] }}</p>
-                    <p class="text-sm font-bold">{{ $ketua['nama'] }}</p>
+                <div class="bg-emerald-700 text-white rounded-2xl px-8 py-4 text-center shadow-md min-w-[240px] max-w-sm hover:shadow-lg transition-shadow">
+                    {{-- Pas Foto Ketua (Kotak formal pas foto) --}}
+                    <div class="w-22 h-28 sm:w-24 sm:h-32 rounded-lg mx-auto mb-2.5 overflow-hidden border-2 border-emerald-300 shadow-md bg-emerald-800/80 flex items-center justify-center p-0.5">
+                        @if (!empty($ketua['foto']) && file_exists(public_path('images/' . $ketua['foto'])))
+                            <img src="{{ asset('images/' . $ketua['foto']) }}" alt="{{ $ketua['nama'] }}" class="w-full h-full object-cover rounded-md">
+                        @else
+                            <div class="w-full h-full flex flex-col items-center justify-center bg-emerald-800 rounded-md text-emerald-100">
+                                <i class="fa-solid fa-user-large text-3xl mb-1"></i>
+                                <span class="text-[9px] font-bold uppercase tracking-wider opacity-75">Pas Foto</span>
+                            </div>
+                        @endif
+                    </div>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-200 mb-0.5">{{ $ketua['jabatan'] }}</p>
+                    <p class="text-base font-bold leading-snug">{{ $ketua['nama'] }}</p>
+                    <p class="text-[11px] text-emerald-100/80 mt-0.5">Ketua TP. PKK Desa</p>
                 </div>
                 {{-- konektor ke bawah --}}
                 <div class="w-[2px] h-8 bg-gray-300"></div>
@@ -144,11 +167,22 @@
             <div class="flex flex-col items-center w-full relative">
                 @php $wakil = $struktur['pengurus_inti'][1]; @endphp
 
-                <div class="bg-emerald-100 border border-emerald-200 rounded-2xl px-6 py-3 text-center shadow-sm min-w-[200px]">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-700 mb-1">
+                <div class="bg-emerald-50 border border-emerald-200 rounded-2xl px-6 py-3.5 text-center shadow-sm min-w-[210px] max-w-xs hover:shadow-md transition-shadow">
+                    {{-- Pas Foto Wakil Ketua (Kotak formal pas foto) --}}
+                    <div class="w-20 h-24 sm:w-22 sm:h-28 rounded-lg mx-auto mb-2 overflow-hidden border-2 border-emerald-400 shadow-sm bg-emerald-100/70 flex items-center justify-center p-0.5">
+                        @if (!empty($wakil['foto']) && file_exists(public_path('images/' . $wakil['foto'])))
+                            <img src="{{ asset('images/' . $wakil['foto']) }}" alt="{{ $wakil['nama'] }}" class="w-full h-full object-cover rounded-md">
+                        @else
+                            <div class="w-full h-full flex flex-col items-center justify-center bg-emerald-100/60 rounded-md text-emerald-700">
+                                <i class="fa-solid fa-user text-2xl mb-1"></i>
+                                <span class="text-[9px] font-bold uppercase tracking-wider opacity-60">Pas Foto</span>
+                            </div>
+                        @endif
+                    </div>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-700 mb-0.5">
                         {{ $wakil['jabatan'] }}
                     </p>
-                    <p class="text-sm font-semibold text-gray-800">
+                    <p class="text-sm font-semibold text-gray-800 leading-snug">
                         {{ $wakil['nama'] }}
                     </p>
                 </div>
@@ -180,11 +214,22 @@
 
                     <div class="flex flex-col gap-3">
                         @foreach (array_slice($struktur['pengurus_inti'], 2, 2) as $sek)
-                        <div class="bg-blue-200 border border-blue-200 rounded-xl px-4 py-3 text-center">
-                            <p class="text-[10px] font-bold uppercase tracking-widest text-blue-700 mb-1">
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-center hover:shadow-xs transition-shadow">
+                            {{-- Pas Foto Sekretaris (Kotak formal pas foto) --}}
+                            <div class="w-16 h-20 rounded-md mx-auto mb-1.5 overflow-hidden border-2 border-blue-300 shadow-xs bg-blue-100/60 flex items-center justify-center p-0.5">
+                                @if (!empty($sek['foto']) && file_exists(public_path('images/' . $sek['foto'])))
+                                    <img src="{{ asset('images/' . $sek['foto']) }}" alt="{{ $sek['nama'] }}" class="w-full h-full object-cover rounded-sm">
+                                @else
+                                    <div class="w-full h-full flex flex-col items-center justify-center bg-blue-100/60 rounded-sm text-blue-600">
+                                        <i class="fa-solid fa-user text-xl mb-0.5"></i>
+                                        <span class="text-[8px] font-bold uppercase tracking-wider opacity-60">Pas Foto</span>
+                                    </div>
+                                @endif
+                            </div>
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-blue-700 mb-0.5">
                                 {{ $sek['jabatan'] }}
                             </p>
-                            <p class="text-sm font-semibold text-gray-800">
+                            <p class="text-xs sm:text-sm font-semibold text-gray-800 leading-snug">
                                 {{ $sek['nama'] }}
                             </p>
                         </div>
@@ -193,11 +238,22 @@
 
                     <div class="flex flex-col gap-3">
                         @foreach (array_slice($struktur['pengurus_inti'], 4, 2) as $ben)
-                        <div class="bg-amber-100 border border-amber-200 rounded-xl px-4 py-3 text-center">
-                            <p class="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-1">
+                        <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-center hover:shadow-xs transition-shadow">
+                            {{-- Pas Foto Bendahara (Kotak formal pas foto) --}}
+                            <div class="w-16 h-20 rounded-md mx-auto mb-1.5 overflow-hidden border-2 border-amber-300 shadow-xs bg-amber-100/60 flex items-center justify-center p-0.5">
+                                @if (!empty($ben['foto']) && file_exists(public_path('images/' . $ben['foto'])))
+                                    <img src="{{ asset('images/' . $ben['foto']) }}" alt="{{ $ben['nama'] }}" class="w-full h-full object-cover rounded-sm">
+                                @else
+                                    <div class="w-full h-full flex flex-col items-center justify-center bg-amber-100/60 rounded-sm text-amber-600">
+                                        <i class="fa-solid fa-user text-xl mb-0.5"></i>
+                                        <span class="text-[8px] font-bold uppercase tracking-wider opacity-60">Pas Foto</span>
+                                    </div>
+                                @endif
+                            </div>
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-0.5">
                                 {{ $ben['jabatan'] }}
                             </p>
-                            <p class="text-sm font-semibold text-gray-800">
+                            <p class="text-xs sm:text-sm font-semibold text-gray-800 leading-snug">
                                 {{ $ben['nama'] }}
                             </p>
                         </div>
@@ -225,12 +281,23 @@
 
                     @foreach ($struktur['pokja'] as $pk)
                     <div class="bg-white border-2 border-emerald-200 rounded-xl px-3 py-3 text-center hover:border-emerald-400 hover:shadow-md transition-all duration-200">
+                        {{-- Pas Foto Pokja (Kotak formal pas foto) --}}
+                        <div class="w-16 h-20 rounded-md mx-auto mb-1.5 overflow-hidden border-2 border-emerald-300 shadow-xs bg-emerald-100/60 flex items-center justify-center p-0.5">
+                            @if (!empty($pk['foto']) && file_exists(public_path('images/' . $pk['foto'])))
+                                <img src="{{ asset('images/' . $pk['foto']) }}" alt="{{ $pk['ketua'] }}" class="w-full h-full object-cover rounded-sm">
+                            @else
+                                <div class="w-full h-full flex flex-col items-center justify-center bg-emerald-100/60 rounded-sm text-emerald-700">
+                                    <i class="fa-solid fa-user text-xl mb-0.5"></i>
+                                    <span class="text-[8px] font-bold uppercase tracking-wider opacity-60">Pas Foto</span>
+                                </div>
+                            @endif
+                        </div>
 
-                        <span class="inline-block bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wide rounded-full px-2 py-0.5 mb-2">
+                        <span class="inline-block bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wide rounded-full px-2 py-0.5 mb-1.5">
                             {{ $pk['kode'] }}
                         </span>
 
-                        <p class="text-xs font-semibold text-gray-700">
+                        <p class="text-xs font-semibold text-gray-800 leading-tight">
                             {{ $pk['ketua'] }}
                         </p>
 

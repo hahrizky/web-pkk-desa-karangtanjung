@@ -56,22 +56,16 @@
             <span>Agenda Kegiatan</span>
         </a>
 
-        <a href="{{ route('admin.pengumuman.index') }}"
-           class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all {{ request()->routeIs('admin.pengumuman.*') ? 'active' : '' }}">
-            <i class="fa-solid fa-bullhorn w-5 text-center"></i>
-            <span>Pengumuman</span>
-        </a>
-
-        <a href="{{ route('admin.galeri.index') }}"
-           class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all {{ request()->routeIs('admin.galeri.*') ? 'active' : '' }}">
-            <i class="fa-solid fa-images w-5 text-center"></i>
-            <span>Galeri Foto</span>
-        </a>
-
         <a href="{{ route('admin.pokja.index') }}"
            class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all {{ request()->routeIs('admin.pokja.*') ? 'active' : '' }}">
             <i class="fa-solid fa-layer-group w-5 text-center"></i>
             <span>Pokja</span>
+        </a>
+
+        <a href="{{ route('admin.struktur.index') }}"
+           class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all {{ request()->routeIs('admin.struktur.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-sitemap w-5 text-center"></i>
+            <span>Struktur Organisasi</span>
         </a>
 
         <a href="{{ route('admin.statistik.index') }}"
