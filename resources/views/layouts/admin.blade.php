@@ -122,7 +122,6 @@
 
             {{-- Page title --}}
             <div class="flex items-center gap-2">
-                <span class="text-sm text-gray-400 hidden md:inline">{{ config('app.name') }} /</span>
                 <span class="text-sm font-semibold text-gray-700">@yield('page-title', 'Dashboard')</span>
             </div>
 
