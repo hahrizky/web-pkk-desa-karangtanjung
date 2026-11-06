@@ -57,18 +57,20 @@ class ProfilController extends Controller
         $pokja3Ketua = $custom['struktur']['pokja'][2]['ketua'] ?? 'Jazil Laturohmah';
         $pokja4Ketua = $custom['struktur']['pokja'][3]['ketua'] ?? 'Lilik Mutammimah';
 
-        $pembinaFoto = $custom['struktur']['pembina']['foto'] ?? null;
-        $ketuaFoto   = $custom['struktur']['pengurus_inti'][0]['foto'] ?? null;
-        $wakilFoto   = $custom['struktur']['pengurus_inti'][1]['foto'] ?? null;
-        $sekretaris1Foto = $custom['struktur']['pengurus_inti'][2]['foto'] ?? null;
-        $sekretaris2Foto = $custom['struktur']['pengurus_inti'][3]['foto'] ?? null;
-        $bendahara1Foto  = $custom['struktur']['pengurus_inti'][4]['foto'] ?? null;
-        $bendahara2Foto  = $custom['struktur']['pengurus_inti'][5]['foto'] ?? null;
+        $defaultFoto = file_exists(public_path('images/pengurus/default_pas_foto.jpg')) ? 'pengurus/default_pas_foto.jpg' : null;
 
-        $pokja1Foto  = $custom['struktur']['pokja'][0]['foto'] ?? null;
-        $pokja2Foto  = $custom['struktur']['pokja'][1]['foto'] ?? null;
-        $pokja3Foto  = $custom['struktur']['pokja'][2]['foto'] ?? null;
-        $pokja4Foto  = $custom['struktur']['pokja'][3]['foto'] ?? null;
+        $pembinaFoto = $custom['struktur']['pembina']['foto'] ?? $defaultFoto;
+        $ketuaFoto   = $custom['struktur']['pengurus_inti'][0]['foto'] ?? $defaultFoto;
+        $wakilFoto   = $custom['struktur']['pengurus_inti'][1]['foto'] ?? $defaultFoto;
+        $sekretaris1Foto = $custom['struktur']['pengurus_inti'][2]['foto'] ?? $defaultFoto;
+        $sekretaris2Foto = $custom['struktur']['pengurus_inti'][3]['foto'] ?? $defaultFoto;
+        $bendahara1Foto  = $custom['struktur']['pengurus_inti'][4]['foto'] ?? $defaultFoto;
+        $bendahara2Foto  = $custom['struktur']['pengurus_inti'][5]['foto'] ?? $defaultFoto;
+
+        $pokja1Foto  = $custom['struktur']['pokja'][0]['foto'] ?? $defaultFoto;
+        $pokja2Foto  = $custom['struktur']['pokja'][1]['foto'] ?? $defaultFoto;
+        $pokja3Foto  = $custom['struktur']['pokja'][2]['foto'] ?? $defaultFoto;
+        $pokja4Foto  = $custom['struktur']['pokja'][3]['foto'] ?? $defaultFoto;
 
         $struktur = [
             'pembina' => [
