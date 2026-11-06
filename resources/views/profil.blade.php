@@ -312,17 +312,6 @@
             </div>
 
         </div>
-                            {{ $pk['ketua'] }}
-                        </p>
-
-                    </div>
-                    @endforeach
-
-                </div>
-
-            </div>
-
-        </div>
 
     </div>
 </section>
