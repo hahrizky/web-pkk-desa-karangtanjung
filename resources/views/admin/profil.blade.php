@@ -183,14 +183,16 @@
                 </div>
                 <div>
                     <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Telepon / WhatsApp</label>
-                    <input type="text" name="telepon" value="{{ old('telepon', $profil['telepon'] ?? '+62 812-3456-7890') }}"
+                    <input type="text" name="telepon" value="{{ old('telepon', $profil['telepon'] ?? '') }}"
+                           placeholder="Kosongkan jika belum ada"
                            class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
                 </div>
             </div>
 
             <div>
                 <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Email Resmi</label>
-                <input type="email" name="email" value="{{ old('email', $profil['email'] ?? 'pkk.desakarangtanjung@gmail.com') }}"
+                <input type="email" name="email" value="{{ old('email', $profil['email'] ?? '') }}"
+                       placeholder="Kosongkan jika belum ada"
                        class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
             </div>
         </div>
