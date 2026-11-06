@@ -120,10 +120,18 @@
 
             {{-- LEVEL 1: PEMBINA --}}
             <div class="flex flex-col items-center w-full">
-                <div class="bg-amber-100 border-2 border-amber-300 rounded-2xl px-6 py-3 text-center shadow-sm min-w-[200px]">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-amber-600 mb-1">{{ $struktur['pembina']['jabatan'] }}</p>
-                    <p class="text-sm font-bold text-gray-800">{{ $struktur['pembina']['nama'] }}</p>
-                    <p class="text-xs text-gray-500">{{ $struktur['pembina']['sub'] }}</p>
+                <div class="bg-amber-50 border-2 border-amber-300 rounded-2xl px-7 py-4 text-center shadow-sm min-w-[220px] max-w-xs hover:shadow-md transition-shadow">
+                    {{-- Foto Profil Pembina --}}
+                    <div class="w-16 h-16 rounded-full mx-auto mb-2.5 overflow-hidden border-2 border-amber-400 shadow-xs bg-amber-100 flex items-center justify-center">
+                        @if (!empty($struktur['pembina']['foto']) && file_exists(public_path('images/' . $struktur['pembina']['foto'])))
+                            <img src="{{ asset('images/' . $struktur['pembina']['foto']) }}" alt="{{ $struktur['pembina']['nama'] }}" class="w-full h-full object-cover">
+                        @else
+                            <i class="fa-solid fa-user-tie text-2xl text-amber-700"></i>
+                        @endif
+                    </div>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-0.5">{{ $struktur['pembina']['jabatan'] }}</p>
+                    <p class="text-sm font-bold text-gray-800 leading-snug">{{ $struktur['pembina']['nama'] }}</p>
+                    <p class="text-[11px] text-gray-500 mt-0.5">{{ $struktur['pembina']['sub'] }}</p>
                 </div>
                 {{-- konektor ke bawah --}}
                 <div class="w-[2px] h-8 bg-gray-300"></div>
@@ -132,9 +140,18 @@
             {{-- LEVEL 2: KETUA (full width card besar) --}}
             <div class="flex flex-col items-center w-full">
                 @php $ketua = $struktur['pengurus_inti'][0]; @endphp
-                <div class="bg-emerald-700 text-white rounded-2xl px-8 py-3 text-center shadow-md min-w-[220px]">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-200 mb-1">{{ $ketua['jabatan'] }}</p>
-                    <p class="text-sm font-bold">{{ $ketua['nama'] }}</p>
+                <div class="bg-emerald-700 text-white rounded-2xl px-8 py-4 text-center shadow-md min-w-[240px] max-w-sm hover:shadow-lg transition-shadow">
+                    {{-- Foto Profil Ketua --}}
+                    <div class="w-20 h-20 rounded-full mx-auto mb-2.5 overflow-hidden border-3 border-emerald-300 shadow-sm bg-emerald-800 flex items-center justify-center">
+                        @if (!empty($ketua['foto']) && file_exists(public_path('images/' . $ketua['foto'])))
+                            <img src="{{ asset('images/' . $ketua['foto']) }}" alt="{{ $ketua['nama'] }}" class="w-full h-full object-cover">
+                        @else
+                            <i class="fa-solid fa-user-large text-3xl text-emerald-200"></i>
+                        @endif
+                    </div>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-200 mb-0.5">{{ $ketua['jabatan'] }}</p>
+                    <p class="text-base font-bold leading-snug">{{ $ketua['nama'] }}</p>
+                    <p class="text-[11px] text-emerald-100/80 mt-0.5">Ketua TP. PKK Desa</p>
                 </div>
                 {{-- konektor ke bawah --}}
                 <div class="w-[2px] h-8 bg-gray-300"></div>
@@ -144,11 +161,19 @@
             <div class="flex flex-col items-center w-full relative">
                 @php $wakil = $struktur['pengurus_inti'][1]; @endphp
 
-                <div class="bg-emerald-100 border border-emerald-200 rounded-2xl px-6 py-3 text-center shadow-sm min-w-[200px]">
-                    <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-700 mb-1">
+                <div class="bg-emerald-50 border border-emerald-200 rounded-2xl px-6 py-3.5 text-center shadow-sm min-w-[210px] max-w-xs hover:shadow-md transition-shadow">
+                    {{-- Foto Profil Wakil Ketua --}}
+                    <div class="w-16 h-16 rounded-full mx-auto mb-2 overflow-hidden border-2 border-emerald-400 shadow-xs bg-emerald-100 flex items-center justify-center">
+                        @if (!empty($wakil['foto']) && file_exists(public_path('images/' . $wakil['foto'])))
+                            <img src="{{ asset('images/' . $wakil['foto']) }}" alt="{{ $wakil['nama'] }}" class="w-full h-full object-cover">
+                        @else
+                            <i class="fa-solid fa-user text-2xl text-emerald-700"></i>
+                        @endif
+                    </div>
+                    <p class="text-[10px] font-bold uppercase tracking-widest text-emerald-700 mb-0.5">
                         {{ $wakil['jabatan'] }}
                     </p>
-                    <p class="text-sm font-semibold text-gray-800">
+                    <p class="text-sm font-semibold text-gray-800 leading-snug">
                         {{ $wakil['nama'] }}
                     </p>
                 </div>
@@ -180,11 +205,19 @@
 
                     <div class="flex flex-col gap-3">
                         @foreach (array_slice($struktur['pengurus_inti'], 2, 2) as $sek)
-                        <div class="bg-blue-200 border border-blue-200 rounded-xl px-4 py-3 text-center">
-                            <p class="text-[10px] font-bold uppercase tracking-widest text-blue-700 mb-1">
+                        <div class="bg-blue-50 border border-blue-200 rounded-xl px-4 py-3 text-center hover:shadow-xs transition-shadow">
+                            {{-- Foto Profil Sekretaris --}}
+                            <div class="w-12 h-12 rounded-full mx-auto mb-1.5 overflow-hidden border-2 border-blue-300 shadow-xs bg-blue-100 flex items-center justify-center">
+                                @if (!empty($sek['foto']) && file_exists(public_path('images/' . $sek['foto'])))
+                                    <img src="{{ asset('images/' . $sek['foto']) }}" alt="{{ $sek['nama'] }}" class="w-full h-full object-cover">
+                                @else
+                                    <i class="fa-solid fa-user text-lg text-blue-600"></i>
+                                @endif
+                            </div>
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-blue-700 mb-0.5">
                                 {{ $sek['jabatan'] }}
                             </p>
-                            <p class="text-sm font-semibold text-gray-800">
+                            <p class="text-xs sm:text-sm font-semibold text-gray-800 leading-snug">
                                 {{ $sek['nama'] }}
                             </p>
                         </div>
@@ -193,11 +226,19 @@
 
                     <div class="flex flex-col gap-3">
                         @foreach (array_slice($struktur['pengurus_inti'], 4, 2) as $ben)
-                        <div class="bg-amber-100 border border-amber-200 rounded-xl px-4 py-3 text-center">
-                            <p class="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-1">
+                        <div class="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-center hover:shadow-xs transition-shadow">
+                            {{-- Foto Profil Bendahara --}}
+                            <div class="w-12 h-12 rounded-full mx-auto mb-1.5 overflow-hidden border-2 border-amber-300 shadow-xs bg-amber-100 flex items-center justify-center">
+                                @if (!empty($ben['foto']) && file_exists(public_path('images/' . $ben['foto'])))
+                                    <img src="{{ asset('images/' . $ben['foto']) }}" alt="{{ $ben['nama'] }}" class="w-full h-full object-cover">
+                                @else
+                                    <i class="fa-solid fa-user text-lg text-amber-600"></i>
+                                @endif
+                            </div>
+                            <p class="text-[10px] font-bold uppercase tracking-widest text-amber-700 mb-0.5">
                                 {{ $ben['jabatan'] }}
                             </p>
-                            <p class="text-sm font-semibold text-gray-800">
+                            <p class="text-xs sm:text-sm font-semibold text-gray-800 leading-snug">
                                 {{ $ben['nama'] }}
                             </p>
                         </div>
@@ -225,12 +266,20 @@
 
                     @foreach ($struktur['pokja'] as $pk)
                     <div class="bg-white border-2 border-emerald-200 rounded-xl px-3 py-3 text-center hover:border-emerald-400 hover:shadow-md transition-all duration-200">
+                        {{-- Foto Profil Pokja --}}
+                        <div class="w-12 h-12 rounded-full mx-auto mb-1.5 overflow-hidden border-2 border-emerald-300 shadow-xs bg-emerald-50 flex items-center justify-center">
+                            @if (!empty($pk['foto']) && file_exists(public_path('images/' . $pk['foto'])))
+                                <img src="{{ asset('images/' . $pk['foto']) }}" alt="{{ $pk['ketua'] }}" class="w-full h-full object-cover">
+                            @else
+                                <i class="fa-solid fa-user text-base text-emerald-700"></i>
+                            @endif
+                        </div>
 
-                        <span class="inline-block bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wide rounded-full px-2 py-0.5 mb-2">
+                        <span class="inline-block bg-emerald-100 text-emerald-800 text-[10px] font-bold uppercase tracking-wide rounded-full px-2 py-0.5 mb-1.5">
                             {{ $pk['kode'] }}
                         </span>
 
-                        <p class="text-xs font-semibold text-gray-700">
+                        <p class="text-xs font-semibold text-gray-800 leading-tight">
                             {{ $pk['ketua'] }}
                         </p>
 
@@ -241,6 +290,158 @@
 
             </div>
 
+        </div>
+
+        {{-- ── DAFTAR PROFIL & FOTO PENGURUS ORGANISASI (GRID SHOWCASE) ── --}}
+        <div class="mt-16 pt-12 border-t border-gray-100">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+                <span class="text-xs font-bold uppercase tracking-widest text-emerald-800 bg-emerald-50 border border-emerald-200 px-3.5 py-1 rounded-full">
+                    Jajaran Pengurus
+                </span>
+                <h3 class="text-2xl font-bold text-gray-900 mt-3 mb-2">
+                    Profil &amp; Foto Pengurus TP. PKK
+                </h3>
+                <p class="text-xs sm:text-sm text-gray-500">
+                    Mengenal lebih dekat para penggerak dan pimpinan program TP. PKK Desa Karangtanjung Periode {{ $periode ?? '2024 - 2029' }}
+                </p>
+            </div>
+
+            @php
+                $semuaPengurus = [
+                    [
+                        'jabatan'   => $struktur['pembina']['jabatan'],
+                        'nama'      => $struktur['pembina']['nama'],
+                        'sub'       => $struktur['pembina']['sub'],
+                        'foto'      => $struktur['pembina']['foto'] ?? null,
+                        'kategori'  => 'Pembina',
+                        'badge_bg'  => 'bg-amber-100 text-amber-800 border-amber-200',
+                        'icon'      => 'fa-crown',
+                    ],
+                    [
+                        'jabatan'   => $struktur['pengurus_inti'][0]['jabatan'],
+                        'nama'      => $struktur['pengurus_inti'][0]['nama'],
+                        'sub'       => 'Pimpinan Utama TP. PKK',
+                        'foto'      => $struktur['pengurus_inti'][0]['foto'] ?? null,
+                        'kategori'  => 'Ketua',
+                        'badge_bg'  => 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                        'icon'      => 'fa-star',
+                    ],
+                    [
+                        'jabatan'   => $struktur['pengurus_inti'][1]['jabatan'],
+                        'nama'      => $struktur['pengurus_inti'][1]['nama'],
+                        'sub'       => 'Pendamping Pimpinan',
+                        'foto'      => $struktur['pengurus_inti'][1]['foto'] ?? null,
+                        'kategori'  => 'Pimpinan',
+                        'badge_bg'  => 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                        'icon'      => 'fa-handshake',
+                    ],
+                    [
+                        'jabatan'   => $struktur['pengurus_inti'][2]['jabatan'],
+                        'nama'      => $struktur['pengurus_inti'][2]['nama'],
+                        'sub'       => 'Administrasi & Persuratan',
+                        'foto'      => $struktur['pengurus_inti'][2]['foto'] ?? null,
+                        'kategori'  => 'Sekretariat',
+                        'badge_bg'  => 'bg-blue-100 text-blue-800 border-blue-200',
+                        'icon'      => 'fa-file-signature',
+                    ],
+                    [
+                        'jabatan'   => $struktur['pengurus_inti'][3]['jabatan'],
+                        'nama'      => $struktur['pengurus_inti'][3]['nama'],
+                        'sub'       => 'Administrasi & Kearsipan',
+                        'foto'      => $struktur['pengurus_inti'][3]['foto'] ?? null,
+                        'kategori'  => 'Sekretariat',
+                        'badge_bg'  => 'bg-blue-100 text-blue-800 border-blue-200',
+                        'icon'      => 'fa-file-lines',
+                    ],
+                    [
+                        'jabatan'   => $struktur['pengurus_inti'][4]['jabatan'],
+                        'nama'      => $struktur['pengurus_inti'][4]['nama'],
+                        'sub'       => 'Pengelolaan Kas & Pembukuan',
+                        'foto'      => $struktur['pengurus_inti'][4]['foto'] ?? null,
+                        'kategori'  => 'Keuangan',
+                        'badge_bg'  => 'bg-amber-100 text-amber-800 border-amber-200',
+                        'icon'      => 'fa-wallet',
+                    ],
+                    [
+                        'jabatan'   => $struktur['pengurus_inti'][5]['jabatan'],
+                        'nama'      => $struktur['pengurus_inti'][5]['nama'],
+                        'sub'       => 'Laporan Keuangan & SPJ',
+                        'foto'      => $struktur['pengurus_inti'][5]['foto'] ?? null,
+                        'kategori'  => 'Keuangan',
+                        'badge_bg'  => 'bg-amber-100 text-amber-800 border-amber-200',
+                        'icon'      => 'fa-coins',
+                    ],
+                    [
+                        'jabatan'   => 'Ketua Pokja I',
+                        'nama'      => $struktur['pokja'][0]['ketua'],
+                        'sub'       => 'Bidang Karakter & Gotong Royong',
+                        'foto'      => $struktur['pokja'][0]['foto'] ?? null,
+                        'kategori'  => 'Pokja I',
+                        'badge_bg'  => 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                        'icon'      => 'fa-hands-holding-child',
+                    ],
+                    [
+                        'jabatan'   => 'Ketua Pokja II',
+                        'nama'      => $struktur['pokja'][1]['ketua'],
+                        'sub'       => 'Bidang Pendidikan & Ekonomi UP2K',
+                        'foto'      => $struktur['pokja'][1]['foto'] ?? null,
+                        'kategori'  => 'Pokja II',
+                        'badge_bg'  => 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                        'icon'      => 'fa-graduation-cap',
+                    ],
+                    [
+                        'jabatan'   => 'Ketua Pokja III',
+                        'nama'      => $struktur['pokja'][2]['ketua'],
+                        'sub'       => 'Bidang Pangan, Sandang & Tata Graha',
+                        'foto'      => $struktur['pokja'][2]['foto'] ?? null,
+                        'kategori'  => 'Pokja III',
+                        'badge_bg'  => 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                        'icon'      => 'fa-seedling',
+                    ],
+                    [
+                        'jabatan'   => 'Ketua Pokja IV',
+                        'nama'      => $struktur['pokja'][3]['ketua'],
+                        'sub'       => 'Bidang Kesehatan, Posyandu & PHBS',
+                        'foto'      => $struktur['pokja'][3]['foto'] ?? null,
+                        'kategori'  => 'Pokja IV',
+                        'badge_bg'  => 'bg-emerald-100 text-emerald-800 border-emerald-200',
+                        'icon'      => 'fa-heart-pulse',
+                    ],
+                ];
+            @endphp
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                @foreach ($semuaPengurus as $p)
+                <div class="bg-white rounded-2xl border border-gray-100 p-5 text-center shadow-xs hover:shadow-md hover:-translate-y-1 transition-all duration-300 group">
+                    {{-- Foto Avatar --}}
+                    <div class="relative w-24 h-24 mx-auto mb-4 rounded-2xl overflow-hidden bg-gray-50 border-2 border-gray-100 group-hover:border-emerald-400 transition-colors shadow-xs">
+                        @if (!empty($p['foto']) && file_exists(public_path('images/' . $p['foto'])))
+                            <img src="{{ asset('images/' . $p['foto']) }}" alt="{{ $p['nama'] }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                        @else
+                            <div class="w-full h-full flex flex-col items-center justify-center bg-gradient-to-br from-emerald-50 to-emerald-100/60 text-emerald-700">
+                                <i class="fa-solid {{ $p['icon'] }} text-2xl mb-1 opacity-75"></i>
+                                <span class="text-[9px] font-bold tracking-wider uppercase opacity-60">Foto</span>
+                            </div>
+                        @endif
+                    </div>
+
+                    {{-- Badge Jabatan --}}
+                    <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border mb-2 {{ $p['badge_bg'] }}">
+                        {{ $p['jabatan'] }}
+                    </span>
+
+                    {{-- Nama Pengurus --}}
+                    <h4 class="text-sm font-bold text-gray-900 group-hover:text-emerald-800 transition-colors leading-snug">
+                        {{ $p['nama'] }}
+                    </h4>
+
+                    {{-- Keterangan Sub --}}
+                    <p class="text-xs text-gray-400 mt-1 leading-normal">
+                        {{ $p['sub'] }}
+                    </p>
+                </div>
+                @endforeach
+            </div>
         </div>
 
     </div>

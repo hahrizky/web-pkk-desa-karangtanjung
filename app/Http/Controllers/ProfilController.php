@@ -57,11 +57,25 @@ class ProfilController extends Controller
         $pokja3Ketua = $custom['struktur']['pokja'][2]['ketua'] ?? 'Jazil Laturohmah';
         $pokja4Ketua = $custom['struktur']['pokja'][3]['ketua'] ?? 'Lilik Mutammimah';
 
+        $pembinaFoto = $custom['struktur']['pembina']['foto'] ?? null;
+        $ketuaFoto   = $custom['struktur']['pengurus_inti'][0]['foto'] ?? null;
+        $wakilFoto   = $custom['struktur']['pengurus_inti'][1]['foto'] ?? null;
+        $sekretaris1Foto = $custom['struktur']['pengurus_inti'][2]['foto'] ?? null;
+        $sekretaris2Foto = $custom['struktur']['pengurus_inti'][3]['foto'] ?? null;
+        $bendahara1Foto  = $custom['struktur']['pengurus_inti'][4]['foto'] ?? null;
+        $bendahara2Foto  = $custom['struktur']['pengurus_inti'][5]['foto'] ?? null;
+
+        $pokja1Foto  = $custom['struktur']['pokja'][0]['foto'] ?? null;
+        $pokja2Foto  = $custom['struktur']['pokja'][1]['foto'] ?? null;
+        $pokja3Foto  = $custom['struktur']['pokja'][2]['foto'] ?? null;
+        $pokja4Foto  = $custom['struktur']['pokja'][3]['foto'] ?? null;
+
         $struktur = [
             'pembina' => [
                 'jabatan' => 'Pembina',
                 'nama'    => $pembinaNama,
                 'sub'     => $pembinaSub,
+                'foto'    => $pembinaFoto,
             ],
             'pengurus_inti' => [
                 [
@@ -69,54 +83,64 @@ class ProfilController extends Controller
                     'nama'    => $ketuaNama,
                     'warna'   => 'emerald',
                     'utama'   => true,
+                    'foto'    => $ketuaFoto,
                 ],
                 [
                     'jabatan' => 'Wakil Ketua',
                     'nama'    => $wakilNama,
                     'warna'   => 'emerald',
                     'utama'   => false,
+                    'foto'    => $wakilFoto,
                 ],
                 [
                     'jabatan' => 'Sekretaris I',
                     'nama'    => $sekretaris1,
                     'warna'   => 'blue',
                     'utama'   => false,
+                    'foto'    => $sekretaris1Foto,
                 ],
                 [
                     'jabatan' => 'Sekretaris II',
                     'nama'    => $sekretaris2,
                     'warna'   => 'blue',
                     'utama'   => false,
+                    'foto'    => $sekretaris2Foto,
                 ],
                 [
                     'jabatan' => 'Bendahara I',
                     'nama'    => $bendahara1,
                     'warna'   => 'amber',
                     'utama'   => false,
+                    'foto'    => $bendahara1Foto,
                 ],
                 [
                     'jabatan' => 'Bendahara II',
                     'nama'    => $bendahara2,
                     'warna'   => 'amber',
                     'utama'   => false,
+                    'foto'    => $bendahara2Foto,
                 ],
             ],
             'pokja' => [
                 [
                     'kode'  => 'Pokja I',
                     'ketua' => $pokja1Ketua,
+                    'foto'  => $pokja1Foto,
                 ],
                 [
                     'kode'  => 'Pokja II',
                     'ketua' => $pokja2Ketua,
+                    'foto'  => $pokja2Foto,
                 ],
                 [
                     'kode'  => 'Pokja III',
                     'ketua' => $pokja3Ketua,
+                    'foto'  => $pokja3Foto,
                 ],
                 [
                     'kode'  => 'Pokja IV',
                     'ketua' => $pokja4Ketua,
+                    'foto'  => $pokja4Foto,
                 ],
             ],
         ];
