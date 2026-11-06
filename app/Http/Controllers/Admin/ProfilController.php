@@ -91,36 +91,40 @@ class ProfilController extends Controller
             'pokja_4_ketua'=> 'required|string|max:150',
         ]);
 
+        $cleanStr = function($str) {
+            return trim(preg_replace('/[\x{FFFC}\x{FFFD}\x{0000}-\x{001F}\x{007F}]/u', '', (string)$str));
+        };
+
         $data = [
-            'nama_desa' => $validated['nama_desa'],
-            'kecamatan' => $validated['kecamatan'],
-            'kabupaten' => $validated['kabupaten'],
-            'provinsi' => $validated['provinsi'],
-            'periode' => $validated['periode'],
-            'alamat' => $validated['alamat'] ?? '',
-            'telepon' => $validated['telepon'] ?? '',
-            'email' => $validated['email'] ?? '',
+            'nama_desa' => $cleanStr($validated['nama_desa']),
+            'kecamatan' => $cleanStr($validated['kecamatan']),
+            'kabupaten' => $cleanStr($validated['kabupaten']),
+            'provinsi' => $cleanStr($validated['provinsi']),
+            'periode' => $cleanStr($validated['periode']),
+            'alamat' => $cleanStr($validated['alamat'] ?? ''),
+            'telepon' => $cleanStr($validated['telepon'] ?? ''),
+            'email' => $cleanStr($validated['email'] ?? ''),
             'visi' => $validated['visi'],
             'misi' => $validated['misi'],
             'struktur' => [
                 'pembina' => [
                     'jabatan' => 'Pembina',
-                    'nama'    => $validated['pembina_nama'],
-                    'sub'     => $validated['pembina_sub'] ?? 'Kepala Desa Karang Tanjung',
+                    'nama'    => $cleanStr($validated['pembina_nama']),
+                    'sub'     => $cleanStr($validated['pembina_sub'] ?? 'Kepala Desa Karang Tanjung'),
                 ],
                 'pengurus_inti' => [
-                    ['jabatan' => 'Ketua', 'nama' => $validated['ketua_nama']],
-                    ['jabatan' => 'Wakil Ketua', 'nama' => $validated['wakil_nama']],
-                    ['jabatan' => 'Sekretaris I', 'nama' => $validated['sekretaris_1']],
-                    ['jabatan' => 'Sekretaris II', 'nama' => $validated['sekretaris_2']],
-                    ['jabatan' => 'Bendahara I', 'nama' => $validated['bendahara_1']],
-                    ['jabatan' => 'Bendahara II', 'nama' => $validated['bendahara_2']],
+                    ['jabatan' => 'Ketua', 'nama' => $cleanStr($validated['ketua_nama'])],
+                    ['jabatan' => 'Wakil Ketua', 'nama' => $cleanStr($validated['wakil_nama'])],
+                    ['jabatan' => 'Sekretaris I', 'nama' => $cleanStr($validated['sekretaris_1'])],
+                    ['jabatan' => 'Sekretaris II', 'nama' => $cleanStr($validated['sekretaris_2'])],
+                    ['jabatan' => 'Bendahara I', 'nama' => $cleanStr($validated['bendahara_1'])],
+                    ['jabatan' => 'Bendahara II', 'nama' => $cleanStr($validated['bendahara_2'])],
                 ],
                 'pokja' => [
-                    ['kode' => 'Pokja I', 'ketua' => $validated['pokja_1_ketua']],
-                    ['kode' => 'Pokja II', 'ketua' => $validated['pokja_2_ketua']],
-                    ['kode' => 'Pokja III', 'ketua' => $validated['pokja_3_ketua']],
-                    ['kode' => 'Pokja IV', 'ketua' => $validated['pokja_4_ketua']],
+                    ['kode' => 'Pokja I', 'ketua' => $cleanStr($validated['pokja_1_ketua'])],
+                    ['kode' => 'Pokja II', 'ketua' => $cleanStr($validated['pokja_2_ketua'])],
+                    ['kode' => 'Pokja III', 'ketua' => $cleanStr($validated['pokja_3_ketua'])],
+                    ['kode' => 'Pokja IV', 'ketua' => $cleanStr($validated['pokja_4_ketua'])],
                 ],
             ],
         ];

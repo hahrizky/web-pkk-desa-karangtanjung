@@ -43,19 +43,23 @@ class ProfilController extends Controller
         ];
 
         // 2. Data Struktur Organisasi
-        $pembinaNama = $custom['struktur']['pembina']['nama'] ?? 'Atmo';
-        $pembinaSub  = $custom['struktur']['pembina']['sub'] ?? 'Kepala Desa Karang Tanjung';
-        $ketuaNama   = $custom['struktur']['pengurus_inti'][0]['nama'] ?? 'Hj. Sunariyah';
-        $wakilNama   = $custom['struktur']['pengurus_inti'][1]['nama'] ?? 'Dwi Setyowati';
-        $sekretaris1 = $custom['struktur']['pengurus_inti'][2]['nama'] ?? 'Alfianita Defi, S.Pd.';
-        $sekretaris2 = $custom['struktur']['pengurus_inti'][3]['nama'] ?? 'Cicik Suyanti';
-        $bendahara1  = $custom['struktur']['pengurus_inti'][4]['nama'] ?? 'Ita Susanti';
-        $bendahara2  = $custom['struktur']['pengurus_inti'][5]['nama'] ?? 'Nuryanti';
+        $cleanStr = function($str) {
+            return trim(preg_replace('/[\x{FFFC}\x{FFFD}\x{0000}-\x{001F}\x{007F}]/u', '', (string)$str));
+        };
 
-        $pokja1Ketua = $custom['struktur']['pokja'][0]['ketua'] ?? 'Mutma\'innah, M.Pd.';
-        $pokja2Ketua = $custom['struktur']['pokja'][1]['ketua'] ?? 'Resti Duwi Rohmawati';
-        $pokja3Ketua = $custom['struktur']['pokja'][2]['ketua'] ?? 'Jazil Laturohmah';
-        $pokja4Ketua = $custom['struktur']['pokja'][3]['ketua'] ?? 'Lilik Mutammimah';
+        $pembinaNama = $cleanStr($custom['struktur']['pembina']['nama'] ?? 'Atmo');
+        $pembinaSub  = $cleanStr($custom['struktur']['pembina']['sub'] ?? 'Kepala Desa Karang Tanjung');
+        $ketuaNama   = $cleanStr($custom['struktur']['pengurus_inti'][0]['nama'] ?? 'Hj. Sunariyah');
+        $wakilNama   = $cleanStr($custom['struktur']['pengurus_inti'][1]['nama'] ?? 'Dwi Setyowati');
+        $sekretaris1 = $cleanStr($custom['struktur']['pengurus_inti'][2]['nama'] ?? 'Alfianita Defi, S.Pd.');
+        $sekretaris2 = $cleanStr($custom['struktur']['pengurus_inti'][3]['nama'] ?? 'Cicik Suyanti');
+        $bendahara1  = $cleanStr($custom['struktur']['pengurus_inti'][4]['nama'] ?? 'Ita Susanti');
+        $bendahara2  = $cleanStr($custom['struktur']['pengurus_inti'][5]['nama'] ?? 'Nuryanti');
+
+        $pokja1Ketua = $cleanStr($custom['struktur']['pokja'][0]['ketua'] ?? 'Mutma\'innah, M.Pd.');
+        $pokja2Ketua = $cleanStr($custom['struktur']['pokja'][1]['ketua'] ?? 'Resti Duwi Rohmawati');
+        $pokja3Ketua = $cleanStr($custom['struktur']['pokja'][2]['ketua'] ?? 'Jazil Laturohmah');
+        $pokja4Ketua = $cleanStr($custom['struktur']['pokja'][3]['ketua'] ?? 'Lilik Mutammimah');
 
         $defaultFoto = file_exists(public_path('images/pengurus/default_pas_foto.jpg')) ? 'pengurus/default_pas_foto.jpg' : null;
 
