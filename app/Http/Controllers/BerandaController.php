@@ -2,38 +2,39 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Berita;
+use App\Models\StatistikDasawisma;
 use Illuminate\Http\Request;
 
 class BerandaController extends Controller
 {
     public function index()
     {
-        // Data Statistik Dasawisma Desa Karangtanjung
-        $statistik = [
-            [
-                'judul' => 'Jumlah KK',
-                'nilai' => '300',
-                'deskripsi' => 'Penduduk keluarga di Desa Karangtanjung',
-                'warna' => 'green',
-                'icon' => 'fa-solid fa-house-chimney-user'
-            ],
-            [
-                'judul' => 'Jumlah Laki-laki',
-                'nilai' => '1.200',
-                'deskripsi' => 'Penduduk laki-laki di Desa Karangtanjung',
-                'warna' => 'orange',
-                'icon' => 'fa-solid fa-person'
-            ],
-            [
-                'judul' => 'Jumlah Perempuan',
-                'nilai' => '300',
-                'deskripsi' => 'Penduduk perempuan di Desa Karangtanjung',
-                'warna' => 'blue',
-                'icon' => 'fa-solid fa-person-dress'
-            ]
-        ];
+        // 1. Data Statistik Dasawisma dari Database (dengan safe try-catch jika tabel belum siap/di test env)
+        try {
+            $statistik = StatistikDasawisma::orderBy('urutan', 'asc')->get()->map(function ($item) {
+                return [
+                    'judul' => $item->judul,
+                    'nilai' => $item->nilai,
+                    'deskripsi' => $item->deskripsi,
+                    'warna' => $item->warna,
+                    'icon' => $item->icon,
+                ];
+            })->all();
+        } catch (\Throwable $e) {
+            $statistik = [];
+        }
 
-        // Daftar Kegiatan PKK Terbaru (Diambil langsung sama persis dengan Data Informasi / Berita)
+        // Fallback jika belum ada data di database
+        if (empty($statistik)) {
+            $statistik = [
+                ['judul' => 'Jumlah KK', 'nilai' => '300', 'deskripsi' => 'Penduduk keluarga di Desa Karangtanjung', 'warna' => 'green', 'icon' => 'fa-solid fa-house-chimney-user'],
+                ['judul' => 'Jumlah Laki-laki', 'nilai' => '1.200', 'deskripsi' => 'Penduduk laki-laki di Desa Karangtanjung', 'warna' => 'orange', 'icon' => 'fa-solid fa-person'],
+                ['judul' => 'Jumlah Perempuan', 'nilai' => '300', 'deskripsi' => 'Penduduk perempuan di Desa Karangtanjung', 'warna' => 'blue', 'icon' => 'fa-solid fa-person-dress'],
+            ];
+        }
+
+        // 2. Daftar Kegiatan PKK Terbaru dari Database Berita
         $badgeColors = [
             'Umum' => 'bg-amber-100 text-amber-800',
             'Pokja I' => 'bg-purple-100 text-purple-800',
@@ -42,19 +43,23 @@ class BerandaController extends Controller
             'Pokja IV' => 'bg-emerald-100 text-emerald-800',
         ];
 
-        $kegiatan = collect(InformasiController::getBeritaData())->map(function ($item) use ($badgeColors) {
-            return [
-                'id' => $item['id'],
-                'judul' => $item['judul'],
-                'tanggal' => $item['tanggal'],
-                'ringkasan' => $item['deskripsi'],
-                'kategori' => $item['kategori'],
-                'badge_color' => $badgeColors[$item['kategori']] ?? 'bg-emerald-100 text-emerald-800',
-                'gambar' => $item['gambar'],
-            ];
-        })->all();
+        try {
+            $kegiatan = Berita::where('status', 'published')->latest('tanggal')->get()->map(function ($item) use ($badgeColors) {
+                return [
+                    'id' => $item->id,
+                    'judul' => $item->judul,
+                    'kategori' => $item->kategori,
+                    'badge_color' => $badgeColors[$item->kategori] ?? 'bg-emerald-100 text-emerald-800',
+                    'tanggal' => $item->tanggal_formatted,
+                    'ringkasan' => $item->ringkasan,
+                    'gambar' => $item->gambar ?? '1.webp',
+                ];
+            })->all();
+        } catch (\Throwable $e) {
+            $kegiatan = [];
+        }
 
-        // 4 Kelompok Kerja (Pokja) PKK
+        // 3. 4 Kelompok Kerja (Pokja) PKK
         $pokja = [
             [
                 'kode' => 'Pokja 1',
@@ -82,15 +87,25 @@ class BerandaController extends Controller
             ]
         ];
 
-        // Dokumentasi Galeri Kegiatan
-        $galeri = [
-            ['judul' => 'Senam Sehat Bersama Kader', 'tag' => 'Kebugaran', 'gambar' => '1.webp'],
-            ['judul' => 'Rapat Koordinasi Pengurus PKK', 'tag' => 'Rakor Bulanan', 'gambar' => '2.webp'],
-            ['judul' => 'Pelatihan Memasak Olahan Pangan', 'tag' => 'UP2K', 'gambar' => '3.webp'],
-            ['judul' => 'Pemanfaatan Pekarangan HATINYA PKK', 'tag' => 'Lingkungan', 'gambar' => '4.webp'],
-            ['judul' => 'Pelayanan Posyandu Balita & Lansia', 'tag' => 'Kesehatan', 'gambar' => '5.webp'],
-            ['judul' => 'Kerja Bakti Kebersihan Saluran Desa', 'tag' => 'Gotong Royong', 'gambar' => '1.webp']
-        ];
+        // 4. Dokumentasi Galeri Kegiatan (8 Berita Terbaru Saja dari Database)
+        try {
+            $galeri = Berita::where('status', 'published')
+                ->whereNotNull('gambar')
+                ->latest('tanggal')
+                ->take(8)
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'id' => $item->id,
+                        'gambar' => $item->gambar ?? '1.webp',
+                        'judul' => $item->judul,
+                        'kategori' => $item->kategori,
+                        'tanggal' => $item->tanggal_formatted,
+                    ];
+                })->all();
+        } catch (\Throwable $e) {
+            $galeri = [];
+        }
 
         return view('beranda', compact('statistik', 'kegiatan', 'pokja', 'galeri'));
     }

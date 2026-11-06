@@ -6,6 +6,7 @@
 
 <!-- ================= 1. HERO SECTION ================= -->
 <section id="beranda" class="relative min-h-[580px] lg:min-h-[640px] flex items-center justify-center overflow-hidden bg-emerald-950">
+    
     <!-- Foto Dokumentasi Pelantikan PKK -->
     <img src="{{ asset('images/5.webp') }}"
         alt="Dokumentasi TP PKK Desa Karangtanjung"
@@ -256,62 +257,114 @@
 </section>
 
 <!-- ================= 5. GALERI KEGIATAN ================= -->
-<section id="galeri" class="py-16 bg-white">
+<section id="galeri" class="py-16 bg-[#F3FBF6] border-t border-[#E2E8F0]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Judul Section -->
-        <div class="text-center max-w-2xl mx-auto mb-12">
-            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-                Galeri Kegiatan
+        <div class="text-center max-w-2xl mx-auto mb-10">
+
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-[#1F2937] tracking-tight">
+                Galeri Foto Kegiatan PKK
             </h2>
-            <p class="text-sm sm:text-base text-gray-600">
-                Dokumentasi kegiatan dan momen kebersamaan TP. PKK Desa Karangtanjung.
+            <p class="text-xs sm:text-sm text-[#475569] mt-2">
+                Kumpulan dokumentasi foto dari seluruh kegiatan dan program kerja TP. PKK Desa Karangtanjung.
             </p>
         </div>
 
-        <!-- Grid 6 Foto / Dokumentasi -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-            @foreach ($galeri as $item)
-            <div class="group relative rounded-2xl overflow-hidden border border-gray-100 shadow-sm bg-gray-900 aspect-video flex flex-col justify-end p-6 hover:shadow-md transition-all duration-300">
-                <!-- Foto Background Dummy -->
-                <img src="{{ asset('images/' . $item['gambar']) }}"
-                    alt="{{ $item['judul'] }}"
-                    class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+        <!-- Grid Murni Foto Kegiatan dari Berita (2 Kolom Mobile, 3 Kolom Tablet, 4 Kolom Desktop) -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 mb-10">
+            @foreach ($galeri as $index => $foto)
+            <div class="group relative aspect-square rounded-2xl overflow-hidden bg-gray-900 shadow-xs hover:shadow-xl transition-all duration-300 cursor-pointer"
+                 onclick="openGaleriModal({{ $index }})"
+                 title="{{ $foto['judul'] }}">
+                <!-- Foto Murni -->
+                <img src="{{ asset('images/' . $foto['gambar']) }}"
+                    alt="{{ $foto['judul'] }}"
+                    loading="lazy"
+                    class="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500 ease-out">
 
-                <!-- Gradient Overlay untuk Keterbacaan Teks -->
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
-
-                <!-- Tag & Judul -->
-                <div class="relative z-10">
-                    <span class="inline-block px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-600/90 text-white uppercase tracking-wider mb-1.5 backdrop-blur-sm">
-                        {{ $item['tag'] }}
+                <!-- Overlay Gradient Halus saat Hover -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-3 sm:p-4 z-10">
+                    <!-- Badge Kategori -->
+                    <span class="inline-block px-2 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider text-white bg-[#075B3C]/90 backdrop-blur-sm self-start mb-1.5">
+                        {{ $foto['kategori'] }}
                     </span>
-                    <h4 class="text-sm sm:text-base font-bold text-white line-clamp-2 drop-shadow-sm">
-                        {{ $item['judul'] }}
-                    </h4>
-                </div>
-
-                <!-- Overlay Hover -->
-                <div class="absolute inset-0 bg-emerald-900/60 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center text-white z-20">
-                    <span class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-white/20 backdrop-blur-md text-xs font-semibold">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                        <span>Lihat Dokumentasi</span>
+                    <!-- Judul Foto Ringkas -->
+                    <p class="text-xs sm:text-sm font-bold text-white line-clamp-2 leading-snug drop-shadow-sm">
+                        {{ $foto['judul'] }}
+                    </p>
+                    <span class="text-[10px] text-emerald-200 mt-1 flex items-center gap-1">
+                        <i class="fa-regular fa-calendar-days text-[9px]"></i>
+                        {{ $foto['tanggal'] }}
                     </span>
                 </div>
             </div>
             @endforeach
         </div>
-
-        <!-- Tombol Lihat Semua Foto -->
-        <div class="text-center">
-            <a href="#" class="inline-flex items-center gap-2 px-7 py-3 rounded-xl font-semibold text-white bg-emerald-700 hover:bg-emerald-800 shadow-md hover:shadow-lg transition-all duration-200">
-                <i class="fa-solid fa-images"></i>
-                <span>Lihat Semua Foto</span>
-            </a>
-        </div>
     </div>
 </section>
 
-<!-- Script Geser Carousel Slider Berita Kegiatan -->
+<!-- ================= MODAL LIGHTBOX PREVIEW FOTO ================= -->
+<div id="galeri-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-3 sm:p-6 bg-black/85 backdrop-blur-sm transition-opacity duration-300" aria-modal="true" role="dialog">
+    <!-- Area Klik Luar untuk Menutup -->
+    <div class="absolute inset-0" onclick="closeGaleriModal()"></div>
+
+    <!-- Kontainer Modal -->
+    <div class="relative bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden z-10 max-h-[92vh] flex flex-col animate-fadeIn">
+        
+        <!-- Header Modal Ringkas -->
+        <div class="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-gray-100 bg-white">
+            <div class="flex items-center gap-2">
+                <span id="modal-kategori-badge" class="px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-[#166534] text-white">
+                    Kategori
+                </span>
+                <span id="modal-counter" class="text-xs text-gray-400 font-semibold">1 / {{ count($galeri) }}</span>
+            </div>
+
+            <div class="flex items-center gap-2">
+                <button type="button"
+                        onclick="closeGaleriModal()"
+                        class="w-8 h-8 rounded-full bg-gray-100 hover:bg-red-50 hover:text-red-600 text-gray-600 flex items-center justify-center text-sm transition-colors"
+                        aria-label="Tutup Preview">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Gambar Ukuran Besar & Navigasi -->
+        <div class="relative bg-black flex items-center justify-center flex-1 min-h-[260px] sm:min-h-[420px] max-h-[65vh] overflow-hidden select-none">
+            <img id="modal-img" src="" alt="" class="max-w-full max-h-[65vh] w-auto h-auto object-contain">
+
+            <!-- Tombol Prev -->
+            <button type="button"
+                    onclick="prevGaleriModal()"
+                    class="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center text-sm backdrop-blur-md transition-all active:scale-95 shadow-md"
+                    aria-label="Foto Sebelumnya">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <!-- Tombol Next -->
+            <button type="button"
+                    onclick="nextGaleriModal()"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center text-sm backdrop-blur-md transition-all active:scale-95 shadow-md"
+                    aria-label="Foto Selanjutnya">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+
+        <!-- Keterangan Judul Foto Singkat di Bawah -->
+        <div class="px-5 py-3.5 bg-white border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <h3 id="modal-judul" class="text-sm sm:text-base font-bold text-gray-900 leading-snug">
+                Judul Kegiatan
+            </h3>
+            <span id="modal-tanggal" class="text-xs text-gray-400 font-medium whitespace-nowrap">
+                Tanggal
+            </span>
+        </div>
+
+    </div>
+</div>
+
+<!-- Script Geser Carousel Slider Berita Kegiatan & Lightbox Galeri -->
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const slider = document.getElementById('kegiatan-slider');
@@ -334,6 +387,62 @@
                     behavior: 'smooth'
                 });
             });
+        }
+    });
+
+    // ================= JAVASCRIPT MODAL GALERI FOTO =================
+    const galeriData = @json($galeri);
+    let currentModalIndex = 0;
+
+    function openGaleriModal(index) {
+        currentModalIndex = index;
+        updateModalContent();
+        const modal = document.getElementById('galeri-modal');
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeGaleriModal() {
+        const modal = document.getElementById('galeri-modal');
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+    }
+
+    function updateModalContent() {
+        const data = galeriData[currentModalIndex];
+        if (!data) return;
+
+        const assetUrl = "{{ asset('images') }}/" + data.gambar;
+        document.getElementById('modal-img').src = assetUrl;
+        document.getElementById('modal-img').alt = data.judul;
+
+        document.getElementById('modal-kategori-badge').textContent = data.kategori;
+        document.getElementById('modal-counter').textContent = (currentModalIndex + 1) + ' / ' + galeriData.length;
+        document.getElementById('modal-tanggal').textContent = data.tanggal;
+        document.getElementById('modal-judul').textContent = data.judul;
+    }
+
+    function nextGaleriModal() {
+        currentModalIndex = (currentModalIndex + 1) % galeriData.length;
+        updateModalContent();
+    }
+
+    function prevGaleriModal() {
+        currentModalIndex = (currentModalIndex - 1 + galeriData.length) % galeriData.length;
+        updateModalContent();
+    }
+
+    // Keyboard Shortcuts (Esc, Panah Kiri, Panah Kanan)
+    document.addEventListener('keydown', function(e) {
+        const modal = document.getElementById('galeri-modal');
+        if (!modal || modal.classList.contains('hidden')) return;
+
+        if (e.key === 'Escape') {
+            closeGaleriModal();
+        } else if (e.key === 'ArrowRight') {
+            nextGaleriModal();
+        } else if (e.key === 'ArrowLeft') {
+            prevGaleriModal();
         }
     });
 </script>
