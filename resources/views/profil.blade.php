@@ -211,17 +211,17 @@
                 </div>
 
                 {{-- Kartu Sekretaris dan Bendahara --}}
-                <div class="relative grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                <div class="relative grid grid-cols-1 sm:grid-cols-2 gap-0 sm:gap-8">
 
                     {{-- Garis vertikal tengah kontinu yang menghubungkan Wakil Ketua ke Pokja (gandeng di desktop/tablet) --}}
                     <div class="absolute left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 bg-gray-300 hidden sm:block"></div>
 
                     {{-- Kolom Sekretaris --}}
-                    <div class="flex flex-col gap-4">
+                    <div class="flex flex-col items-center gap-0 sm:gap-4">
                         @foreach (array_slice($struktur['pengurus_inti'], 2, 2) as $sek)
                         @if ($loop->iteration > 1)
-                            {{-- Garis penghubung Sekretaris I ke Sekretaris II --}}
-                            <div class="w-[2px] h-4 bg-gray-300 mx-auto -my-2"></div>
+                            {{-- Garis penghubung Sekretaris I ke Sekretaris II (gandeng di mobile) --}}
+                            <div class="sm:hidden w-[2px] h-6 bg-gray-300 mx-auto"></div>
                         @endif
                         <div class="w-full max-w-[280px] sm:max-w-none mx-auto bg-blue-50 border border-blue-200 rounded-2xl p-4 sm:p-5 text-center hover:shadow-md transition-shadow">
                             {{-- Pas Foto Sekretaris (Ukuran Seragam Formal & Responsif) --}}
@@ -245,15 +245,15 @@
                         @endforeach
                     </div>
 
-                    {{-- Konektor vertikal mobile antar kolom Sekretaris ke Bendahara --}}
-                    <div class="sm:hidden w-[2px] h-6 bg-gray-300 mx-auto -my-2"></div>
+                    {{-- Konektor vertikal mobile antar kolom Sekretaris ke Bendahara (gandeng di mobile) --}}
+                    <div class="sm:hidden w-[2px] h-8 bg-gray-300 mx-auto"></div>
 
                     {{-- Kolom Bendahara --}}
-                    <div class="flex flex-col gap-4">
+                    <div class="flex flex-col items-center gap-0 sm:gap-4">
                         @foreach (array_slice($struktur['pengurus_inti'], 4, 2) as $ben)
                         @if ($loop->iteration > 1)
-                            {{-- Garis penghubung Bendahara I ke Bendahara II --}}
-                            <div class="w-[2px] h-4 bg-gray-300 mx-auto -my-2"></div>
+                            {{-- Garis penghubung Bendahara I ke Bendahara II (gandeng di mobile) --}}
+                            <div class="sm:hidden w-[2px] h-6 bg-gray-300 mx-auto"></div>
                         @endif
                         <div class="w-full max-w-[280px] sm:max-w-none mx-auto bg-amber-50 border border-amber-200 rounded-2xl p-4 sm:p-5 text-center hover:shadow-md transition-shadow">
                             {{-- Pas Foto Bendahara (Ukuran Seragam Formal & Responsif) --}}
@@ -279,13 +279,12 @@
 
                 </div>
 
-                {{-- Konektor vertikal mobile dari Bendahara ke Pokja --}}
-                <div class="sm:hidden w-[2px] h-8 bg-gray-300 mx-auto my-1"></div>
+                {{-- Konektor vertikal mobile dari Bendahara ke Pokja (gandeng di mobile) --}}
+                <div class="sm:hidden w-[2px] h-8 bg-gray-300 mx-auto"></div>
 
                 {{-- Konektor menuju Pokja (Tablet 2 Kolom: sm to lg) --}}
                 <div class="hidden sm:block lg:hidden relative h-10">
                     <div class="absolute left-1/4 right-1/4 top-0 h-[2px] bg-gray-300"></div>
-                    <div class="absolute left-1/2 top-0 h-full w-[2px] -translate-x-1/2 bg-gray-300"></div>
                     <div class="absolute left-1/4 top-0 h-10 w-[2px] -translate-x-1/2 bg-gray-300"></div>
                     <div class="absolute right-1/4 top-0 h-10 w-[2px] translate-x-1/2 bg-gray-300"></div>
                 </div>
@@ -305,12 +304,12 @@
                 </div>
 
                 {{-- LEVEL 5: KARTU POKJA I - IV --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-0 sm:gap-5">
 
                     @foreach ($struktur['pokja'] as $pk)
                     @if (!$loop->first)
-                        {{-- Garis konektor mobile antar kartu Pokja --}}
-                        <div class="sm:hidden w-[2px] h-4 bg-gray-300 mx-auto -my-2"></div>
+                        {{-- Garis konektor mobile antar kartu Pokja (gandeng di mobile) --}}
+                        <div class="sm:hidden w-[2px] h-6 bg-gray-300 mx-auto"></div>
                     @endif
                     <div class="w-full max-w-[280px] sm:max-w-none mx-auto bg-white border-2 border-emerald-200 rounded-2xl p-4 sm:p-5 text-center hover:border-emerald-400 hover:shadow-md transition-all duration-200">
                         {{-- Pas Foto Pokja (Ukuran Seragam Formal & Responsif) --}}
