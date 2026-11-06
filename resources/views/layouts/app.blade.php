@@ -170,29 +170,45 @@
                 </div>
 
                 <!-- Kolom 3: Kontak Kami -->
+                @php
+                    $hasAnyContact = !empty($kontakFooter['alamat']) || !empty($kontakFooter['telepon']) || !empty($kontakFooter['email']) || !empty($kontakFooter['jam_layanan']);
+                @endphp
+                @if($hasAnyContact)
                 <div>
                     <h4 class="text-base font-bold text-white mb-4 pb-2 border-b border-emerald-800/80 inline-block">
                         Kontak Kami
                     </h4>
                     <ul class="space-y-3 text-sm text-emerald-100/80">
+                        @if(!empty($kontakFooter['alamat']))
                         <li class="flex items-start gap-3">
                             <i class="fa-solid fa-location-dot text-amber-400 mt-1"></i>
-                            <span>Jl. Sunan Giri No.1 Desa Karangtanjung, Kec. Candi, Kab. Sidoarjo, Jawa Timur</span>
+                            <span>{{ $kontakFooter['alamat'] }}</span>
                         </li>
+                        @endif
+
+                        @if(!empty($kontakFooter['telepon']))
                         <li class="flex items-center gap-3">
                             <i class="fa-solid fa-phone text-amber-400"></i>
-                            <span>+62 812-3456-7890 (Sekretariat PKK)</span>
+                            <span>{{ $kontakFooter['telepon'] }}</span>
                         </li>
+                        @endif
+
+                        @if(!empty($kontakFooter['email']))
                         <li class="flex items-center gap-3">
                             <i class="fa-solid fa-envelope text-amber-400"></i>
-                            <span>pkk.desakarangtanjung@gmail.com</span>
+                            <span>{{ $kontakFooter['email'] }}</span>
                         </li>
+                        @endif
+
+                        @if(!empty($kontakFooter['jam_layanan']))
                         <li class="flex items-center gap-3">
                             <i class="fa-solid fa-clock text-amber-400"></i>
-                            <span>Jam Layanan: Senin - Jumat (08.00 - 15.00 WIB)</span>
+                            <span>{{ $kontakFooter['jam_layanan'] }}</span>
                         </li>
+                        @endif
                     </ul>
                 </div>
+                @endif
 
             </div>
 
