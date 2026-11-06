@@ -211,7 +211,10 @@
                 </div>
 
                 {{-- Kartu Sekretaris dan Bendahara --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                <div class="relative grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+
+                    {{-- Garis vertikal tengah kontinu yang menghubungkan Wakil Ketua ke Pokja (gandeng) --}}
+                    <div class="absolute left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 bg-gray-300 hidden sm:block"></div>
 
                     {{-- Kolom Sekretaris --}}
                     <div class="flex flex-col gap-4">
