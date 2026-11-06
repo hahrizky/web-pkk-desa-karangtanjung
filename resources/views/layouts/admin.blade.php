@@ -128,10 +128,6 @@
 
             {{-- Right side --}}
             <div class="flex items-center gap-3">
-                <span class="text-xs text-gray-500 hidden sm:inline">
-                    <i class="fa-regular fa-clock mr-1"></i>
-                    {{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }}
-                </span>
                 <div class="w-8 h-8 bg-[#075B3C] rounded-full flex items-center justify-center text-white text-xs font-bold">
                     A
                 </div>
