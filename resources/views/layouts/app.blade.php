@@ -159,38 +159,54 @@
                 </div>
 
                 <!-- Kolom 3: Kontak Kami -->
+                @php
+                    $footerAlamat = trim($kontakFooter['alamat'] ?? '');
+                    $footerTelepon = trim($kontakFooter['telepon'] ?? '');
+                    $footerEmail = trim($kontakFooter['email'] ?? '');
+                    $footerJam = trim($kontakFooter['jam_layanan'] ?? '');
+
+                    $hasAlamat = !empty($footerAlamat) && $footerAlamat !== '-';
+                    $hasTelepon = !empty($footerTelepon) && $footerTelepon !== '-';
+                    $hasEmail = !empty($footerEmail) && $footerEmail !== '-';
+                    $hasJam = !empty($footerJam) && $footerJam !== '-';
+                    $hasAnyContact = $hasAlamat || $hasTelepon || $hasEmail || $hasJam;
+                @endphp
+                @if($hasAnyContact)
                 <div>
                     <h4 class="text-base font-bold text-white mb-4 pb-2 border-b border-emerald-800/80 inline-block">
                         Kontak Kami
                     </h4>
-                    @php
-                        $footerAlamat = trim($profilFooter['alamat'] ?? '');
-                        $footerTelepon = trim($profilFooter['telepon'] ?? '');
-                        $footerEmail = trim($profilFooter['email'] ?? '');
-                    @endphp
                     <ul class="space-y-3 text-sm text-emerald-100/80">
+                        @if($hasAlamat)
                         <li class="flex items-start gap-3">
                             <i class="fa-solid fa-location-dot text-amber-400 mt-1"></i>
-                            <span>{{ (!empty($footerAlamat) && $footerAlamat !== '-') ? $footerAlamat : 'Jl. Sunan Giri No.1 Desa Karangtanjung, Kec. Candi, Kab. Sidoarjo, Jawa Timur' }}</span>
+                            <span>{{ $footerAlamat }}</span>
                         </li>
-                        @if (!empty($footerTelepon) && $footerTelepon !== '-')
+                        @endif
+
+                        @if($hasTelepon)
                         <li class="flex items-center gap-3">
                             <i class="fa-solid fa-phone text-amber-400"></i>
                             <span>{{ $footerTelepon }}</span>
                         </li>
                         @endif
-                        @if (!empty($footerEmail) && $footerEmail !== '-')
+
+                        @if($hasEmail)
                         <li class="flex items-center gap-3">
                             <i class="fa-solid fa-envelope text-amber-400"></i>
                             <span>{{ $footerEmail }}</span>
                         </li>
                         @endif
+
+                        @if($hasJam)
                         <li class="flex items-center gap-3">
                             <i class="fa-solid fa-clock text-amber-400"></i>
-                            <span>Jam Layanan: Senin - Jumat (08.00 - 15.00 WIB)</span>
+                            <span>{{ $footerJam }}</span>
                         </li>
+                        @endif
                     </ul>
                 </div>
+                @endif
 
             </div>
 

@@ -24,6 +24,7 @@ class ProfilController extends Controller
             'alamat' => 'Jl. Sunan Giri No.1 Desa Karangtanjung, Kec. Candi, Kab. Sidoarjo, Jawa Timur',
             'telepon' => '',
             'email' => '',
+            'jam_layanan' => 'Senin - Jumat (08.00 - 15.00 WIB)',
             'visi' => 'Terwujudnya Keluarga Karangtanjung yang Beriman, Berakhlak Mulia, Sehat, Sejahtera, Maju, dan Mandiri Berbasis Ketahanan Desa yang Berkelanjutan',
             'misi' => "Meningkatkan kualitas keimanan, pengamalan nilai-nilai luhur Pancasila, pembinaan kesadaran bela negara, serta semangat gotong royong warga.\nMeningkatkan akses dan kualitas pendidikan formal, non-formal, keterampilan keluarga, serta pola asuh anak dan remaja yang bijak.\nMengembangkan ketahanan pangan keluarga lewat program AKU HATINYA PKK dan mendorong kemandirian ekonomi keluarga melalui UP2K.\nMeningkatkan derajat kesehatan keluarga melalui pencegahan stunting, optimalisasi posyandu, PHBS, serta kelestarian lingkungan hidup.",
             'struktur' => [
@@ -69,70 +70,39 @@ class ProfilController extends Controller
             'kecamatan' => 'required|string|max:100',
             'kabupaten' => 'required|string|max:100',
             'provinsi' => 'required|string|max:100',
-            'periode' => 'required|string|max:50',
             'alamat' => 'nullable|string|max:255',
-            'telepon' => 'nullable|string|max:50',
+            'telepon' => 'nullable|string|max:100',
             'email' => 'nullable|email|max:100',
+            'jam_layanan' => 'nullable|string|max:150',
             'visi' => 'required|string',
             'misi' => 'required|string',
-
-            // Nama-nama struktur organisasi
-            'pembina_nama' => 'required|string|max:150',
-            'pembina_sub'  => 'nullable|string|max:150',
-            'ketua_nama'   => 'required|string|max:150',
-            'wakil_nama'   => 'required|string|max:150',
-            'sekretaris_1' => 'required|string|max:150',
-            'sekretaris_2' => 'required|string|max:150',
-            'bendahara_1'  => 'required|string|max:150',
-            'bendahara_2'  => 'required|string|max:150',
-            'pokja_1_ketua'=> 'required|string|max:150',
-            'pokja_2_ketua'=> 'required|string|max:150',
-            'pokja_3_ketua'=> 'required|string|max:150',
-            'pokja_4_ketua'=> 'required|string|max:150',
         ]);
 
         $cleanStr = function($str) {
             return trim(preg_replace('/[\x{FFFC}\x{FFFD}\x{0000}-\x{001F}\x{007F}]/u', '', (string)$str));
         };
 
-        $data = [
-            'nama_desa' => $cleanStr($validated['nama_desa']),
-            'kecamatan' => $cleanStr($validated['kecamatan']),
-            'kabupaten' => $cleanStr($validated['kabupaten']),
-            'provinsi' => $cleanStr($validated['provinsi']),
-            'periode' => $cleanStr($validated['periode']),
-            'alamat' => $cleanStr($validated['alamat'] ?? ''),
-            'telepon' => $cleanStr($validated['telepon'] ?? ''),
-            'email' => $cleanStr($validated['email'] ?? ''),
-            'visi' => $validated['visi'],
-            'misi' => $validated['misi'],
-            'struktur' => [
-                'pembina' => [
-                    'jabatan' => 'Pembina',
-                    'nama'    => $cleanStr($validated['pembina_nama']),
-                    'sub'     => $cleanStr($validated['pembina_sub'] ?? 'Kepala Desa Karang Tanjung'),
-                ],
-                'pengurus_inti' => [
-                    ['jabatan' => 'Ketua', 'nama' => $cleanStr($validated['ketua_nama'])],
-                    ['jabatan' => 'Wakil Ketua', 'nama' => $cleanStr($validated['wakil_nama'])],
-                    ['jabatan' => 'Sekretaris I', 'nama' => $cleanStr($validated['sekretaris_1'])],
-                    ['jabatan' => 'Sekretaris II', 'nama' => $cleanStr($validated['sekretaris_2'])],
-                    ['jabatan' => 'Bendahara I', 'nama' => $cleanStr($validated['bendahara_1'])],
-                    ['jabatan' => 'Bendahara II', 'nama' => $cleanStr($validated['bendahara_2'])],
-                ],
-                'pokja' => [
-                    ['kode' => 'Pokja I', 'ketua' => $cleanStr($validated['pokja_1_ketua'])],
-                    ['kode' => 'Pokja II', 'ketua' => $cleanStr($validated['pokja_2_ketua'])],
-                    ['kode' => 'Pokja III', 'ketua' => $cleanStr($validated['pokja_3_ketua'])],
-                    ['kode' => 'Pokja IV', 'ketua' => $cleanStr($validated['pokja_4_ketua'])],
-                ],
-            ],
-        ];
+        $cleaned = [];
+        foreach ($validated as $key => $val) {
+            $cleaned[$key] = is_string($val) ? $cleanStr($val) : $val;
+        }
+
+        $path = $this->getStoragePath();
+        $data = File::exists($path)
+            ? (json_decode(File::get($path), true) ?? $this->getDefaultData())
+            : $this->getDefaultData();
+
+        $data = array_merge($data, $cleaned, [
+            'alamat' => $cleaned['alamat'] ?? '',
+            'telepon' => $cleaned['telepon'] ?? '',
+            'email' => $cleaned['email'] ?? '',
+            'jam_layanan' => $cleaned['jam_layanan'] ?? '',
+        ]);
 
         File::ensureDirectoryExists(storage_path('app'));
-        File::put($this->getStoragePath(), json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        File::put($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         return redirect()->route('admin.profil')
-            ->with('success', 'Data profil & susunan struktur organisasi berhasil disimpan!');
+            ->with('success', 'Data profil desa berhasil disimpan!');
     }
 }

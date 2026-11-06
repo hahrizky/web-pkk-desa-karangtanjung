@@ -26,14 +26,38 @@ class AppServiceProvider extends ServiceProvider
             URL::forceScheme('https');
         }
 
-        // Bagikan data kontak profil dinamis dari CMS ke layout publik
+        // Bagikan data kontak footer ke semua view publik
         View::composer('layouts.app', function ($view) {
             $path = storage_path('app/profil_data.json');
-            $profilFooter = [];
+            $kontak = [
+                'alamat' => 'Jl. Sunan Giri No.1 Desa Karangtanjung, Kec. Candi, Kab. Sidoarjo, Jawa Timur',
+                'telepon' => '',
+                'email' => '',
+                'jam_layanan' => 'Jam Layanan: Senin - Jumat (08.00 - 15.00 WIB)',
+            ];
+            $saved = [];
+
             if (File::exists($path)) {
-                $profilFooter = json_decode(File::get($path), true) ?? [];
+                $saved = json_decode(File::get($path), true) ?? [];
+                if (array_key_exists('alamat', $saved)) {
+                    $kontak['alamat'] = trim((string)$saved['alamat']);
+                }
+                if (array_key_exists('telepon', $saved)) {
+                    $kontak['telepon'] = trim((string)$saved['telepon']);
+                }
+                if (array_key_exists('email', $saved)) {
+                    $kontak['email'] = trim((string)$saved['email']);
+                }
+                if (array_key_exists('jam_layanan', $saved)) {
+                    $jam = trim((string)$saved['jam_layanan']);
+                    $kontak['jam_layanan'] = (!empty($jam) && !str_starts_with($jam, 'Jam Layanan:'))
+                        ? 'Jam Layanan: ' . $jam
+                        : $jam;
+                }
             }
-            $view->with('profilFooter', $profilFooter);
+
+            $view->with('kontakFooter', $kontak);
+            $view->with('profilFooter', $saved);
         });
     }
 }
