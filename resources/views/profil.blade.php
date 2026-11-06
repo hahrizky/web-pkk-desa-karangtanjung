@@ -192,91 +192,119 @@
                 </div>
 
                 {{-- Garis vertikal utama ke bawah --}}
-                <div class="w-[2px] h-10 bg-gray-300"></div>
+                <div class="w-[2px] h-8 bg-gray-300"></div>
             </div>
 
-            {{-- LEVEL 4: KONEKTOR SEKRETARIS DAN BENDAHARA --}}
+            {{-- LEVEL 4: KONEKTOR & KARTU SEKRETARIS DAN BENDAHARA --}}
             <div class="w-full max-w-4xl">
 
-                {{-- Garis dari Wakil Ketua menuju Sekretaris dan Bendahara --}}
-                <div class="relative h-10">
-                    {{-- Garis horizontal --}}
-                    <div class="absolute left-1/4 right-1/4 top-0 h-[2px] bg-gray-300"></div>
-                    {{-- Garis tengah turun ke Pokja --}}
-                    <div class="absolute left-1/2 top-0 h-full w-[2px] -translate-x-1/2 bg-gray-300"></div>
-                    {{-- Garis turun ke Sekretaris --}}
-                    <div class="absolute left-1/4 top-0 h-10 w-[2px] -translate-x-1/2 bg-gray-300"></div>
-                    {{-- Garis turun ke Bendahara --}}
-                    <div class="absolute right-1/4 top-0 h-10 w-[2px] translate-x-1/2 bg-gray-300"></div>
+                {{-- Cabang Horizontal & Vertikal Masuk ke Sekretaris & Bendahara --}}
+                <div class="grid grid-cols-2 gap-6 sm:gap-8">
+                    {{-- Kolom Kiri: Cabang ke Sekretaris --}}
+                    <div class="relative h-8">
+                        <div class="absolute top-0 left-1/2 right-[-12px] sm:right-[-16px] h-[2px] bg-gray-300"></div>
+                        <div class="absolute top-0 bottom-0 left-1/2 w-[2px] -translate-x-1/2 bg-gray-300"></div>
+                    </div>
+                    {{-- Kolom Kanan: Cabang ke Bendahara --}}
+                    <div class="relative h-8">
+                        <div class="absolute top-0 left-[-12px] sm:left-[-16px] right-1/2 h-[2px] bg-gray-300"></div>
+                        <div class="absolute top-0 bottom-0 left-1/2 w-[2px] -translate-x-1/2 bg-gray-300"></div>
+                    </div>
                 </div>
 
-                {{-- Kartu Sekretaris dan Bendahara --}}
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+                {{-- Kartu Sekretaris & Bendahara dengan Garis Tengah Kontinu Menuju Pokja --}}
+                <div class="relative">
+                    {{-- Garis vertikal tengah kontinu melewati celah antar kolom --}}
+                    <div class="absolute left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 bg-gray-300 hidden sm:block"></div>
 
-                    {{-- Kolom Sekretaris --}}
-                    <div class="flex flex-col gap-4">
-                        @foreach (array_slice($struktur['pengurus_inti'], 2, 2) as $sek)
-                        <div class="bg-blue-50 border border-blue-200 rounded-2xl p-5 text-center hover:shadow-md transition-shadow">
-                            {{-- Pas Foto Sekretaris (Ukuran Seragam Formal) --}}
-                            <div class="w-28 sm:w-32 aspect-[3/4] rounded-lg mx-auto mb-3 overflow-hidden border-2 border-blue-300 shadow-sm bg-white p-0.5">
-                                @if (!empty($sek['foto']) && file_exists(public_path('images/' . $sek['foto'])))
-                                    <img src="{{ asset('images/' . $sek['foto']) }}" alt="{{ $sek['nama'] }}" class="w-full h-full object-cover rounded-md">
-                                @else
-                                    <div class="w-full h-full bg-[#B91C1C] flex flex-col items-center justify-center text-white rounded-md shadow-inner">
-                                        <i class="fa-solid fa-user text-3xl mb-1 text-white"></i>
-                                        <span class="text-[9px] font-bold uppercase tracking-wider text-white/90">Pas Foto</span>
-                                    </div>
-                                @endif
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8">
+
+                        {{-- Kolom Sekretaris --}}
+                        <div class="flex flex-col items-center">
+                            @foreach (array_slice($struktur['pengurus_inti'], 2, 2) as $index => $sek)
+                            @if ($index > 0)
+                                {{-- Garis penghubung Sekretaris I ke Sekretaris II --}}
+                                <div class="w-[2px] h-6 bg-gray-300"></div>
+                            @endif
+                            <div class="w-full bg-blue-50 border border-blue-200 rounded-2xl p-5 text-center hover:shadow-md transition-shadow">
+                                {{-- Pas Foto Sekretaris (Ukuran Seragam Formal) --}}
+                                <div class="w-28 sm:w-32 aspect-[3/4] rounded-lg mx-auto mb-3 overflow-hidden border-2 border-blue-300 shadow-sm bg-white p-0.5">
+                                    @if (!empty($sek['foto']) && file_exists(public_path('images/' . $sek['foto'])))
+                                        <img src="{{ asset('images/' . $sek['foto']) }}" alt="{{ $sek['nama'] }}" class="w-full h-full object-cover rounded-md">
+                                    @else
+                                        <div class="w-full h-full bg-[#B91C1C] flex flex-col items-center justify-center text-white rounded-md shadow-inner">
+                                            <i class="fa-solid fa-user text-3xl mb-1 text-white"></i>
+                                            <span class="text-[9px] font-bold uppercase tracking-wider text-white/90">Pas Foto</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <span class="text-[11px] font-bold uppercase tracking-widest text-blue-800 bg-blue-100 px-3 py-0.5 rounded-full inline-block mb-1.5 border border-blue-200">
+                                    {{ $sek['jabatan'] }}
+                                </span>
+                                <p class="text-sm sm:text-base font-bold text-gray-900 leading-snug">
+                                    {{ $sek['nama'] }}
+                                </p>
                             </div>
-                            <span class="text-[11px] font-bold uppercase tracking-widest text-blue-800 bg-blue-100 px-3 py-0.5 rounded-full inline-block mb-1.5 border border-blue-200">
-                                {{ $sek['jabatan'] }}
-                            </span>
-                            <p class="text-sm sm:text-base font-bold text-gray-900 leading-snug">
-                                {{ $sek['nama'] }}
-                            </p>
+                            @endforeach
                         </div>
-                        @endforeach
-                    </div>
 
-                    {{-- Kolom Bendahara --}}
-                    <div class="flex flex-col gap-4">
-                        @foreach (array_slice($struktur['pengurus_inti'], 4, 2) as $ben)
-                        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-5 text-center hover:shadow-md transition-shadow">
-                            {{-- Pas Foto Bendahara (Ukuran Seragam Formal) --}}
-                            <div class="w-28 sm:w-32 aspect-[3/4] rounded-lg mx-auto mb-3 overflow-hidden border-2 border-amber-300 shadow-sm bg-white p-0.5">
-                                @if (!empty($ben['foto']) && file_exists(public_path('images/' . $ben['foto'])))
-                                    <img src="{{ asset('images/' . $ben['foto']) }}" alt="{{ $ben['nama'] }}" class="w-full h-full object-cover rounded-md">
-                                @else
-                                    <div class="w-full h-full bg-[#B91C1C] flex flex-col items-center justify-center text-white rounded-md shadow-inner">
-                                        <i class="fa-solid fa-user text-3xl mb-1 text-white"></i>
-                                        <span class="text-[9px] font-bold uppercase tracking-wider text-white/90">Pas Foto</span>
-                                    </div>
-                                @endif
+                        {{-- Kolom Bendahara --}}
+                        <div class="flex flex-col items-center">
+                            @foreach (array_slice($struktur['pengurus_inti'], 4, 2) as $index => $ben)
+                            @if ($index > 0)
+                                {{-- Garis penghubung Bendahara I ke Bendahara II --}}
+                                <div class="w-[2px] h-6 bg-gray-300"></div>
+                            @endif
+                            <div class="w-full bg-amber-50 border border-amber-200 rounded-2xl p-5 text-center hover:shadow-md transition-shadow">
+                                {{-- Pas Foto Bendahara (Ukuran Seragam Formal) --}}
+                                <div class="w-28 sm:w-32 aspect-[3/4] rounded-lg mx-auto mb-3 overflow-hidden border-2 border-amber-300 shadow-sm bg-white p-0.5">
+                                    @if (!empty($ben['foto']) && file_exists(public_path('images/' . $ben['foto'])))
+                                        <img src="{{ asset('images/' . $ben['foto']) }}" alt="{{ $ben['nama'] }}" class="w-full h-full object-cover rounded-md">
+                                    @else
+                                        <div class="w-full h-full bg-[#B91C1C] flex flex-col items-center justify-center text-white rounded-md shadow-inner">
+                                            <i class="fa-solid fa-user text-3xl mb-1 text-white"></i>
+                                            <span class="text-[9px] font-bold uppercase tracking-wider text-white/90">Pas Foto</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                <span class="text-[11px] font-bold uppercase tracking-widest text-amber-800 bg-amber-100 px-3 py-0.5 rounded-full inline-block mb-1.5 border border-amber-200">
+                                    {{ $ben['jabatan'] }}
+                                </span>
+                                <p class="text-sm sm:text-base font-bold text-gray-900 leading-snug">
+                                    {{ $ben['nama'] }}
+                                </p>
                             </div>
-                            <span class="text-[11px] font-bold uppercase tracking-widest text-amber-800 bg-amber-100 px-3 py-0.5 rounded-full inline-block mb-1.5 border border-amber-200">
-                                {{ $ben['jabatan'] }}
-                            </span>
-                            <p class="text-sm sm:text-base font-bold text-gray-900 leading-snug">
-                                {{ $ben['nama'] }}
-                            </p>
+                            @endforeach
                         </div>
-                        @endforeach
-                    </div>
 
+                    </div>
                 </div>
 
-                {{-- Konektor menuju Pokja --}}
-                <div class="relative h-12">
-                    {{-- Garis tengah turun dari tengah --}}
-                    <div class="absolute left-1/2 top-0 h-6 w-[2px] -translate-x-1/2 bg-gray-300"></div>
-                    {{-- Garis horizontal yang menghubungkan keempat Pokja --}}
-                    <div class="absolute left-[12.5%] right-[12.5%] top-6 border-t-2 border-gray-300"></div>
+                {{-- Konektor dari Bawah Sekretaris/Bendahara Menuju Pokja --}}
+                <div class="w-[2px] h-8 bg-gray-300 mx-auto"></div>
 
-                    {{-- Garis vertikal menuju masing-masing Pokja --}}
-                    <div class="absolute left-[12.5%] top-6 h-6 border-l-2 border-gray-300"></div>
-                    <div class="absolute left-[37.5%] top-6 h-6 border-l-2 border-gray-300"></div>
-                    <div class="absolute left-[62.5%] top-6 h-6 border-l-2 border-gray-300"></div>
-                    <div class="absolute left-[87.5%] top-6 h-6 border-l-2 border-gray-300"></div>
+                {{-- Cabang Horizontal & Vertikal Masuk ke 4 Pokja (Desktop lg: 4 Kolom) --}}
+                <div class="hidden lg:grid grid-cols-4 gap-4 sm:gap-5">
+                    {{-- Pokja I: dari tengah ke kanan --}}
+                    <div class="relative h-8">
+                        <div class="absolute top-0 left-1/2 right-[-8px] sm:right-[-10px] h-[2px] bg-gray-300"></div>
+                        <div class="absolute top-0 bottom-0 left-1/2 w-[2px] -translate-x-1/2 bg-gray-300"></div>
+                    </div>
+                    {{-- Pokja II: dari kiri melintasi ke kanan --}}
+                    <div class="relative h-8">
+                        <div class="absolute top-0 left-[-8px] sm:left-[-10px] right-[-8px] sm:right-[-10px] h-[2px] bg-gray-300"></div>
+                        <div class="absolute top-0 bottom-0 left-1/2 w-[2px] -translate-x-1/2 bg-gray-300"></div>
+                    </div>
+                    {{-- Pokja III: dari kiri melintasi ke kanan --}}
+                    <div class="relative h-8">
+                        <div class="absolute top-0 left-[-8px] sm:left-[-10px] right-[-8px] sm:right-[-10px] h-[2px] bg-gray-300"></div>
+                        <div class="absolute top-0 bottom-0 left-1/2 w-[2px] -translate-x-1/2 bg-gray-300"></div>
+                    </div>
+                    {{-- Pokja IV: dari kiri ke tengah --}}
+                    <div class="relative h-8">
+                        <div class="absolute top-0 left-[-8px] sm:left-[-10px] right-1/2 h-[2px] bg-gray-300"></div>
+                        <div class="absolute top-0 bottom-0 left-1/2 w-[2px] -translate-x-1/2 bg-gray-300"></div>
+                    </div>
                 </div>
 
                 {{-- LEVEL 5: KARTU POKJA I - IV --}}
