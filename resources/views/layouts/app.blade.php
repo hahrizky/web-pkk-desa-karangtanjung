@@ -62,32 +62,9 @@
                     <a href="{{ route('pokja') }}" class="px-3.5 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('pokja') ? 'font-extrabold text-[#075B3C] border-b-2 border-[#075B3C] rounded-b-none' : 'font-medium text-gray-600 hover:text-[#075B3C] hover:bg-emerald-50' }}">
                         Pokja
                     </a>
-
-                    <!-- Dropdown Navigasi Informasi (Desktop) -->
-                    <div class="relative group">
-                        <button type="button"
-                                class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-sm transition-all cursor-pointer {{ request()->routeIs('informasi.*') ? 'font-extrabold text-[#075B3C] border-b-2 border-[#075B3C] rounded-b-none' : 'font-medium text-gray-600 hover:text-[#075B3C] hover:bg-emerald-50' }}"
-                                aria-expanded="false">
-                            <span>Informasi</span>
-                            <i class="fa-solid fa-chevron-down text-[11px] group-hover:rotate-180 transition-transform duration-200"></i>
-                        </button>
-
-                        <!-- Menu Dropdown Desktop -->
-                        <div class="absolute left-0 top-full pt-2 w-56 hidden group-hover:block z-50 animate-fadeIn">
-                            <div class="bg-white rounded-xl shadow-lg border border-gray-100 py-1.5 overflow-hidden">
-                                <a href="{{ route('informasi.index') }}"
-                                   class="flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm font-medium transition-colors {{ request()->routeIs('informasi.index') || request()->routeIs('informasi.show') ? 'bg-emerald-50 text-[#075B3C] font-bold' : 'text-gray-700 hover:bg-emerald-50 hover:text-[#075B3C]' }}">
-                                    <i class="fa-solid fa-newspaper text-[#075B3C] w-4 text-center"></i>
-                                    <span>Pusat Informasi &amp; Berita</span>
-                                </a>
-                                <a href="{{ route('informasi.agenda.index') }}"
-                                   class="flex items-center gap-2.5 px-4 py-2.5 text-xs sm:text-sm font-medium transition-colors {{ request()->routeIs('informasi.agenda.*') ? 'bg-emerald-50 text-[#075B3C] font-bold' : 'text-gray-700 hover:bg-emerald-50 hover:text-[#075B3C]' }}">
-                                    <i class="fa-solid fa-calendar-days text-[#075B3C] w-4 text-center"></i>
-                                    <span>Agenda Kegiatan</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
+                    <a href="{{ route('informasi.index') }}" class="px-3.5 py-2 rounded-lg text-sm transition-all {{ request()->routeIs('informasi.*') ? 'font-extrabold text-[#075B3C] border-b-2 border-[#075B3C] rounded-b-none' : 'font-medium text-gray-600 hover:text-[#075B3C] hover:bg-emerald-50' }}">
+                        Informasi
+                    </a>
                 </div>
 
                 <!-- Tombol Menu Mobile -->
@@ -113,29 +90,10 @@
             <a href="{{ route('pokja') }}" class="block px-3 py-2 rounded-md text-base {{ request()->routeIs('pokja') ? 'font-extrabold text-[#075B3C] bg-emerald-50 border-l-4 border-[#075B3C]' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50' }}">
                 Pokja
             </a>
-
-            <!-- Dropdown / Submenu Mobile untuk Informasi -->
-            <div class="pt-1">
-                <button type="button"
-                        id="mobile-informasi-btn"
-                        class="w-full flex items-center justify-between px-3 py-2 rounded-md text-base transition-colors {{ request()->routeIs('informasi.*') ? 'font-extrabold text-[#075B3C] bg-emerald-50 border-l-4 border-[#075B3C]' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50' }}">
-                    <span class="flex items-center gap-2">
-                        <span>Informasi</span>
-                    </span>
-                    <i class="fa-solid fa-chevron-down text-xs transition-transform duration-200" id="mobile-informasi-icon"></i>
-                </button>
-                
-                <div id="mobile-informasi-submenu" class="pl-4 pt-1 space-y-1 {{ request()->routeIs('informasi.*') ? '' : 'hidden' }}">
-                    <a href="{{ route('informasi.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-sm {{ request()->routeIs('informasi.index') || request()->routeIs('informasi.show') ? 'font-bold text-[#075B3C] bg-emerald-50/60' : 'text-gray-600 hover:text-[#075B3C] hover:bg-gray-50' }}">
-                        <i class="fa-solid fa-newspaper text-xs text-[#075B3C]"></i>
-                        <span>Pusat Berita &amp; Informasi</span>
-                    </a>
-                    <a href="{{ route('informasi.agenda.index') }}" class="flex items-center gap-2.5 px-3 py-2 rounded-md text-sm {{ request()->routeIs('informasi.agenda.*') ? 'font-bold text-[#075B3C] bg-emerald-50/60' : 'text-gray-600 hover:text-[#075B3C] hover:bg-gray-50' }}">
-                        <i class="fa-solid fa-calendar-days text-xs text-[#075B3C]"></i>
-                        <span>Agenda Kegiatan</span>
-                    </a>
-                </div>
-            </div>
+            <a href="{{ route('informasi.index') }}" class="block px-3 py-2 rounded-md text-base {{ request()->routeIs('informasi.*') ? 'font-extrabold text-[#075B3C] bg-emerald-50 border-l-4 border-[#075B3C]' : 'font-medium text-gray-600 hover:text-emerald-800 hover:bg-gray-50' }}">
+                Informasi
+            </a>
+        </div>
     </nav>
 
     <!-- ================= MAIN CONTENT ================= -->
@@ -279,20 +237,6 @@
                 menuIcon.classList.add('fa-bars');
             });
         });
-
-        // Toggle Submenu Informasi di Mobile
-        const mobileInfoBtn = document.getElementById('mobile-informasi-btn');
-        const mobileInfoSubmenu = document.getElementById('mobile-informasi-submenu');
-        const mobileInfoIcon = document.getElementById('mobile-informasi-icon');
-
-        if (mobileInfoBtn && mobileInfoSubmenu) {
-            mobileInfoBtn.addEventListener('click', function() {
-                mobileInfoSubmenu.classList.toggle('hidden');
-                if (mobileInfoIcon) {
-                    mobileInfoIcon.classList.toggle('rotate-180');
-                }
-            });
-        }
 
         // Tombol Back to Top
         const backToTopBtn = document.getElementById('btn-back-to-top');

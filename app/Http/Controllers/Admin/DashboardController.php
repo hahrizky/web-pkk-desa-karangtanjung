@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Berita;
 use App\Models\Agenda;
+use App\Models\StatistikDasawisma;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -13,8 +14,8 @@ class DashboardController extends Controller
     {
         $totalBerita = Berita::count();
         $totalAgenda = Agenda::count();
-        $totalPengumuman = 4;
-        $totalGaleri = Berita::whereNotNull('gambar')->count();
+        $totalStatistik = StatistikDasawisma::count();
+        $totalPokja = 4;
 
         // 5 berita terbaru untuk tabel dashboard
         $recentBerita = Berita::latest('tanggal')->take(5)->get()->map(function ($item) {
@@ -41,8 +42,8 @@ class DashboardController extends Controller
         return view('admin.dashboard', compact(
             'totalBerita',
             'totalAgenda',
-            'totalPengumuman',
-            'totalGaleri',
+            'totalStatistik',
+            'totalPokja',
             'recentBerita',
             'upcomingAgenda'
         ));

@@ -3,13 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 class ProfilController extends Controller
 {
     public function index()
     {
+        $customPath = storage_path('app/profil_data.json');
+        $custom = File::exists($customPath) ? json_decode(File::get($customPath), true) : null;
+
         // 1. Data Visi & Misi
-        $visi = "Terwujudnya Keluarga Karangtanjung yang Beriman, Berakhlak Mulia, Sehat, Sejahtera, Maju, dan Mandiri Berbasis Ketahanan Desa yang Berkelanjutan";
+        $visi = $custom['visi'] ?? "Terwujudnya Keluarga Karangtanjung yang Beriman, Berakhlak Mulia, Sehat, Sejahtera, Maju, dan Mandiri Berbasis Ketahanan Desa yang Berkelanjutan";
 
         $misi = [
             [
@@ -39,46 +43,60 @@ class ProfilController extends Controller
         ];
 
         // 2. Data Struktur Organisasi
+        $pembinaNama = $custom['struktur']['pembina']['nama'] ?? 'Atmo';
+        $pembinaSub  = $custom['struktur']['pembina']['sub'] ?? 'Kepala Desa Karang Tanjung';
+        $ketuaNama   = $custom['struktur']['pengurus_inti'][0]['nama'] ?? 'Hj. Sunariyah';
+        $wakilNama   = $custom['struktur']['pengurus_inti'][1]['nama'] ?? 'Dwi Setyowati';
+        $sekretaris1 = $custom['struktur']['pengurus_inti'][2]['nama'] ?? 'Alfianita Defi, S.Pd.';
+        $sekretaris2 = $custom['struktur']['pengurus_inti'][3]['nama'] ?? 'Cicik Suyanti';
+        $bendahara1  = $custom['struktur']['pengurus_inti'][4]['nama'] ?? 'Ita Susanti';
+        $bendahara2  = $custom['struktur']['pengurus_inti'][5]['nama'] ?? 'Nuryanti';
+
+        $pokja1Ketua = $custom['struktur']['pokja'][0]['ketua'] ?? 'Mutma\'innah, M.Pd.';
+        $pokja2Ketua = $custom['struktur']['pokja'][1]['ketua'] ?? 'Resti Duwi Rohmawati';
+        $pokja3Ketua = $custom['struktur']['pokja'][2]['ketua'] ?? 'Jazil Laturohmah';
+        $pokja4Ketua = $custom['struktur']['pokja'][3]['ketua'] ?? 'Lilik Mutammimah';
+
         $struktur = [
             'pembina' => [
                 'jabatan' => 'Pembina',
-                'nama'    => 'Atmo',
-                'sub'     => 'Kepala Desa Karang Tanjung',
+                'nama'    => $pembinaNama,
+                'sub'     => $pembinaSub,
             ],
             'pengurus_inti' => [
                 [
                     'jabatan' => 'Ketua',
-                    'nama'    => 'Hj. Sunariyah',
+                    'nama'    => $ketuaNama,
                     'warna'   => 'emerald',
                     'utama'   => true,
                 ],
                 [
                     'jabatan' => 'Wakil Ketua',
-                    'nama'    => 'Dwi Setyowati',
+                    'nama'    => $wakilNama,
                     'warna'   => 'emerald',
                     'utama'   => false,
                 ],
                 [
                     'jabatan' => 'Sekretaris I',
-                    'nama'    => 'Alfianita Defi, S.Pd.',
+                    'nama'    => $sekretaris1,
                     'warna'   => 'blue',
                     'utama'   => false,
                 ],
                 [
                     'jabatan' => 'Sekretaris II',
-                    'nama'    => 'Cicik Suyanti',
+                    'nama'    => $sekretaris2,
                     'warna'   => 'blue',
                     'utama'   => false,
                 ],
                 [
                     'jabatan' => 'Bendahara I',
-                    'nama'    => 'Ita Susanti',
+                    'nama'    => $bendahara1,
                     'warna'   => 'amber',
                     'utama'   => false,
                 ],
                 [
                     'jabatan' => 'Bendahara II',
-                    'nama'    => 'Nuryanti',
+                    'nama'    => $bendahara2,
                     'warna'   => 'amber',
                     'utama'   => false,
                 ],
@@ -86,19 +104,19 @@ class ProfilController extends Controller
             'pokja' => [
                 [
                     'kode'  => 'Pokja I',
-                    'ketua' => 'Mutma\'innah, M.Pd.',
+                    'ketua' => $pokja1Ketua,
                 ],
                 [
                     'kode'  => 'Pokja II',
-                    'ketua' => 'Resti Duwi Rohmawati',
+                    'ketua' => $pokja2Ketua,
                 ],
                 [
                     'kode'  => 'Pokja III',
-                    'ketua' => 'Jazil Laturohmah',
+                    'ketua' => $pokja3Ketua,
                 ],
                 [
                     'kode'  => 'Pokja IV',
-                    'ketua' => 'Lilik Mutammimah',
+                    'ketua' => $pokja4Ketua,
                 ],
             ],
         ];
@@ -243,7 +261,10 @@ class ProfilController extends Controller
             ]
         ];
 
+        $periode = $custom['periode'] ?? '2024 - 2029';
+
         return view('profil', compact(
+            'periode',
             'visi',
             'misi',
             'struktur',

@@ -105,14 +105,14 @@
 {{-- ═══════════════════════════════════════════════
          3. STRUKTUR ORGANISASI (bagan hierarki)
     ═══════════════════════════════════════════════ --}}
-<section class="py-16 bg-white border-b border-gray-100">
+<section id="struktur" class="py-16 bg-white border-b border-gray-100">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div class="mb-10">
             <h2 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                 Struktur Organisasi TP. PKK Desa Karangtanjung
             </h2>
-            <p class="text-sm text-gray-500">Pengurus Inti TP PKK Periode Aktif {{ date('Y') }}</p>
+            <p class="text-sm text-gray-500">Pengurus Inti TP. PKK Periode Aktif {{ $periode ?? '2024 - 2029' }}</p>
         </div>
 
         {{-- ── Bagan Org ── --}}

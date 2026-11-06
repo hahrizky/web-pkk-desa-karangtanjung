@@ -620,31 +620,18 @@ class InformasiController extends Controller
     }
 
     /**
-     * Halaman Daftar Pengumuman PKK
+     * Halaman Daftar Pengumuman PKK (Dialihkan ke Informasi)
      */
     public function pengumumanIndex()
     {
-        $pengumumans = $this->getPengumumanData();
-        $infoPenting = $this->getInfoPentingData();
-
-        return view('informasi.pengumuman-index', compact('pengumumans', 'infoPenting'));
+        return redirect()->route('informasi.index');
     }
 
     /**
-     * Halaman Detail Pengumuman PKK
+     * Halaman Detail Pengumuman PKK (Dialihkan ke Informasi)
      */
     public function pengumumanShow($id)
     {
-        $allPengumuman = collect($this->getPengumumanData());
-        $pengumuman = $allPengumuman->firstWhere('id', (int) $id);
-
-        if (!$pengumuman) {
-            abort(404, 'Pengumuman tidak ditemukan');
-        }
-
-        $pengumumanLainnya = $allPengumuman->where('id', '!=', (int) $id)->take(3);
-        $infoPenting = $this->getInfoPentingData();
-
-        return view('informasi.pengumuman-show', compact('pengumuman', 'pengumumanLainnya', 'infoPenting'));
+        return redirect()->route('informasi.index');
     }
 }

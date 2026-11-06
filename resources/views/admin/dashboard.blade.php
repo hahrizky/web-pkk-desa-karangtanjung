@@ -24,10 +24,10 @@
 <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
     @php
         $stats = [
-            ['label' => 'Total Berita', 'value' => $totalBerita, 'icon' => 'fa-newspaper', 'color' => 'bg-blue-50 text-blue-600', 'route' => 'admin.berita.index'],
+            ['label' => 'Total Berita', 'value' => $totalBerita, 'icon' => 'fa-newspaper', 'color' => 'bg-emerald-50 text-emerald-600', 'route' => 'admin.berita.index'],
             ['label' => 'Agenda Kegiatan', 'value' => $totalAgenda, 'icon' => 'fa-calendar-days', 'color' => 'bg-amber-50 text-amber-600', 'route' => 'admin.agenda.index'],
-            ['label' => 'Pengumuman', 'value' => $totalPengumuman, 'icon' => 'fa-bullhorn', 'color' => 'bg-purple-50 text-purple-600', 'route' => 'admin.pengumuman.index'],
-            ['label' => 'Galeri Foto', 'value' => $totalGaleri, 'icon' => 'fa-images', 'color' => 'bg-pink-50 text-pink-600', 'route' => 'admin.galeri.index'],
+            ['label' => 'Statistik Dasawisma', 'value' => $totalStatistik, 'icon' => 'fa-chart-pie', 'color' => 'bg-blue-50 text-blue-600', 'route' => 'admin.statistik.index'],
+            ['label' => 'Kelompok Kerja (Pokja)', 'value' => $totalPokja, 'icon' => 'fa-layer-group', 'color' => 'bg-purple-50 text-purple-600', 'route' => 'admin.pokja.index'],
         ];
     @endphp
 
@@ -120,7 +120,7 @@
             </div>
             <div class="grid grid-cols-2 gap-2">
                 <a href="{{ route('admin.berita.create') }}"
-                   class="flex flex-col items-center gap-2 p-3 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl transition-colors text-center active:scale-95">
+                   class="flex flex-col items-center gap-2 p-3 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 rounded-xl transition-colors text-center active:scale-95">
                     <i class="fa-solid fa-newspaper text-lg"></i>
                     <span class="text-xs font-medium">Berita Baru</span>
                 </a>
@@ -129,15 +129,20 @@
                     <i class="fa-solid fa-calendar-plus text-lg"></i>
                     <span class="text-xs font-medium">Agenda Baru</span>
                 </a>
-                <a href="{{ route('admin.pengumuman.create') }}"
-                   class="flex flex-col items-center gap-2 p-3 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl transition-colors text-center active:scale-95">
-                    <i class="fa-solid fa-bullhorn text-lg"></i>
-                    <span class="text-xs font-medium">Pengumuman</span>
+                <a href="{{ route('admin.statistik.create') }}"
+                   class="flex flex-col items-center gap-2 p-3 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl transition-colors text-center active:scale-95">
+                    <i class="fa-solid fa-chart-line text-lg"></i>
+                    <span class="text-xs font-medium">Statistik Baru</span>
                 </a>
-                <a href="{{ route('admin.galeri.create') }}"
-                   class="flex flex-col items-center gap-2 p-3 bg-pink-50 hover:bg-pink-100 text-pink-700 rounded-xl transition-colors text-center active:scale-95">
-                    <i class="fa-solid fa-camera text-lg"></i>
-                    <span class="text-xs font-medium">Foto Baru</span>
+                <a href="{{ route('admin.profil') }}"
+                   class="flex flex-col items-center gap-2 p-3 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl transition-colors text-center active:scale-95">
+                    <i class="fa-solid fa-id-card text-lg"></i>
+                    <span class="text-xs font-medium">Profil Desa</span>
+                </a>
+                <a href="{{ route('admin.struktur.index') }}"
+                   class="flex flex-col items-center gap-2 p-3 bg-teal-50 hover:bg-teal-100 text-teal-700 rounded-xl transition-colors text-center active:scale-95 col-span-2">
+                    <i class="fa-solid fa-sitemap text-lg"></i>
+                    <span class="text-xs font-semibold">Ganti Nama Struktur Organisasi</span>
                 </a>
             </div>
         </div>
