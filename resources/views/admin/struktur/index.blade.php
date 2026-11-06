@@ -96,7 +96,7 @@
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">Foto Profil Pembina</label>
                         <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-full overflow-hidden bg-white border border-amber-200 flex-shrink-0 flex items-center justify-center">
+                            <div class="w-11 h-14 rounded-lg overflow-hidden bg-white border border-amber-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
                                 @if (!empty($struktur['pembina_foto']) && file_exists(public_path('images/' . $struktur['pembina_foto'])))
                                     <img src="{{ asset('images/' . $struktur['pembina_foto']) }}" class="w-full h-full object-cover">
                                 @else
@@ -125,7 +125,7 @@
                     <div>
                         <label class="block text-[11px] font-semibold text-gray-600 mb-1">Foto Profil Ketua</label>
                         <div class="flex items-center gap-3">
-                            <div class="w-12 h-12 rounded-full overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center">
+                            <div class="w-11 h-14 rounded-lg overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
                                 @if (!empty($struktur['ketua_foto']) && file_exists(public_path('images/' . $struktur['ketua_foto'])))
                                     <img src="{{ asset('images/' . $struktur['ketua_foto']) }}" class="w-full h-full object-cover">
                                 @else
@@ -155,7 +155,7 @@
                 <div>
                     <label class="block text-[11px] font-semibold text-gray-600 mb-1">Foto Profil Wakil Ketua</label>
                     <div class="flex items-center gap-3">
-                        <div class="w-12 h-12 rounded-full overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center">
+                        <div class="w-11 h-14 rounded-lg overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
                             @if (!empty($struktur['wakil_foto']) && file_exists(public_path('images/' . $struktur['wakil_foto'])))
                                 <img src="{{ asset('images/' . $struktur['wakil_foto']) }}" class="w-full h-full object-cover">
                             @else
@@ -196,7 +196,7 @@
                            placeholder="Nama Sekretaris I"
                            class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-medium text-gray-800" required>
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full overflow-hidden bg-white border border-blue-200 flex-shrink-0 flex items-center justify-center">
+                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-blue-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
                             @if (!empty($struktur['sekretaris_1_foto']) && file_exists(public_path('images/' . $struktur['sekretaris_1_foto'])))
                                 <img src="{{ asset('images/' . $struktur['sekretaris_1_foto']) }}" class="w-full h-full object-cover">
                             @else
@@ -217,7 +217,7 @@
                            placeholder="Nama Sekretaris II"
                            class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-medium text-gray-800" required>
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full overflow-hidden bg-white border border-blue-200 flex-shrink-0 flex items-center justify-center">
+                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-blue-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
                             @if (!empty($struktur['sekretaris_2_foto']) && file_exists(public_path('images/' . $struktur['sekretaris_2_foto'])))
                                 <img src="{{ asset('images/' . $struktur['sekretaris_2_foto']) }}" class="w-full h-full object-cover">
                             @else
@@ -238,7 +238,7 @@
                            placeholder="Nama Bendahara I"
                            class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 font-medium text-gray-800" required>
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full overflow-hidden bg-white border border-amber-200 flex-shrink-0 flex items-center justify-center">
+                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-amber-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
                             @if (!empty($struktur['bendahara_1_foto']) && file_exists(public_path('images/' . $struktur['bendahara_1_foto'])))
                                 <img src="{{ asset('images/' . $struktur['bendahara_1_foto']) }}" class="w-full h-full object-cover">
                             @else
@@ -259,7 +259,7 @@
                            placeholder="Nama Bendahara II"
                            class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 font-medium text-gray-800" required>
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full overflow-hidden bg-white border border-amber-200 flex-shrink-0 flex items-center justify-center">
+                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-amber-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
                             @if (!empty($struktur['bendahara_2_foto']) && file_exists(public_path('images/' . $struktur['bendahara_2_foto'])))
                                 <img src="{{ asset('images/' . $struktur['bendahara_2_foto']) }}" class="w-full h-full object-cover">
                             @else
@@ -303,7 +303,7 @@
                            placeholder="Nama Ketua Pokja I"
                            class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center">
+                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
                             @if (!empty($struktur['pokja_1_foto']) && file_exists(public_path('images/' . $struktur['pokja_1_foto'])))
                                 <img src="{{ asset('images/' . $struktur['pokja_1_foto']) }}" class="w-full h-full object-cover">
                             @else
@@ -327,7 +327,7 @@
                            placeholder="Nama Ketua Pokja II"
                            class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center">
+                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
                             @if (!empty($struktur['pokja_2_foto']) && file_exists(public_path('images/' . $struktur['pokja_2_foto'])))
                                 <img src="{{ asset('images/' . $struktur['pokja_2_foto']) }}" class="w-full h-full object-cover">
                             @else
@@ -351,7 +351,7 @@
                            placeholder="Nama Ketua Pokja III"
                            class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center">
+                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
                             @if (!empty($struktur['pokja_3_foto']) && file_exists(public_path('images/' . $struktur['pokja_3_foto'])))
                                 <img src="{{ asset('images/' . $struktur['pokja_3_foto']) }}" class="w-full h-full object-cover">
                             @else
@@ -375,7 +375,7 @@
                            placeholder="Nama Ketua Pokja IV"
                            class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center">
+                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
                             @if (!empty($struktur['pokja_4_foto']) && file_exists(public_path('images/' . $struktur['pokja_4_foto'])))
                                 <img src="{{ asset('images/' . $struktur['pokja_4_foto']) }}" class="w-full h-full object-cover">
                             @else
