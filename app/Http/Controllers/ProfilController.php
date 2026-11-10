@@ -35,7 +35,23 @@ class ProfilController extends Controller
         $misiRaw = $custom['misi'] ?? null;
         $misi = [];
 
-        if (!empty($misiRaw)) {
+        if (!empty($misiRaw) && is_array($misiRaw)) {
+            $index = 1;
+            foreach ($misiRaw as $item) {
+                $judul = trim($item['judul'] ?? '');
+                $deskripsi = trim($item['deskripsi'] ?? '');
+                if ($judul === '' && $deskripsi === '') {
+                    continue;
+                }
+                $misi[] = [
+                    'nomor' => sprintf('%02d', $index),
+                    'judul' => $judul !== '' ? $judul : ('Program Misi ' . sprintf('%02d', $index)),
+                    'deskripsi' => $deskripsi,
+                    'icon' => $defaultIcons[($index - 1) % count($defaultIcons)],
+                ];
+                $index++;
+            }
+        } elseif (!empty($misiRaw) && is_string($misiRaw)) {
             $lines = preg_split('/\r\n|\r|\n/', trim($misiRaw));
             $index = 1;
             foreach ($lines as $line) {

@@ -132,11 +132,48 @@
                           class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>{{ old('visi', $profil['visi'] ?? '') }}</textarea>
             </div>
 
+            {{-- Poin-Poin Misi Terstruktur --}}
             <div>
-                <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Misi (Pisahkan per baris)</label>
-                <textarea name="misi" rows="4"
-                          class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>{{ old('misi', $profil['misi'] ?? '') }}</textarea>
-                <p class="text-[11px] text-gray-400 mt-1">Tulis satu poin misi per baris. Format opsional: "Judul: Deskripsi misi" atau langsung tulis deskripsinya.</p>
+                <div class="flex items-center justify-between mb-3">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider">Poin-Poin Misi</label>
+                        <p class="text-[11px] text-gray-400 mt-0.5">Ubah judul dan uraian deskripsi setiap misi yang tampil di website publik</p>
+                    </div>
+                    <button type="button" id="btn-tambah-misi"
+                            class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-[#075B3C] border border-emerald-200 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 shadow-2xs">
+                        <i class="fa-solid fa-plus text-[10px]"></i>
+                        <span>Tambah Misi</span>
+                    </button>
+                </div>
+
+                <div id="misi-container" class="space-y-3.5">
+                    @foreach ($profil['misi'] as $idx => $m)
+                    <div class="misi-item bg-gray-50/80 border border-gray-200 rounded-xl p-3.5 sm:p-4 space-y-2.5 relative">
+                        <div class="flex items-center justify-between">
+                            <span class="misi-badge text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                                Misi {{ sprintf('%02d', $loop->iteration) }}
+                            </span>
+                            <button type="button" onclick="hapusMisi(this)"
+                                    class="btn-hapus-misi text-gray-400 hover:text-red-500 text-xs transition-colors flex items-center gap-1">
+                                <i class="fa-regular fa-trash-can"></i>
+                                <span>Hapus</span>
+                            </button>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">Judul Misi</label>
+                            <input type="text" name="misi[{{ $idx }}][judul]" value="{{ old('misi.'.$idx.'.judul', $m['judul'] ?? '') }}"
+                                   placeholder="Contoh: Ketahanan Mental & Gotong Royong"
+                                   class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
+                        </div>
+                        <div>
+                            <label class="block text-[11px] font-semibold text-gray-600 mb-1">Deskripsi Misi</label>
+                            <textarea name="misi[{{ $idx }}][deskripsi]" rows="2"
+                                      placeholder="Tuliskan uraian detail misi ini..."
+                                      class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs sm:text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>{{ old('misi.'.$idx.'.deskripsi', $m['deskripsi'] ?? '') }}</textarea>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
         </div>
 
@@ -150,4 +187,71 @@
         </div>
     </form>
 </div>
+
+<script>
+    function updateMisiBadges() {
+        const items = document.querySelectorAll('#misi-container .misi-item');
+        items.forEach((item, index) => {
+            const num = String(index + 1).padStart(2, '0');
+            const badge = item.querySelector('.misi-badge');
+            if (badge) badge.textContent = 'Misi ' + num;
+
+            const judulInput = item.querySelector('input[type="text"]');
+            if (judulInput) judulInput.name = `misi[${index}][judul]`;
+
+            const deskripsiTextarea = item.querySelector('textarea');
+            if (deskripsiTextarea) deskripsiTextarea.name = `misi[${index}][deskripsi]`;
+
+            const btnHapus = item.querySelector('.btn-hapus-misi');
+            if (btnHapus) {
+                btnHapus.style.display = items.length <= 1 ? 'none' : 'flex';
+            }
+        });
+    }
+
+    function hapusMisi(button) {
+        const container = document.getElementById('misi-container');
+        if (container.children.length > 1) {
+            button.closest('.misi-item').remove();
+            updateMisiBadges();
+        }
+    }
+
+    document.getElementById('btn-tambah-misi')?.addEventListener('click', function () {
+        const container = document.getElementById('misi-container');
+        const count = container.children.length;
+        const num = String(count + 1).padStart(2, '0');
+
+        const div = document.createElement('div');
+        div.className = 'misi-item bg-gray-50/80 border border-gray-200 rounded-xl p-3.5 sm:p-4 space-y-2.5 relative';
+        div.innerHTML = `
+            <div class="flex items-center justify-between">
+                <span class="misi-badge text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                    Misi ${num}
+                </span>
+                <button type="button" onclick="hapusMisi(this)"
+                        class="btn-hapus-misi text-gray-400 hover:text-red-500 text-xs transition-colors flex items-center gap-1">
+                    <i class="fa-regular fa-trash-can"></i>
+                    <span>Hapus</span>
+                </button>
+            </div>
+            <div>
+                <label class="block text-[11px] font-semibold text-gray-600 mb-1">Judul Misi</label>
+                <input type="text" name="misi[${count}][judul]" value=""
+                       placeholder="Contoh: Program Misi ${num}"
+                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
+            </div>
+            <div>
+                <label class="block text-[11px] font-semibold text-gray-600 mb-1">Deskripsi Misi</label>
+                <textarea name="misi[${count}][deskripsi]" rows="2"
+                          placeholder="Tuliskan uraian detail misi ini..."
+                          class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs sm:text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required></textarea>
+            </div>
+        `;
+        container.appendChild(div);
+        updateMisiBadges();
+    });
+
+    document.addEventListener('DOMContentLoaded', updateMisiBadges);
+</script>
 @endsection

@@ -26,7 +26,24 @@ class ProfilController extends Controller
             'email' => '',
             'jam_layanan' => 'Senin - Jumat (08.00 - 15.00 WIB)',
             'visi' => 'Terwujudnya Keluarga Karangtanjung yang Beriman, Berakhlak Mulia, Sehat, Sejahtera, Maju, dan Mandiri Berbasis Ketahanan Desa yang Berkelanjutan',
-            'misi' => "Meningkatkan kualitas keimanan, pengamalan nilai-nilai luhur Pancasila, pembinaan kesadaran bela negara, serta semangat gotong royong warga.\nMeningkatkan akses dan kualitas pendidikan formal, non-formal, keterampilan keluarga, serta pola asuh anak dan remaja yang bijak.\nMengembangkan ketahanan pangan keluarga lewat program AKU HATINYA PKK dan mendorong kemandirian ekonomi keluarga melalui UP2K.\nMeningkatkan derajat kesehatan keluarga melalui pencegahan stunting, optimalisasi posyandu, PHBS, serta kelestarian lingkungan hidup.",
+            'misi' => [
+                [
+                    'judul' => 'Ketahanan Mental & Gotong Royong',
+                    'deskripsi' => 'Meningkatkan kualitas keimanan, pengamalan nilai-nilai luhur Pancasila, pembinaan kesadaran bela negara, serta semangat gotong royong warga.',
+                ],
+                [
+                    'judul' => 'Kualitas Pendidikan & Pola Asuh Anak',
+                    'deskripsi' => 'Meningkatkan akses dan kualitas pendidikan formal, non-formal, keterampilan keluarga, serta pola asuh anak dan remaja yang bijak.',
+                ],
+                [
+                    'judul' => 'Ketahanan Pangan & Kemandirian UP2K',
+                    'deskripsi' => 'Mengembangkan ketahanan pangan keluarga lewat program AKU HATINYA PKK dan mendorong kemandirian ekonomi keluarga melalui UP2K.',
+                ],
+                [
+                    'judul' => 'Kesehatan Keluarga & Kelestarian Lingkungan',
+                    'deskripsi' => 'Meningkatkan derajat kesehatan keluarga melalui pencegahan stunting, optimalisasi posyandu, PHBS, serta kelestarian lingkungan hidup.',
+                ],
+            ],
             'struktur' => [
                 'pembina' => [
                     'jabatan' => 'Pembina',
@@ -60,6 +77,38 @@ class ProfilController extends Controller
             $profil = $this->getDefaultData();
         }
 
+        // Konversi jika misi masih berupa string lama
+        if (isset($profil['misi']) && is_string($profil['misi'])) {
+            $defaultTitles = [
+                'Ketahanan Mental & Gotong Royong',
+                'Kualitas Pendidikan & Pola Asuh Anak',
+                'Ketahanan Pangan & Kemandirian UP2K',
+                'Kesehatan Keluarga & Kelestarian Lingkungan',
+            ];
+            $lines = preg_split('/\r\n|\r|\n/', trim($profil['misi']));
+            $converted = [];
+            $i = 0;
+            foreach ($lines as $line) {
+                $line = trim($line);
+                if ($line === '') continue;
+                $cleanLine = preg_replace('/^\s*(\d+[\.\)]|\-|\*)\s*/', '', $line);
+                if (str_contains($cleanLine, ':')) {
+                    $parts = explode(':', $cleanLine, 2);
+                    $converted[] = ['judul' => trim($parts[0]), 'deskripsi' => trim($parts[1])];
+                } elseif (str_contains($cleanLine, ' - ')) {
+                    $parts = explode(' - ', $cleanLine, 2);
+                    $converted[] = ['judul' => trim($parts[0]), 'deskripsi' => trim($parts[1])];
+                } else {
+                    $converted[] = [
+                        'judul' => $defaultTitles[$i] ?? ('Program Misi ' . sprintf('%02d', $i + 1)),
+                        'deskripsi' => $cleanLine,
+                    ];
+                }
+                $i++;
+            }
+            $profil['misi'] = !empty($converted) ? $converted : $this->getDefaultData()['misi'];
+        }
+
         return view('admin.profil', compact('profil'));
     }
 
@@ -75,7 +124,7 @@ class ProfilController extends Controller
             'email' => 'nullable|email|max:100',
             'jam_layanan' => 'nullable|string|max:150',
             'visi' => 'required|string',
-            'misi' => 'required|string',
+            'misi' => 'nullable',
         ]);
 
         $cleanStr = function ($str, $preserveNewlines = false) {
@@ -87,8 +136,56 @@ class ProfilController extends Controller
 
         $cleaned = [];
         foreach ($validated as $key => $val) {
-            $cleaned[$key] = is_string($val) ? $cleanStr($val, in_array($key, ['visi', 'misi', 'alamat'])) : $val;
+            if ($key === 'misi') continue;
+            $cleaned[$key] = is_string($val) ? $cleanStr($val, in_array($key, ['visi', 'alamat'])) : $val;
         }
+
+        // Pengolahan data Misi (Array Judul & Deskripsi)
+        $misiList = [];
+        $rawMisi = $request->input('misi');
+
+        if (is_array($rawMisi)) {
+            foreach ($rawMisi as $item) {
+                $judul = isset($item['judul']) ? $cleanStr($item['judul']) : '';
+                $deskripsi = isset($item['deskripsi']) ? $cleanStr($item['deskripsi'], true) : '';
+                if ($judul !== '' || $deskripsi !== '') {
+                    $misiList[] = [
+                        'judul' => $judul !== '' ? $judul : 'Program Misi',
+                        'deskripsi' => $deskripsi,
+                    ];
+                }
+            }
+        } elseif (is_string($rawMisi)) {
+            $lines = preg_split('/\r\n|\r|\n/', trim($rawMisi));
+            $i = 0;
+            $defaultTitles = [
+                'Ketahanan Mental & Gotong Royong',
+                'Kualitas Pendidikan & Pola Asuh Anak',
+                'Ketahanan Pangan & Kemandirian UP2K',
+                'Kesehatan Keluarga & Kelestarian Lingkungan',
+            ];
+            foreach ($lines as $line) {
+                $line = trim($line);
+                if ($line === '') continue;
+                $cleanLine = preg_replace('/^\s*(\d+[\.\)]|\-|\*)\s*/', '', $line);
+                if (str_contains($cleanLine, ':')) {
+                    $parts = explode(':', $cleanLine, 2);
+                    $misiList[] = ['judul' => trim($parts[0]), 'deskripsi' => trim($parts[1])];
+                } else {
+                    $misiList[] = [
+                        'judul' => $defaultTitles[$i] ?? ('Program Misi ' . sprintf('%02d', $i + 1)),
+                        'deskripsi' => $cleanLine,
+                    ];
+                }
+                $i++;
+            }
+        }
+
+        if (empty($misiList)) {
+            $misiList = $this->getDefaultData()['misi'];
+        }
+
+        $cleaned['misi'] = $misiList;
 
         $path = $this->getStoragePath();
         $data = File::exists($path)
@@ -100,12 +197,13 @@ class ProfilController extends Controller
             'telepon' => $cleaned['telepon'] ?? '',
             'email' => $cleaned['email'] ?? '',
             'jam_layanan' => $cleaned['jam_layanan'] ?? '',
+            'misi' => $cleaned['misi'],
         ]);
 
         File::ensureDirectoryExists(storage_path('app'));
         File::put($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
         return redirect()->route('admin.profil')
-            ->with('success', 'Data profil desa berhasil disimpan!');
+            ->with('success', 'Data profil desa & misi berhasil disimpan!');
     }
 }
