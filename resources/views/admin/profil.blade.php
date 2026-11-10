@@ -136,6 +136,7 @@
                 <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Misi (Pisahkan per baris)</label>
                 <textarea name="misi" rows="4"
                           class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>{{ old('misi', $profil['misi'] ?? '') }}</textarea>
+                <p class="text-[11px] text-gray-400 mt-1">Tulis satu poin misi per baris. Format opsional: "Judul: Deskripsi misi" atau langsung tulis deskripsinya.</p>
             </div>
         </div>
 

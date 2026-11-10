@@ -14,32 +14,94 @@ class ProfilController extends Controller
         // 1. Data Visi & Misi
         $visi = $custom['visi'] ?? 'Terwujudnya Keluarga Karangtanjung yang Beriman, Berakhlak Mulia, Sehat, Sejahtera, Maju, dan Mandiri Berbasis Ketahanan Desa yang Berkelanjutan';
 
-        $misi = [
-            [
-                'nomor' => '01',
-                'judul' => 'Ketahanan Mental & Gotong Royong',
-                'deskripsi' => 'Meningkatkan kualitas keimanan, pengamalan nilai-nilai luhur Pancasila, pembinaan kesadaran bela negara, serta semangat gotong royong warga.',
-                'icon' => 'fa-solid fa-hand-holding-heart',
-            ],
-            [
-                'nomor' => '02',
-                'judul' => 'Kualitas Pendidikan & Pola Asuh Anak',
-                'deskripsi' => 'Meningkatkan akses dan kualitas pendidikan formal, non-formal, keterampilan keluarga, serta pola asuh anak dan remaja yang bijak.',
-                'icon' => 'fa-solid fa-graduation-cap',
-            ],
-            [
-                'nomor' => '03',
-                'judul' => 'Ketahanan Pangan & Kemandirian UP2K',
-                'deskripsi' => 'Mengembangkan ketahanan pangan keluarga lewat program AKU HATINYA PKK dan mendorong kemandirian ekonomi keluarga melalui UP2K.',
-                'icon' => 'fa-solid fa-seedling',
-            ],
-            [
-                'nomor' => '04',
-                'judul' => 'Kesehatan Keluarga & Kelestarian Lingkungan',
-                'deskripsi' => 'Meningkatkan derajat kesehatan keluarga melalui pencegahan stunting, optimalisasi posyandu, PHBS, serta kelestarian lingkungan hidup.',
-                'icon' => 'fa-solid fa-heart-pulse',
-            ],
+        $defaultIcons = [
+            'fa-solid fa-hand-holding-heart',
+            'fa-solid fa-graduation-cap',
+            'fa-solid fa-seedling',
+            'fa-solid fa-heart-pulse',
+            'fa-solid fa-people-roof',
+            'fa-solid fa-shield-halved',
+            'fa-solid fa-users',
+            'fa-solid fa-hands-holding-circle',
         ];
+
+        $defaultTitles = [
+            'Ketahanan Mental & Gotong Royong',
+            'Kualitas Pendidikan & Pola Asuh Anak',
+            'Ketahanan Pangan & Kemandirian UP2K',
+            'Kesehatan Keluarga & Kelestarian Lingkungan',
+        ];
+
+        $misiRaw = $custom['misi'] ?? null;
+        $misi = [];
+
+        if (!empty($misiRaw)) {
+            $lines = preg_split('/\r\n|\r|\n/', trim($misiRaw));
+            $index = 1;
+            foreach ($lines as $line) {
+                $line = trim($line);
+                if ($line === '') {
+                    continue;
+                }
+
+                // Bersihkan penomoran awal seperti "1. ", "1) ", "- ", "* "
+                $cleanLine = preg_replace('/^\s*(\d+[\.\)]|\-|\*)\s*/', '', $line);
+
+                $judul = '';
+                $deskripsi = $cleanLine;
+
+                if (str_contains($cleanLine, ':')) {
+                    $parts = explode(':', $cleanLine, 2);
+                    $judul = trim($parts[0]);
+                    $deskripsi = trim($parts[1]);
+                } elseif (str_contains($cleanLine, ' - ')) {
+                    $parts = explode(' - ', $cleanLine, 2);
+                    $judul = trim($parts[0]);
+                    $deskripsi = trim($parts[1]);
+                } else {
+                    $judul = $defaultTitles[$index - 1] ?? ('Program Misi ' . sprintf('%02d', $index));
+                }
+
+                $misi[] = [
+                    'nomor' => sprintf('%02d', $index),
+                    'judul' => $judul,
+                    'deskripsi' => $deskripsi,
+                    'icon' => $defaultIcons[($index - 1) % count($defaultIcons)],
+                ];
+
+                $index++;
+            }
+        }
+
+        // Fallback jika belum diisi sama sekali
+        if (empty($misi)) {
+            $misi = [
+                [
+                    'nomor' => '01',
+                    'judul' => 'Ketahanan Mental & Gotong Royong',
+                    'deskripsi' => 'Meningkatkan kualitas keimanan, pengamalan nilai-nilai luhur Pancasila, pembinaan kesadaran bela negara, serta semangat gotong royong warga.',
+                    'icon' => 'fa-solid fa-hand-holding-heart',
+                ],
+                [
+                    'nomor' => '02',
+                    'judul' => 'Kualitas Pendidikan & Pola Asuh Anak',
+                    'deskripsi' => 'Meningkatkan akses dan kualitas pendidikan formal, non-formal, keterampilan keluarga, serta pola asuh anak dan remaja yang bijak.',
+                    'icon' => 'fa-solid fa-graduation-cap',
+                ],
+                [
+                    'nomor' => '03',
+                    'judul' => 'Ketahanan Pangan & Kemandirian UP2K',
+                    'deskripsi' => 'Mengembangkan ketahanan pangan keluarga lewat program AKU HATINYA PKK dan mendorong kemandirian ekonomi keluarga melalui UP2K.',
+                    'icon' => 'fa-solid fa-seedling',
+                ],
+                [
+                    'nomor' => '04',
+                    'judul' => 'Kesehatan Keluarga & Kelestarian Lingkungan',
+                    'deskripsi' => 'Meningkatkan derajat kesehatan keluarga melalui pencegahan stunting, optimalisasi posyandu, PHBS, serta kelestarian lingkungan hidup.',
+                    'icon' => 'fa-solid fa-heart-pulse',
+                ],
+            ];
+        }
 
         // 2. Data Struktur Organisasi
         $cleanStr = function ($str) {

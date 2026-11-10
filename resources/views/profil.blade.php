@@ -89,9 +89,11 @@
                         Misi {{ $item['nomor'] }}
                     </span>
                 </div>
+                @if (!empty($item['judul']))
                 <h3 class="text-base sm:text-lg font-bold text-gray-900 mb-2 leading-snug">
                     {{ $item['judul'] }}
                 </h3>
+                @endif
                 <p class="text-sm text-gray-500 leading-relaxed">
                     {{ $item['deskripsi'] }}
                 </p>

@@ -78,13 +78,16 @@ class ProfilController extends Controller
             'misi' => 'required|string',
         ]);
 
-        $cleanStr = function($str) {
-            return trim(preg_replace('/[\x{FFFC}\x{FFFD}\x{0000}-\x{001F}\x{007F}]/u', '', (string)$str));
+        $cleanStr = function ($str, $preserveNewlines = false) {
+            if ($preserveNewlines) {
+                return trim(preg_replace('/[\x{FFFC}\x{FFFD}\x{0000}-\x{0008}\x{000B}\x{000C}\x{000E}-\x{001F}\x{007F}]/u', '', (string) $str));
+            }
+            return trim(preg_replace('/[\x{FFFC}\x{FFFD}\x{0000}-\x{001F}\x{007F}]/u', '', (string) $str));
         };
 
         $cleaned = [];
         foreach ($validated as $key => $val) {
-            $cleaned[$key] = is_string($val) ? $cleanStr($val) : $val;
+            $cleaned[$key] = is_string($val) ? $cleanStr($val, in_array($key, ['visi', 'misi', 'alamat'])) : $val;
         }
 
         $path = $this->getStoragePath();
