@@ -73,7 +73,7 @@
                                     <i class="fa-solid fa-pen text-xs"></i>
                                 </a>
                                 <form action="{{ route('admin.agenda.destroy', $agenda['id']) }}" method="POST" class="inline"
-                                      onsubmit="return confirm('Yakin ingin menghapus agenda ini?')">
+                                      data-confirm-message="Hapus agenda ‘{{ $agenda['judul'] }}’? Tindakan ini tidak dapat dibatalkan.">
                                     @csrf @method('DELETE')
                                     <button type="submit"
                                             class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-500 rounded-lg flex items-center justify-center transition-colors" title="Hapus">

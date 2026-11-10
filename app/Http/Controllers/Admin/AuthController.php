@@ -33,8 +33,8 @@ class AuthController extends Controller
         ]);
 
         $user = User::where('username', $request->username)
-                    ->orWhere('email', $request->username)
-                    ->first();
+            ->orWhere('email', $request->username)
+            ->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
             session([
@@ -45,7 +45,7 @@ class AuthController extends Controller
             ]);
 
             return redirect()->route('admin.dashboard')
-                ->with('success', 'Selamat datang, ' . $user->name . '!');
+                ->with('success', 'Selamat datang, '.$user->name.'!');
         }
 
         return back()->with('error', 'Username atau password salah. Silakan coba lagi.')->withInput($request->only('username'));
@@ -57,8 +57,8 @@ class AuthController extends Controller
     public function logout(Request $request)
     {
         $request->session()->forget(['admin_logged_in', 'admin_id', 'admin_name', 'admin_username']);
+
         return redirect()->route('admin.login')
             ->with('success', 'Anda telah keluar dari sistem.');
     }
 }
-

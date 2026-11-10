@@ -129,10 +129,10 @@
                     <i class="fa-solid fa-calendar-plus text-lg"></i>
                     <span class="text-xs font-medium">Agenda Baru</span>
                 </a>
-                <a href="{{ route('admin.statistik.create') }}"
+                <a href="{{ route('admin.statistik.index') }}"
                    class="flex flex-col items-center gap-2 p-3 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl transition-colors text-center active:scale-95">
                     <i class="fa-solid fa-chart-line text-lg"></i>
-                    <span class="text-xs font-medium">Statistik Baru</span>
+                    <span class="text-xs font-medium">Ubah Statistik</span>
                 </a>
                 <a href="{{ route('admin.profil') }}"
                    class="flex flex-col items-center gap-2 p-3 bg-purple-50 hover:bg-purple-100 text-purple-700 rounded-xl transition-colors text-center active:scale-95">

@@ -48,6 +48,7 @@ class PengumumanController extends Controller
     public function index()
     {
         $pengumumanList = $this->getAllPengumuman();
+
         return view('admin.pengumuman.index', compact('pengumumanList'));
     }
 
@@ -62,27 +63,26 @@ class PengumumanController extends Controller
             ->with('success', 'Pengumuman berhasil ditambahkan! (Demo — data belum disimpan ke database)');
     }
 
-    public function edit($id)
+    public function edit(int|string $id)
     {
-        $pengumuman = collect($this->getAllPengumuman())->firstWhere('id', (int)$id);
+        $pengumuman = collect($this->getAllPengumuman())->firstWhere('id', (int) $id);
 
-        if (!$pengumuman) {
+        if (! $pengumuman) {
             abort(404, 'Pengumuman tidak ditemukan');
         }
 
         return view('admin.pengumuman.form', compact('pengumuman'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int|string $id)
     {
         return redirect()->route('admin.pengumuman.index')
             ->with('success', 'Pengumuman berhasil diperbarui! (Demo — data belum disimpan ke database)');
     }
 
-    public function destroy($id)
+    public function destroy(int|string $id)
     {
         return redirect()->route('admin.pengumuman.index')
             ->with('success', 'Pengumuman berhasil dihapus! (Demo — data belum disimpan ke database)');
     }
 }
-

@@ -12,12 +12,13 @@ class StatistikDasawisma extends Model
     protected $table = 'statistik_dasawisma';
 
     protected $fillable = [
+        'id',
         'judul',
         'nilai',
+        'satuan',
         'deskripsi',
         'warna',
         'icon',
         'urutan',
     ];
 }
-

@@ -30,8 +30,8 @@ class ProfilController extends Controller
             'struktur' => [
                 'pembina' => [
                     'jabatan' => 'Pembina',
-                    'nama'    => 'Atmo',
-                    'sub'     => 'Kepala Desa Karang Tanjung',
+                    'nama' => 'Atmo',
+                    'sub' => 'Kepala Desa Karang Tanjung',
                 ],
                 'pengurus_inti' => [
                     ['jabatan' => 'Ketua', 'nama' => 'Hj. Sunariyah'],

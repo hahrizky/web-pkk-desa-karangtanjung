@@ -33,7 +33,7 @@
                         <i class="fa-solid fa-pen text-xs"></i>
                     </a>
                     <form action="{{ route('admin.galeri.destroy', $foto['id']) }}" method="POST" class="inline"
-                          onsubmit="return confirm('Yakin ingin menghapus foto ini?')">
+                          data-confirm-message="Hapus foto ‘{{ $foto['judul'] }}’? Tindakan ini tidak dapat dibatalkan.">
                         @csrf @method('DELETE')
                         <button type="submit"
                                 class="w-8 h-8 bg-white/20 hover:bg-red-500/50 backdrop-blur text-white rounded-lg flex items-center justify-center transition-colors" title="Hapus">

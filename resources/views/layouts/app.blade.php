@@ -120,20 +120,9 @@
                             <p class="text-xs text-emerald-300">Kec. Candi, Kab. Sidoarjo</p>
                         </div>
                     </div>
-                    <p class="text-sm text-emerald-100/80 leading-relaxed mb-6">
+                    <p class="text-sm text-emerald-100/80 leading-relaxed">
                         Portal informasi kegiatan, program kerja, dan data statistik Dasawisma TP. PKK Desa Karangtanjung untuk mewujudkan keluarga yang sehat, mandiri, dan sejahtera.
                     </p>
-                    <div class="flex items-center gap-3">
-                        <a href="#" class="w-9 h-9 rounded-full bg-emerald-900/80 hover:bg-emerald-800 flex items-center justify-center text-emerald-200 hover:text-white transition-colors" title="Facebook">
-                            <i class="fa-brands fa-facebook-f text-sm"></i>
-                        </a>
-                        <a href="#" class="w-9 h-9 rounded-full bg-emerald-900/80 hover:bg-emerald-800 flex items-center justify-center text-emerald-200 hover:text-white transition-colors" title="Instagram">
-                            <i class="fa-brands fa-instagram text-sm"></i>
-                        </a>
-                        <a href="#" class="w-9 h-9 rounded-full bg-emerald-900/80 hover:bg-emerald-800 flex items-center justify-center text-emerald-200 hover:text-white transition-colors" title="YouTube">
-                            <i class="fa-brands fa-youtube text-sm"></i>
-                        </a>
-                    </div>
                 </div>
 
                 <!-- Kolom 2: Kelompok Kerja (Pokja) -->
@@ -143,25 +132,25 @@
                     </h4>
                     <ul class="space-y-3 text-sm text-emerald-100/80">
                         <li>
-                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja I']) }}" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja I']) }}" class="flex items-center gap-2 transition-colors duration-200 hover:text-white">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
                                 <span><strong>Pokja I:</strong> Penghayatan &amp; Gotong Royong</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja II']) }}" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja II']) }}" class="flex items-center gap-2 transition-colors duration-200 hover:text-white">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
                                 <span><strong>Pokja II:</strong> Pendidikan, Keterampilan &amp; UP2K</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja III']) }}" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja III']) }}" class="flex items-center gap-2 transition-colors duration-200 hover:text-white">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
                                 <span><strong>Pokja III:</strong> Pangan, Sandang &amp; Tata Laksana</span>
                             </a>
                         </li>
                         <li>
-                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja IV']) }}" class="hover:text-emerald-300 transition-colors flex items-center gap-2">
+                            <a href="{{ route('informasi.index', ['kategori' => 'Pokja IV']) }}" class="flex items-center gap-2 transition-colors duration-200 hover:text-white">
                                 <i class="fa-solid fa-angle-right text-xs text-amber-400"></i>
                                 <span><strong>Pokja IV:</strong> Kesehatan &amp; Lingkungan Hidup</span>
                             </a>
