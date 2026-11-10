@@ -51,13 +51,13 @@ class Berita extends Model
     // Accessor URL gambar
     public function getGambarUrlAttribute(): string
     {
-        if ($this->gambar && file_exists(public_path('images/' . $this->gambar))) {
-            return asset('images/' . $this->gambar);
+        if ($this->gambar && file_exists(public_path('images/'.$this->gambar))) {
+            return asset('images/'.$this->gambar);
         }
-        if ($this->gambar && file_exists(storage_path('app/public/' . $this->gambar))) {
-            return asset('storage/' . $this->gambar);
+        if ($this->gambar && file_exists(storage_path('app/public/'.$this->gambar))) {
+            return asset('storage/'.$this->gambar);
         }
+
         return asset('images/1.webp');
     }
 }
-

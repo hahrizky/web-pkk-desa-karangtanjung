@@ -7,11 +7,11 @@
     <title>@yield('title', 'Dashboard') — CMS PKK Karangtanjung</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Poppins', sans-serif; }
         .sidebar-link.active { background-color: rgba(255,255,255,0.15); font-weight: 600; }
         .sidebar-link:hover { background-color: rgba(255,255,255,0.1); }
     </style>
@@ -122,7 +122,6 @@
 
             {{-- Page title --}}
             <div class="flex items-center gap-2">
-                <span class="text-sm text-gray-400 hidden md:inline">{{ config('app.name') }} /</span>
                 <span class="text-sm font-semibold text-gray-700">@yield('page-title', 'Dashboard')</span>
             </div>
 
@@ -170,6 +169,29 @@
     </footer>
 </div>
 
+{{-- confirmation dialog admin --}}
+<div id="admin-confirm-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4" aria-hidden="true">
+    <button type="button" class="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px]" data-confirm-cancel aria-label="Tutup dialog"></button>
+    <section role="dialog" aria-modal="true" aria-labelledby="admin-confirm-title" aria-describedby="admin-confirm-message"
+             class="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-black/5">
+        <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-red-50 text-red-600">
+            <i class="fa-solid fa-trash-can text-lg" aria-hidden="true"></i>
+        </div>
+        <h2 id="admin-confirm-title" class="text-center text-lg font-bold text-gray-900">Hapus Berita?</h2>
+        <p id="admin-confirm-message" class="mt-2 text-center text-sm leading-relaxed text-gray-500"></p>
+        <div class="mt-6 flex gap-3">
+            <button type="button" data-confirm-cancel
+                    class="flex-1 rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                Batal
+            </button>
+            <button type="button" id="admin-confirm-submit"
+                    class="flex-1 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2">
+                Hapus
+            </button>
+        </div>
+    </section>
+</div>
+
 <script>
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
@@ -183,6 +205,43 @@
         const flash = document.getElementById('flash-success');
         if (flash) flash.remove();
     }, 4000);
+
+    const confirmModal = document.getElementById('admin-confirm-modal');
+    const confirmMessage = document.getElementById('admin-confirm-message');
+    const confirmSubmit = document.getElementById('admin-confirm-submit');
+    let pendingConfirmForm = null;
+
+    function closeAdminConfirm() {
+        confirmModal.classList.add('hidden');
+        confirmModal.classList.remove('flex');
+        confirmModal.setAttribute('aria-hidden', 'true');
+        pendingConfirmForm = null;
+    }
+
+    document.addEventListener('submit', event => {
+        const form = event.target.closest('form[data-confirm-message]');
+        if (!form) return;
+
+        event.preventDefault();
+        pendingConfirmForm = form;
+        confirmMessage.textContent = form.dataset.confirmMessage;
+        confirmModal.classList.remove('hidden');
+        confirmModal.classList.add('flex');
+        confirmModal.setAttribute('aria-hidden', 'false');
+        confirmModal.querySelector('[data-confirm-cancel]').focus();
+    });
+
+    confirmModal.querySelectorAll('[data-confirm-cancel]').forEach(button => {
+        button.addEventListener('click', closeAdminConfirm);
+    });
+
+    confirmSubmit.addEventListener('click', () => {
+        if (pendingConfirmForm) pendingConfirmForm.submit();
+    });
+
+    document.addEventListener('keydown', event => {
+        if (event.key === 'Escape' && pendingConfirmForm) closeAdminConfirm();
+    });
 </script>
 @stack('scripts')
 </body>

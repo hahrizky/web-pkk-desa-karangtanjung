@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Berita;
 use App\Models\Agenda;
+use App\Models\Berita;
 use App\Models\StatistikDasawisma;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -14,7 +13,7 @@ class DashboardController extends Controller
     {
         $totalBerita = Berita::count();
         $totalAgenda = Agenda::count();
-        $totalStatistik = StatistikDasawisma::count();
+        $totalStatistik = min(StatistikDasawisma::count(), 3);
         $totalPokja = 4;
 
         // 5 berita terbaru untuk tabel dashboard

@@ -56,7 +56,7 @@
             </p>
         </div>
 
-        <!-- Grid 3 Kartu Statistik -->
+        <!-- Jumlah kartu dan urutan mengikuti data statistik di CMS -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
             @foreach ($statistik as $item)
             <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-gray-100 hover:shadow-md hover:-translate-y-1 transition-all duration-200">
@@ -82,7 +82,7 @@
                             {{ $item['judul'] }}
                         </span>
                         <span class="block text-3xl sm:text-4xl font-extrabold @if($item['warna'] == 'green') text-emerald-700 @elseif($item['warna'] == 'orange') text-amber-600 @else text-sky-600 @endif mb-1">
-                            {{ $item['nilai'] }}
+                            {{ $item['nilai'] ?? '—' }} {{ $item['satuan'] }}
                         </span>
                         <p class="text-xs sm:text-sm text-gray-500">
                             {{ $item['deskripsi'] }}
@@ -109,14 +109,17 @@
                 </p>
             </div>
 
+            @if (count($kegiatan) > 0)
             <div>
                 <a href="{{ route('informasi.index') }}" class="hidden sm:inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-700 hover:text-emerald-800 transition-colors">
                     <span>Lihat semua kegiatan</span>
                     <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>
             </div>
+            @endif
         </div>
 
+        @if (count($kegiatan) > 0)
         <!-- Area Carousel Slider dengan Tombol Navigasi Kiri & Kanan di Samping -->
         <div class="relative px-0 sm:px-6 lg:px-8 group/carousel">
             <!-- Tombol Navigasi Kiri (Previous) - Vertikal di Tengah Kartu (Hanya muncul di Tablet & Desktop) -->
@@ -200,6 +203,17 @@
                 <i class="fa-solid fa-arrow-right text-xs"></i>
             </a>
         </div>
+        @else
+        <!-- Empty State ketika Berita Kegiatan Kosong -->
+        <div class="bg-white border-2 border-[#075B3C]/30 rounded-2xl p-8 sm:p-12 text-center max-w-full mx-auto my-4 shadow-sm">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#075B3C] text-white border border-[#075B3C] mb-3">
+                Informasi Belum Tersedia
+            </span>
+            <p class="text-sm sm:text-base text-gray-700 leading-relaxed max-w-md mx-auto">
+                Kabar terbaru seputar kegiatan, agenda, dan program kerja TP. PKK Desa Karangtanjung akan segera dipublikasikan di sini.
+            </p>
+        </div>
+        @endif
     </div>
 </section>
 
@@ -270,11 +284,12 @@
             </p>
         </div>
 
+        @if (count($galeri) > 0)
         <!-- Grid Murni Foto Kegiatan dari Berita (2 Kolom Mobile, 3 Kolom Tablet, 4 Kolom Desktop) -->
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 sm:gap-4 lg:gap-5 mb-10">
             @foreach ($galeri as $index => $foto)
             <div class="group relative aspect-square rounded-2xl overflow-hidden bg-gray-900 shadow-xs hover:shadow-xl transition-all duration-300 cursor-pointer"
-                 onclick="openGaleriModal({{ $index }})"
+                 onclick="openGaleriModal('{{ $index }}')"
                  title="{{ $foto['judul'] }}">
                 <!-- Foto Murni -->
                 <img src="{{ asset('images/' . $foto['gambar']) }}"
@@ -300,6 +315,17 @@
             </div>
             @endforeach
         </div>
+        @else
+        <!-- Empty State ketika Galeri Kosong -->
+        <div class="bg-white border-2 border-[#075B3C]/30 rounded-2xl p-8 sm:p-12 text-center max-w-full mx-auto mb-6 shadow-sm">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#075B3C] text-white border border-[#075B3C] mb-3">
+                Dokumentasi Belum Tersedia
+            </span>
+            <p class="text-sm sm:text-base text-gray-700 leading-relaxed max-w-xl mx-auto">
+                Dokumentasi foto kegiatan TP. PKK Desa Karangtanjung akan ditampilkan di sini setelah berita dengan foto dipublikasikan.
+            </p>
+        </div>
+        @endif
     </div>
 </section>
 
@@ -389,13 +415,20 @@
             });
         }
     });
+</script>
 
+<script type="application/json" id="galeri-data">
+    @json($galeri)
+</script>
+
+<script>
     // ================= JAVASCRIPT MODAL GALERI FOTO =================
-    const galeriData = @json($galeri);
+    const galeriDataElement = document.getElementById('galeri-data');
+    const galeriData = galeriDataElement ? JSON.parse(galeriDataElement.textContent) : [];
     let currentModalIndex = 0;
 
     function openGaleriModal(index) {
-        currentModalIndex = index;
+        currentModalIndex = parseInt(index, 10);
         updateModalContent();
         const modal = document.getElementById('galeri-modal');
         modal.classList.remove('hidden');

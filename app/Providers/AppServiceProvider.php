@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -34,16 +35,16 @@ class AppServiceProvider extends ServiceProvider
                 'jam_layanan' => 'Jam Layanan: Senin - Jumat (08.00 - 15.00 WIB)',
             ];
 
-            if (\Illuminate\Support\Facades\File::exists($path)) {
-                $saved = json_decode(\Illuminate\Support\Facades\File::get($path), true) ?? [];
+            if (File::exists($path)) {
+                $saved = json_decode(File::get($path), true) ?? [];
                 // Jika key ada di file json (bisa berupa string atau null/kosong)
                 $kontak['alamat'] = isset($saved['alamat']) ? trim($saved['alamat']) : $kontak['alamat'];
                 $kontak['telepon'] = isset($saved['telepon']) ? trim($saved['telepon']) : $kontak['telepon'];
                 $kontak['email'] = isset($saved['email']) ? trim($saved['email']) : $kontak['email'];
                 if (isset($saved['jam_layanan'])) {
                     $jam = trim($saved['jam_layanan']);
-                    $kontak['jam_layanan'] = (!empty($jam) && !str_starts_with($jam, 'Jam Layanan:'))
-                        ? 'Jam Layanan: ' . $jam
+                    $kontak['jam_layanan'] = (! empty($jam) && ! str_starts_with($jam, 'Jam Layanan:'))
+                        ? 'Jam Layanan: '.$jam
                         : $jam;
                 }
             }

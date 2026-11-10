@@ -53,7 +53,7 @@ class AgendaController extends Controller
             ->with('success', 'Agenda kegiatan berhasil ditambahkan!');
     }
 
-    public function edit($id)
+    public function edit(int|string $id)
     {
         $item = Agenda::findOrFail($id);
 
@@ -72,7 +72,7 @@ class AgendaController extends Controller
         return view('admin.agenda.form', compact('agenda'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int|string $id)
     {
         $item = Agenda::findOrFail($id);
 
@@ -92,7 +92,7 @@ class AgendaController extends Controller
             ->with('success', 'Agenda kegiatan berhasil diperbarui!');
     }
 
-    public function destroy($id)
+    public function destroy(int|string $id)
     {
         $item = Agenda::findOrFail($id);
         $item->delete();

@@ -44,6 +44,7 @@
     <section class="py-12 bg-white">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
+            @if(count($agendas) > 0)
             <!-- Grid Agenda (3 Kolom Desktop, 2 Kolom Tablet, 1 Kolom Mobile) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($agendas as $agenda)
@@ -112,6 +113,20 @@
                     </div>
                 @endforeach
             </div>
+            @else
+            <!-- Empty State jika belum ada agenda -->
+            <div class="bg-white border-2 border-[#075B3C]/30 rounded-2xl p-8 sm:p-12 text-center max-w-xl mx-auto my-2 shadow-sm">
+                <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#075B3C] text-white flex items-center justify-center text-3xl sm:text-4xl mx-auto mb-4 shadow-md">
+                    <i class="fa-regular fa-calendar-xmark"></i>
+                </div>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#075B3C] text-white border border-[#075B3C] mb-3">
+                    Agenda Belum Tersedia
+                </span>
+                <p class="text-sm sm:text-base text-gray-700 leading-relaxed max-w-md mx-auto">
+                    Jadwal kegiatan berkala, pertemuan kader, dan pelayanan Posyandu akan diumumkan melalui portal ini jika sudah dijadwalkan.
+                </p>
+            </div>
+            @endif
 
             <!-- Navigasi Bawah -->
             <div class="mt-12 text-center">
