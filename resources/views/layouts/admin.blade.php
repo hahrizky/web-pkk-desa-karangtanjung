@@ -127,11 +127,6 @@
 
             {{-- Right side --}}
             <div class="flex items-center gap-3">
-                <a href="{{ url('/') }}" target="_blank"
-                   class="hidden sm:inline-flex items-center gap-1.5 text-xs font-medium text-[#075B3C] border border-[#075B3C]/30 bg-emerald-50 hover:bg-emerald-100 px-3 py-1.5 rounded-lg transition-colors">
-                    <i class="fa-solid fa-arrow-up-right-from-square text-[11px]"></i>
-                    Lihat Website
-                </a>
                 <div class="w-8 h-8 bg-[#075B3C] rounded-full flex items-center justify-center text-white text-xs font-bold">
                     A
                 </div>
