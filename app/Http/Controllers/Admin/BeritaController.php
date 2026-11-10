@@ -20,7 +20,7 @@ class BeritaController extends Controller
                 'tanggal_raw' => $item->tanggal ? $item->tanggal->format('Y-m-d') : date('Y-m-d'),
                 'ringkasan' => $item->ringkasan,
                 'konten' => $item->konten,
-                'gambar' => $item->gambar ?? '1.webp',
+                'gambar' => $item->gambar,
                 'penulis' => $item->penulis,
             ];
         })->all();
@@ -42,21 +42,19 @@ class BeritaController extends Controller
             'ringkasan' => 'nullable|string',
             'konten' => 'required|string',
             'penulis' => 'nullable|string|max:150',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
-        $validated['slug'] = Str::slug($validated['judul']) . '-' . time();
+        $validated['slug'] = Str::slug($validated['judul']).'-'.time();
         $validated['penulis'] = $validated['penulis'] ?? 'Sekretariat TP. PKK Karangtanjung';
         $validated['status'] = 'published';
 
         // Upload gambar jika ada
         if ($request->hasFile('gambar')) {
             $file = $request->file('gambar');
-            $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+            $filename = time().'_'.Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$file->getClientOriginalExtension();
             $file->move(public_path('images'), $filename);
             $validated['gambar'] = $filename;
-        } else {
-            $validated['gambar'] = '1.webp';
         }
 
         Berita::create($validated);
@@ -65,7 +63,7 @@ class BeritaController extends Controller
             ->with('success', 'Berita berhasil dipublikasikan!');
     }
 
-    public function edit($id)
+    public function edit(int|string $id)
     {
         $item = Berita::findOrFail($id);
 
@@ -77,14 +75,14 @@ class BeritaController extends Controller
             'tanggal_raw' => $item->tanggal ? $item->tanggal->format('Y-m-d') : date('Y-m-d'),
             'ringkasan' => $item->ringkasan,
             'konten' => $item->konten,
-            'gambar' => $item->gambar ?? '1.webp',
+            'gambar' => $item->gambar,
             'penulis' => $item->penulis,
         ];
 
         return view('admin.berita.form', compact('berita'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int|string $id)
     {
         $item = Berita::findOrFail($id);
 
@@ -95,12 +93,12 @@ class BeritaController extends Controller
             'ringkasan' => 'nullable|string',
             'konten' => 'required|string',
             'penulis' => 'nullable|string|max:150',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         if ($request->hasFile('gambar')) {
             $file = $request->file('gambar');
-            $filename = time() . '_' . Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '.' . $file->getClientOriginalExtension();
+            $filename = time().'_'.Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$file->getClientOriginalExtension();
             $file->move(public_path('images'), $filename);
             $validated['gambar'] = $filename;
         }
@@ -111,7 +109,7 @@ class BeritaController extends Controller
             ->with('success', 'Berita berhasil diperbarui!');
     }
 
-    public function destroy($id)
+    public function destroy(int|string $id)
     {
         $item = Berita::findOrFail($id);
         $item->delete();

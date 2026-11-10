@@ -52,29 +52,33 @@ class PokjaController extends Controller
         $path = $this->getStoragePath();
         if (File::exists($path)) {
             $data = json_decode(File::get($path), true);
-            if (is_array($data)) return $data;
+            if (is_array($data)) {
+                return $data;
+            }
         }
+
         return $this->getDefaultPokja();
     }
 
     public function index()
     {
         $pokjaList = $this->getAllPokja();
+
         return view('admin.pokja.index', compact('pokjaList'));
     }
 
-    public function edit($id)
+    public function edit(int|string $id)
     {
-        $pokja = collect($this->getAllPokja())->firstWhere('id', (int)$id);
+        $pokja = collect($this->getAllPokja())->firstWhere('id', (int) $id);
 
-        if (!$pokja) {
+        if (! $pokja) {
             abort(404, 'Pokja tidak ditemukan');
         }
 
         return view('admin.pokja.form', compact('pokja'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int|string $id)
     {
         $validated = $request->validate([
             'ketua' => 'required|string|max:150',
@@ -83,7 +87,7 @@ class PokjaController extends Controller
 
         $list = $this->getAllPokja();
         foreach ($list as &$item) {
-            if ($item['id'] == (int)$id) {
+            if ($item['id'] == (int) $id) {
                 $item['ketua'] = $validated['ketua'];
                 $item['deskripsi'] = $validated['deskripsi'];
                 break;
@@ -99,7 +103,7 @@ class PokjaController extends Controller
             $profil = json_decode(File::get($profilPath), true);
             if (isset($profil['struktur']['pokja'])) {
                 foreach ($profil['struktur']['pokja'] as &$pk) {
-                    if ($pk['kode'] === 'Pokja ' . ($id == 1 ? 'I' : ($id == 2 ? 'II' : ($id == 3 ? 'III' : 'IV')))) {
+                    if ($pk['kode'] === 'Pokja '.($id == 1 ? 'I' : ($id == 2 ? 'II' : ($id == 3 ? 'III' : 'IV')))) {
                         $pk['ketua'] = $validated['ketua'];
                     }
                 }

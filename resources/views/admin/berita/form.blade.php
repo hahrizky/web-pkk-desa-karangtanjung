@@ -103,6 +103,9 @@
                     <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
                         Foto Dokumentasi
                     </label>
+                    <p class="text-[11px] text-gray-500 mb-2">
+                        PG, PNG, atau WebP · Maks. 5 MB. Disarankan menggunakan WebP untuk ukuran file lebih kecil
+                    </p>
 
                     @if(!empty($berita['gambar']))
                         <div class="mb-2">
@@ -112,7 +115,7 @@
                         </div>
                     @endif
 
-                    <input type="file" name="gambar" accept="image/*"
+                    <input type="file" name="gambar" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
                            class="block w-full text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-[#075B3C] hover:file:bg-emerald-100 cursor-pointer"
                            onchange="previewImage(this)">
                     <img id="preview-img" src="" alt="" class="hidden w-full h-32 object-cover rounded-lg mt-2 border border-emerald-300">

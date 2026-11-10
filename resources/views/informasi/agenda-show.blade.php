@@ -108,17 +108,6 @@
                     {{ $agenda['isi'] }}
                 </p>
 
-                <p>
-                    Kader diharapkan hadir 15 menit sebelum acara dimulai guna mempersiapkan perlengkapan administrasi dan koordinasi teknis bersama tim pelaksana. Partisipasi aktif seluruh warga dan kader dasawisma sangat diharapkan demi kelancaran program pemberdayaan ini.
-                </p>
-            </div>
-
-            <!-- Banner Disclaimer Catatan Data Contoh -->
-            <div class="p-4 rounded-xl bg-amber-50 border border-amber-200 flex items-start gap-3 mb-10">
-                <i class="fa-solid fa-triangle-exclamation text-amber-600 text-sm mt-0.5"></i>
-                <div class="text-xs text-amber-900 leading-relaxed">
-                    <strong>Pemberitahuan:</strong> Jadwal dan waktu pelaksanaan kegiatan di atas merupakan contoh data pada tahap perancangan sistem informasi PKK Desa Karangtanjung. Konfirmasi resmi jadwal kegiatan dapat dicek secara berkala melalui surat edaran desa atau pengumuman kader di masing-masing RW.
-                </div>
             </div>
 
             <!-- Tombol Aksi & Navigasi -->

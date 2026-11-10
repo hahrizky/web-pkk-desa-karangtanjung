@@ -47,4 +47,3 @@ class Agenda extends Model
         return $this->tanggal ? $this->tanggal->format('d') : '-';
     }
 }
-

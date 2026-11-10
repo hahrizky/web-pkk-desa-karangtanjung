@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\File;
+use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -40,18 +40,18 @@ class AppServiceProvider extends ServiceProvider
             if (File::exists($path)) {
                 $saved = json_decode(File::get($path), true) ?? [];
                 if (array_key_exists('alamat', $saved)) {
-                    $kontak['alamat'] = trim((string)$saved['alamat']);
+                    $kontak['alamat'] = trim((string) $saved['alamat']);
                 }
                 if (array_key_exists('telepon', $saved)) {
-                    $kontak['telepon'] = trim((string)$saved['telepon']);
+                    $kontak['telepon'] = trim((string) $saved['telepon']);
                 }
                 if (array_key_exists('email', $saved)) {
-                    $kontak['email'] = trim((string)$saved['email']);
+                    $kontak['email'] = trim((string) $saved['email']);
                 }
                 if (array_key_exists('jam_layanan', $saved)) {
-                    $jam = trim((string)$saved['jam_layanan']);
-                    $kontak['jam_layanan'] = (!empty($jam) && !str_starts_with($jam, 'Jam Layanan:'))
-                        ? 'Jam Layanan: ' . $jam
+                    $jam = trim((string) $saved['jam_layanan']);
+                    $kontak['jam_layanan'] = (! empty($jam) && ! str_starts_with($jam, 'Jam Layanan:'))
+                        ? 'Jam Layanan: '.$jam
                         : $jam;
                 }
             }

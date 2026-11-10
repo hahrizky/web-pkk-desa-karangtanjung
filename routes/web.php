@@ -1,18 +1,18 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\BerandaController;
-use App\Http\Controllers\ProfilController;
-use App\Http\Controllers\PokjaController;
-use App\Http\Controllers\InformasiController;
-use App\Http\Controllers\Admin\AuthController;
-use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
 use App\Http\Controllers\Admin\AgendaController as AdminAgendaController;
+use App\Http\Controllers\Admin\AuthController;
+use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PokjaController as AdminPokjaController;
 use App\Http\Controllers\Admin\ProfilController as AdminProfilController;
-use App\Http\Controllers\Admin\StrukturController as AdminStrukturController;
 use App\Http\Controllers\Admin\StatistikController as AdminStatistikController;
+use App\Http\Controllers\Admin\StrukturController as AdminStrukturController;
+use App\Http\Controllers\BerandaController;
+use App\Http\Controllers\InformasiController;
+use App\Http\Controllers\PokjaController;
+use App\Http\Controllers\ProfilController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,13 +52,13 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index']);
 
     // Berita (CRUD Database)
-    Route::resource('berita', AdminBeritaController::class);
+    Route::resource('berita', AdminBeritaController::class)->except(['show']);
 
     // Agenda (CRUD Database)
-    Route::resource('agenda', AdminAgendaController::class);
+    Route::resource('agenda', AdminAgendaController::class)->except(['show']);
 
     // Statistik Dasawisma (CRUD Database)
-    Route::resource('statistik', AdminStatistikController::class);
+    Route::resource('statistik', AdminStatistikController::class)->only(['index', 'edit', 'update']);
 
     // Pokja
     Route::get('/pokja', [AdminPokjaController::class, 'index'])->name('pokja.index');

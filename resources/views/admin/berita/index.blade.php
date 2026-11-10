@@ -78,7 +78,7 @@
                                         <i class="fa-solid fa-pen text-xs"></i>
                                     </a>
                                     <form action="{{ route('admin.berita.destroy', $berita['id']) }}" method="POST" class="inline"
-                                          onsubmit="return confirm('Yakin ingin menghapus berita ini?')">
+                                          data-confirm-message="Tindakan ini tidak dapat dibatalkan.">
                                         @csrf @method('DELETE')
                                         <button type="submit"
                                                 class="w-8 h-8 bg-emerald-100 hover:bg-emerald-300 text-red-500 rounded-lg flex items-center justify-center transition-colors" title="Hapus">

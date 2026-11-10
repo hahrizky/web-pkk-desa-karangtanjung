@@ -24,6 +24,7 @@ class GaleriController extends Controller
     public function index()
     {
         $galeriList = $this->getAllGaleri();
+
         return view('admin.galeri.index', compact('galeriList'));
     }
 
@@ -38,27 +39,26 @@ class GaleriController extends Controller
             ->with('success', 'Foto berhasil diupload! (Demo — data belum disimpan ke database)');
     }
 
-    public function edit($id)
+    public function edit(int|string $id)
     {
-        $foto = collect($this->getAllGaleri())->firstWhere('id', (int)$id);
+        $foto = collect($this->getAllGaleri())->firstWhere('id', (int) $id);
 
-        if (!$foto) {
+        if (! $foto) {
             abort(404, 'Foto tidak ditemukan');
         }
 
         return view('admin.galeri.form', compact('foto'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int|string $id)
     {
         return redirect()->route('admin.galeri.index')
             ->with('success', 'Foto berhasil diperbarui! (Demo — data belum disimpan ke database)');
     }
 
-    public function destroy($id)
+    public function destroy(int|string $id)
     {
         return redirect()->route('admin.galeri.index')
             ->with('success', 'Foto berhasil dihapus! (Demo — data belum disimpan ke database)');
     }
 }
-
