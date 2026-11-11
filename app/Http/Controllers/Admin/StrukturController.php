@@ -172,27 +172,31 @@ class StrukturController extends Controller
         $pokja4Foto = $handleUpload('pokja_4_foto', $profil['struktur']['pokja'][3]['foto'] ?? null);
 
         // Update bagian struktur, foto, dan periode
-        $profil['periode'] = $validated['periode'];
+        $cleanStr = function($str) {
+            return trim(preg_replace('/[\x{FFFC}\x{FFFD}\x{0000}-\x{001F}\x{007F}]/u', '', (string)$str));
+        };
+
+        $profil['periode'] = $cleanStr($validated['periode']);
         $profil['struktur'] = [
             'pembina' => [
                 'jabatan' => 'Pembina',
-                'nama' => $validated['pembina_nama'],
-                'sub' => $validated['pembina_sub'] ?? 'Kepala Desa Karang Tanjung',
-                'foto' => $pembinaFoto,
+                'nama'    => $cleanStr($validated['pembina_nama']),
+                'sub'     => $cleanStr($validated['pembina_sub'] ?? 'Kepala Desa Karang Tanjung'),
+                'foto'    => $pembinaFoto,
             ],
             'pengurus_inti' => [
-                ['jabatan' => 'Ketua', 'nama' => $validated['ketua_nama'], 'foto' => $ketuaFoto],
-                ['jabatan' => 'Wakil Ketua', 'nama' => $validated['wakil_nama'], 'foto' => $wakilFoto],
-                ['jabatan' => 'Sekretaris I', 'nama' => $validated['sekretaris_1'], 'foto' => $sekretaris1Foto],
-                ['jabatan' => 'Sekretaris II', 'nama' => $validated['sekretaris_2'], 'foto' => $sekretaris2Foto],
-                ['jabatan' => 'Bendahara I', 'nama' => $validated['bendahara_1'], 'foto' => $bendahara1Foto],
-                ['jabatan' => 'Bendahara II', 'nama' => $validated['bendahara_2'], 'foto' => $bendahara2Foto],
+                ['jabatan' => 'Ketua', 'nama' => $cleanStr($validated['ketua_nama']), 'foto' => $ketuaFoto],
+                ['jabatan' => 'Wakil Ketua', 'nama' => $cleanStr($validated['wakil_nama']), 'foto' => $wakilFoto],
+                ['jabatan' => 'Sekretaris I', 'nama' => $cleanStr($validated['sekretaris_1']), 'foto' => $sekretaris1Foto],
+                ['jabatan' => 'Sekretaris II', 'nama' => $cleanStr($validated['sekretaris_2']), 'foto' => $sekretaris2Foto],
+                ['jabatan' => 'Bendahara I', 'nama' => $cleanStr($validated['bendahara_1']), 'foto' => $bendahara1Foto],
+                ['jabatan' => 'Bendahara II', 'nama' => $cleanStr($validated['bendahara_2']), 'foto' => $bendahara2Foto],
             ],
             'pokja' => [
-                ['kode' => 'Pokja I', 'ketua' => $validated['pokja_1_ketua'], 'foto' => $pokja1Foto],
-                ['kode' => 'Pokja II', 'ketua' => $validated['pokja_2_ketua'], 'foto' => $pokja2Foto],
-                ['kode' => 'Pokja III', 'ketua' => $validated['pokja_3_ketua'], 'foto' => $pokja3Foto],
-                ['kode' => 'Pokja IV', 'ketua' => $validated['pokja_4_ketua'], 'foto' => $pokja4Foto],
+                ['kode' => 'Pokja I', 'ketua' => $cleanStr($validated['pokja_1_ketua']), 'foto' => $pokja1Foto],
+                ['kode' => 'Pokja II', 'ketua' => $cleanStr($validated['pokja_2_ketua']), 'foto' => $pokja2Foto],
+                ['kode' => 'Pokja III', 'ketua' => $cleanStr($validated['pokja_3_ketua']), 'foto' => $pokja3Foto],
+                ['kode' => 'Pokja IV', 'ketua' => $cleanStr($validated['pokja_4_ketua']), 'foto' => $pokja4Foto],
             ],
         ];
 

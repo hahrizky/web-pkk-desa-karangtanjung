@@ -14,60 +14,144 @@ class ProfilController extends Controller
         // 1. Data Visi & Misi
         $visi = $custom['visi'] ?? 'Terwujudnya Keluarga Karangtanjung yang Beriman, Berakhlak Mulia, Sehat, Sejahtera, Maju, dan Mandiri Berbasis Ketahanan Desa yang Berkelanjutan';
 
-        $misi = [
-            [
-                'nomor' => '01',
-                'judul' => 'Ketahanan Mental & Gotong Royong',
-                'deskripsi' => 'Meningkatkan kualitas keimanan, pengamalan nilai-nilai luhur Pancasila, pembinaan kesadaran bela negara, serta semangat gotong royong warga.',
-                'icon' => 'fa-solid fa-hand-holding-heart',
-            ],
-            [
-                'nomor' => '02',
-                'judul' => 'Kualitas Pendidikan & Pola Asuh Anak',
-                'deskripsi' => 'Meningkatkan akses dan kualitas pendidikan formal, non-formal, keterampilan keluarga, serta pola asuh anak dan remaja yang bijak.',
-                'icon' => 'fa-solid fa-graduation-cap',
-            ],
-            [
-                'nomor' => '03',
-                'judul' => 'Ketahanan Pangan & Kemandirian UP2K',
-                'deskripsi' => 'Mengembangkan ketahanan pangan keluarga lewat program AKU HATINYA PKK dan mendorong kemandirian ekonomi keluarga melalui UP2K.',
-                'icon' => 'fa-solid fa-seedling',
-            ],
-            [
-                'nomor' => '04',
-                'judul' => 'Kesehatan Keluarga & Kelestarian Lingkungan',
-                'deskripsi' => 'Meningkatkan derajat kesehatan keluarga melalui pencegahan stunting, optimalisasi posyandu, PHBS, serta kelestarian lingkungan hidup.',
-                'icon' => 'fa-solid fa-heart-pulse',
-            ],
+        $defaultIcons = [
+            'fa-solid fa-hand-holding-heart',
+            'fa-solid fa-graduation-cap',
+            'fa-solid fa-seedling',
+            'fa-solid fa-heart-pulse',
+            'fa-solid fa-people-roof',
+            'fa-solid fa-shield-halved',
+            'fa-solid fa-users',
+            'fa-solid fa-hands-holding-circle',
         ];
 
+        $defaultTitles = [
+            'Ketahanan Mental & Gotong Royong',
+            'Kualitas Pendidikan & Pola Asuh Anak',
+            'Ketahanan Pangan & Kemandirian UP2K',
+            'Kesehatan Keluarga & Kelestarian Lingkungan',
+        ];
+
+        $misiRaw = $custom['misi'] ?? null;
+        $misi = [];
+
+        if (!empty($misiRaw) && is_array($misiRaw)) {
+            $index = 1;
+            foreach ($misiRaw as $item) {
+                $judul = trim($item['judul'] ?? '');
+                $deskripsi = trim($item['deskripsi'] ?? '');
+                if ($judul === '' && $deskripsi === '') {
+                    continue;
+                }
+                $misi[] = [
+                    'nomor' => sprintf('%02d', $index),
+                    'judul' => $judul !== '' ? $judul : ('Program Misi ' . sprintf('%02d', $index)),
+                    'deskripsi' => $deskripsi,
+                    'icon' => $defaultIcons[($index - 1) % count($defaultIcons)],
+                ];
+                $index++;
+            }
+        } elseif (!empty($misiRaw) && is_string($misiRaw)) {
+            $lines = preg_split('/\r\n|\r|\n/', trim($misiRaw));
+            $index = 1;
+            foreach ($lines as $line) {
+                $line = trim($line);
+                if ($line === '') {
+                    continue;
+                }
+
+                // Bersihkan penomoran awal seperti "1. ", "1) ", "- ", "* "
+                $cleanLine = preg_replace('/^\s*(\d+[\.\)]|\-|\*)\s*/', '', $line);
+
+                $judul = '';
+                $deskripsi = $cleanLine;
+
+                if (str_contains($cleanLine, ':')) {
+                    $parts = explode(':', $cleanLine, 2);
+                    $judul = trim($parts[0]);
+                    $deskripsi = trim($parts[1]);
+                } elseif (str_contains($cleanLine, ' - ')) {
+                    $parts = explode(' - ', $cleanLine, 2);
+                    $judul = trim($parts[0]);
+                    $deskripsi = trim($parts[1]);
+                } else {
+                    $judul = $defaultTitles[$index - 1] ?? ('Program Misi ' . sprintf('%02d', $index));
+                }
+
+                $misi[] = [
+                    'nomor' => sprintf('%02d', $index),
+                    'judul' => $judul,
+                    'deskripsi' => $deskripsi,
+                    'icon' => $defaultIcons[($index - 1) % count($defaultIcons)],
+                ];
+
+                $index++;
+            }
+        }
+
+        // Fallback jika belum diisi sama sekali
+        if (empty($misi)) {
+            $misi = [
+                [
+                    'nomor' => '01',
+                    'judul' => 'Ketahanan Mental & Gotong Royong',
+                    'deskripsi' => 'Meningkatkan kualitas keimanan, pengamalan nilai-nilai luhur Pancasila, pembinaan kesadaran bela negara, serta semangat gotong royong warga.',
+                    'icon' => 'fa-solid fa-hand-holding-heart',
+                ],
+                [
+                    'nomor' => '02',
+                    'judul' => 'Kualitas Pendidikan & Pola Asuh Anak',
+                    'deskripsi' => 'Meningkatkan akses dan kualitas pendidikan formal, non-formal, keterampilan keluarga, serta pola asuh anak dan remaja yang bijak.',
+                    'icon' => 'fa-solid fa-graduation-cap',
+                ],
+                [
+                    'nomor' => '03',
+                    'judul' => 'Ketahanan Pangan & Kemandirian UP2K',
+                    'deskripsi' => 'Mengembangkan ketahanan pangan keluarga lewat program AKU HATINYA PKK dan mendorong kemandirian ekonomi keluarga melalui UP2K.',
+                    'icon' => 'fa-solid fa-seedling',
+                ],
+                [
+                    'nomor' => '04',
+                    'judul' => 'Kesehatan Keluarga & Kelestarian Lingkungan',
+                    'deskripsi' => 'Meningkatkan derajat kesehatan keluarga melalui pencegahan stunting, optimalisasi posyandu, PHBS, serta kelestarian lingkungan hidup.',
+                    'icon' => 'fa-solid fa-heart-pulse',
+                ],
+            ];
+        }
+
         // 2. Data Struktur Organisasi
-        $pembinaNama = $custom['struktur']['pembina']['nama'] ?? 'Atmo';
-        $pembinaSub = $custom['struktur']['pembina']['sub'] ?? 'Kepala Desa Karang Tanjung';
-        $ketuaNama = $custom['struktur']['pengurus_inti'][0]['nama'] ?? 'Hj. Sunariyah';
-        $wakilNama = $custom['struktur']['pengurus_inti'][1]['nama'] ?? 'Dwi Setyowati';
-        $sekretaris1 = $custom['struktur']['pengurus_inti'][2]['nama'] ?? 'Alfianita Defi, S.Pd.';
-        $sekretaris2 = $custom['struktur']['pengurus_inti'][3]['nama'] ?? 'Cicik Suyanti';
-        $bendahara1 = $custom['struktur']['pengurus_inti'][4]['nama'] ?? 'Ita Susanti';
-        $bendahara2 = $custom['struktur']['pengurus_inti'][5]['nama'] ?? 'Nuryanti';
+        $cleanStr = function ($str) {
+            return trim(preg_replace('/[\x{FFFC}\x{FFFD}\x{0000}-\x{001F}\x{007F}]/u', '', (string) $str));
+        };
 
-        $pokja1Ketua = $custom['struktur']['pokja'][0]['ketua'] ?? 'Mutma\'innah, M.Pd.';
-        $pokja2Ketua = $custom['struktur']['pokja'][1]['ketua'] ?? 'Resti Duwi Rohmawati';
-        $pokja3Ketua = $custom['struktur']['pokja'][2]['ketua'] ?? 'Jazil Laturohmah';
-        $pokja4Ketua = $custom['struktur']['pokja'][3]['ketua'] ?? 'Lilik Mutammimah';
+        $pembinaNama = $cleanStr($custom['struktur']['pembina']['nama'] ?? 'Atmo');
+        $pembinaSub  = $cleanStr($custom['struktur']['pembina']['sub'] ?? 'Kepala Desa Karang Tanjung');
+        $ketuaNama   = $cleanStr($custom['struktur']['pengurus_inti'][0]['nama'] ?? 'Hj. Sunariyah');
+        $wakilNama   = $cleanStr($custom['struktur']['pengurus_inti'][1]['nama'] ?? 'Dwi Setyowati');
+        $sekretaris1 = $cleanStr($custom['struktur']['pengurus_inti'][2]['nama'] ?? 'Alfianita Defi, S.Pd.');
+        $sekretaris2 = $cleanStr($custom['struktur']['pengurus_inti'][3]['nama'] ?? 'Cicik Suyanti');
+        $bendahara1  = $cleanStr($custom['struktur']['pengurus_inti'][4]['nama'] ?? 'Ita Susanti');
+        $bendahara2  = $cleanStr($custom['struktur']['pengurus_inti'][5]['nama'] ?? 'Nuryanti');
 
-        $pembinaFoto = $custom['struktur']['pembina']['foto'] ?? null;
-        $ketuaFoto = $custom['struktur']['pengurus_inti'][0]['foto'] ?? null;
-        $wakilFoto = $custom['struktur']['pengurus_inti'][1]['foto'] ?? null;
-        $sekretaris1Foto = $custom['struktur']['pengurus_inti'][2]['foto'] ?? null;
-        $sekretaris2Foto = $custom['struktur']['pengurus_inti'][3]['foto'] ?? null;
-        $bendahara1Foto = $custom['struktur']['pengurus_inti'][4]['foto'] ?? null;
-        $bendahara2Foto = $custom['struktur']['pengurus_inti'][5]['foto'] ?? null;
+        $pokja1Ketua = $cleanStr($custom['struktur']['pokja'][0]['ketua'] ?? 'Mutma\'innah, M.Pd.');
+        $pokja2Ketua = $cleanStr($custom['struktur']['pokja'][1]['ketua'] ?? 'Resti Duwi Rohmawati');
+        $pokja3Ketua = $cleanStr($custom['struktur']['pokja'][2]['ketua'] ?? 'Jazil Laturohmah');
+        $pokja4Ketua = $cleanStr($custom['struktur']['pokja'][3]['ketua'] ?? 'Lilik Mutammimah');
 
-        $pokja1Foto = $custom['struktur']['pokja'][0]['foto'] ?? null;
-        $pokja2Foto = $custom['struktur']['pokja'][1]['foto'] ?? null;
-        $pokja3Foto = $custom['struktur']['pokja'][2]['foto'] ?? null;
-        $pokja4Foto = $custom['struktur']['pokja'][3]['foto'] ?? null;
+        $defaultFoto = file_exists(public_path('images/pengurus/default_pas_foto.jpg')) ? 'pengurus/default_pas_foto.jpg' : null;
+
+        $pembinaFoto = $custom['struktur']['pembina']['foto'] ?? $defaultFoto;
+        $ketuaFoto   = $custom['struktur']['pengurus_inti'][0]['foto'] ?? $defaultFoto;
+        $wakilFoto   = $custom['struktur']['pengurus_inti'][1]['foto'] ?? $defaultFoto;
+        $sekretaris1Foto = $custom['struktur']['pengurus_inti'][2]['foto'] ?? $defaultFoto;
+        $sekretaris2Foto = $custom['struktur']['pengurus_inti'][3]['foto'] ?? $defaultFoto;
+        $bendahara1Foto  = $custom['struktur']['pengurus_inti'][4]['foto'] ?? $defaultFoto;
+        $bendahara2Foto  = $custom['struktur']['pengurus_inti'][5]['foto'] ?? $defaultFoto;
+
+        $pokja1Foto  = $custom['struktur']['pokja'][0]['foto'] ?? $defaultFoto;
+        $pokja2Foto  = $custom['struktur']['pokja'][1]['foto'] ?? $defaultFoto;
+        $pokja3Foto  = $custom['struktur']['pokja'][2]['foto'] ?? $defaultFoto;
+        $pokja4Foto  = $custom['struktur']['pokja'][3]['foto'] ?? $defaultFoto;
 
         $struktur = [
             'pembina' => [

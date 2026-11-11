@@ -160,7 +160,16 @@
 
                 <!-- Kolom 3: Kontak Kami -->
                 @php
-                    $hasAnyContact = !empty($kontakFooter['alamat']) || !empty($kontakFooter['telepon']) || !empty($kontakFooter['email']) || !empty($kontakFooter['jam_layanan']);
+                    $footerAlamat = trim($kontakFooter['alamat'] ?? '');
+                    $footerTelepon = trim($kontakFooter['telepon'] ?? '');
+                    $footerEmail = trim($kontakFooter['email'] ?? '');
+                    $footerJam = trim($kontakFooter['jam_layanan'] ?? '');
+
+                    $hasAlamat = !empty($footerAlamat) && $footerAlamat !== '-';
+                    $hasTelepon = !empty($footerTelepon) && $footerTelepon !== '-';
+                    $hasEmail = !empty($footerEmail) && $footerEmail !== '-';
+                    $hasJam = !empty($footerJam) && $footerJam !== '-';
+                    $hasAnyContact = $hasAlamat || $hasTelepon || $hasEmail || $hasJam;
                 @endphp
                 @if($hasAnyContact)
                 <div>
@@ -168,31 +177,31 @@
                         Kontak Kami
                     </h4>
                     <ul class="space-y-3 text-sm text-emerald-100/80">
-                        @if(!empty($kontakFooter['alamat']))
+                        @if($hasAlamat)
                         <li class="flex items-start gap-3">
                             <i class="fa-solid fa-location-dot text-amber-400 mt-1"></i>
-                            <span>{{ $kontakFooter['alamat'] }}</span>
+                            <span>{{ $footerAlamat }}</span>
                         </li>
                         @endif
 
-                        @if(!empty($kontakFooter['telepon']))
+                        @if($hasTelepon)
                         <li class="flex items-center gap-3">
                             <i class="fa-solid fa-phone text-amber-400"></i>
-                            <span>{{ $kontakFooter['telepon'] }}</span>
+                            <span>{{ $footerTelepon }}</span>
                         </li>
                         @endif
 
-                        @if(!empty($kontakFooter['email']))
+                        @if($hasEmail)
                         <li class="flex items-center gap-3">
                             <i class="fa-solid fa-envelope text-amber-400"></i>
-                            <span>{{ $kontakFooter['email'] }}</span>
+                            <span>{{ $footerEmail }}</span>
                         </li>
                         @endif
 
-                        @if(!empty($kontakFooter['jam_layanan']))
+                        @if($hasJam)
                         <li class="flex items-center gap-3">
                             <i class="fa-solid fa-clock text-amber-400"></i>
-                            <span>{{ $kontakFooter['jam_layanan'] }}</span>
+                            <span>{{ $footerJam }}</span>
                         </li>
                         @endif
                     </ul>

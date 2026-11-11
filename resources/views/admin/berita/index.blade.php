@@ -36,17 +36,17 @@
 </div>
 
 {{-- Table --}}
-<div class="bg-white rounded-2xl shadow-sm border border-emerald-900/20 p-4 sm:p-5 overflow-hidden">
+<div class="bg-[#075B3C] rounded-2xl shadow-sm border border-emerald-900/20 p-4 sm:p-5 overflow-hidden">
     <div class="bg-white rounded-xl shadow-xs overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm" id="berita-table">
                 <thead>
-                    <tr class="border-b-2 border-[#075B3C] bg-[#075B3C]">
-                        <th class="text-left font-semibold text-white px-6 py-3.5 text-xs uppercase tracking-wider w-10">#</th>
-                        <th class="text-center font-semibold text-white px-6 py-3.5 text-xs uppercase tracking-wider">Berita</th>
-                        <th class="text-left font-semibold text-white px-4 py-3.5 text-xs uppercase tracking-wider hidden md:table-cell">Kategori</th>
-                        <th class="text-left font-semibold text-white px-4 py-3.5 text-xs uppercase tracking-wider hidden lg:table-cell">Tanggal</th>
-                        <th class="text-center font-semibold text-white px-4 py-3.5 text-xs uppercase tracking-wider">Aksi</th>
+                    <tr class="border-b-4 border-white bg-emerald-100">
+                        <th class="text-left font-semibold text-[#075B3C] px-6 py-3.5 text-xs uppercase tracking-wider w-10">No</th>
+                        <th class="text-center font-semibold text-[#075B3C] px-6 py-3.5 text-xs uppercase tracking-wider">Berita</th>
+                        <th class="text-left font-semibold text-[#075B3C] px-4 py-3.5 text-xs uppercase tracking-wider hidden md:table-cell">Kategori</th>
+                        <th class="text-left font-semibold text-[#075B3C] px-4 py-3.5 text-xs uppercase tracking-wider hidden lg:table-cell">Tanggal</th>
+                        <th class="text-center font-semibold text-[#075B3C] px-4 py-3.5 text-xs uppercase tracking-wider">Aksi</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-border-[#075B3C]" id="table-body">
