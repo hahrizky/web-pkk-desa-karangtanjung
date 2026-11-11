@@ -14,7 +14,7 @@ class DashboardController extends Controller
         $totalBerita = Berita::count();
         $totalAgenda = Agenda::count();
         $totalStatistik = min(StatistikDasawisma::count(), 3);
-        $totalPokja = 4;
+        $totalPengurus = 11; // 1 Pembina + 6 Pengurus Inti + 4 Pokja
 
         // 5 berita terbaru untuk tabel dashboard
         $recentBerita = Berita::latest('tanggal')->take(5)->get()->map(function ($item) {
@@ -42,7 +42,7 @@ class DashboardController extends Controller
             'totalBerita',
             'totalAgenda',
             'totalStatistik',
-            'totalPokja',
+            'totalPengurus',
             'recentBerita',
             'upcomingAgenda'
         ));

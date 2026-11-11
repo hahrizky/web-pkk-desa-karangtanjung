@@ -4,7 +4,6 @@ use App\Http\Controllers\Admin\AgendaController as AdminAgendaController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\PokjaController as AdminPokjaController;
 use App\Http\Controllers\Admin\ProfilController as AdminProfilController;
 use App\Http\Controllers\Admin\StatistikController as AdminStatistikController;
 use App\Http\Controllers\Admin\StrukturController as AdminStrukturController;
@@ -59,11 +58,6 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
 
     // Statistik Dasawisma (CRUD Database)
     Route::resource('statistik', AdminStatistikController::class)->only(['index', 'edit', 'update']);
-
-    // Pokja
-    Route::get('/pokja', [AdminPokjaController::class, 'index'])->name('pokja.index');
-    Route::get('/pokja/{id}/edit', [AdminPokjaController::class, 'edit'])->name('pokja.edit');
-    Route::put('/pokja/{id}', [AdminPokjaController::class, 'update'])->name('pokja.update');
 
     // Struktur Organisasi (Ganti Nama Pengurus)
     Route::get('/struktur', [AdminStrukturController::class, 'index'])->name('struktur.index');

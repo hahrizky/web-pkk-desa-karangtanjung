@@ -117,8 +117,130 @@
             <p class="text-sm text-gray-500">Pengurus Inti TP. PKK Periode Aktif {{ $periode ?? '2024 - 2029' }}</p>
         </div>
 
+        {{-- ══════════════════════════════════════════════════
+             MOBILE: Infinite Marquee Card Slider
+        ══════════════════════════════════════════════════ --}}
+        <div class="sm:hidden overflow-hidden relative"
+             x-data="{
+                dragging: false,
+                startX: 0,
+                scrollLeft: 0,
+                get track() { return this.$refs.track },
+                pause()  { this.track.style.animationPlayState = 'paused' },
+                resume() { if (!this.dragging) this.track.style.animationPlayState = 'running' },
+                onTouchStart(e) {
+                    this.dragging = true;
+                    this.startX = e.touches[0].clientX;
+                    this.scrollLeft = this.$refs.wrapper.scrollLeft;
+                    this.pause();
+                },
+                onTouchMove(e) {
+                    if (!this.dragging) return;
+                    const x = e.touches[0].clientX;
+                    const walk = (this.startX - x) * 1.5;
+                    this.$refs.wrapper.scrollLeft = this.scrollLeft + walk;
+                },
+                onTouchEnd() {
+                    this.dragging = false;
+                    this.resume();
+                },
+             }"
+             @mouseenter="pause()" @mouseleave="resume()"
+        >
+            {{-- Gradient fade edges --}}
+            <div class="absolute left-0 top-0 bottom-0 w-10 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+            <div class="absolute right-0 top-0 bottom-0 w-10 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+
+            @php
+                // array flat semua anggota struktur
+                $allMembers = [];
+
+                // Mapping warna → Tailwind class lengkap (agar terdeteksi scanner)
+                $colorClasses = [
+                    'amber'   => ['border' => 'border-amber-200', 'border_foto' => 'border-amber-300', 'bg' => 'bg-amber-100', 'text' => 'text-amber-800', 'badge_border' => 'border-amber-200'],
+                    'emerald' => ['border' => 'border-emerald-200', 'border_foto' => 'border-emerald-300', 'bg' => 'bg-emerald-100', 'text' => 'text-emerald-800', 'badge_border' => 'border-emerald-200'],
+                    'blue'    => ['border' => 'border-blue-200', 'border_foto' => 'border-blue-300', 'bg' => 'bg-blue-100', 'text' => 'text-blue-800', 'badge_border' => 'border-blue-200'],
+                ];
+
+                // Pembina
+                $allMembers[] = [
+                    'nama'    => $struktur['pembina']['nama'],
+                    'jabatan' => $struktur['pembina']['jabatan'],
+                    'sub'     => $struktur['pembina']['sub'] ?? '',
+                    'foto'    => $struktur['pembina']['foto'] ?? '',
+                    'cls'     => $colorClasses['amber'],
+                ];
+
+                // Pengurus Inti
+                $colorKeys = ['emerald', 'emerald', 'blue', 'blue', 'amber', 'amber'];
+                foreach ($struktur['pengurus_inti'] as $idx => $pi) {
+                    $key = $colorKeys[$idx] ?? 'emerald';
+                    $allMembers[] = [
+                        'nama'    => $pi['nama'],
+                        'jabatan' => $pi['jabatan'],
+                        'sub'     => '',
+                        'foto'    => $pi['foto'] ?? '',
+                        'cls'     => $colorClasses[$key],
+                    ];
+                }
+
+                // Pokja
+                foreach ($struktur['pokja'] as $pk) {
+                    $allMembers[] = [
+                        'nama'    => $pk['ketua'],
+                        'jabatan' => $pk['kode'],
+                        'sub'     => 'Ketua Kelompok Kerja',
+                        'foto'    => $pk['foto'] ?? '',
+                        'cls'     => $colorClasses['emerald'],
+                    ];
+                }
+            @endphp
+
+            <div x-ref="wrapper" class="overflow-x-auto scrollbar-hide"
+                 @touchstart="onTouchStart($event)"
+                 @touchmove.prevent="onTouchMove($event)"
+                 @touchend="onTouchEnd()"
+            >
+                <div
+                    x-ref="track"
+                    class="flex gap-4 py-4 marquee-track"
+                >
+                {{-- Render 2x untuk loop seamless --}}
+                @for ($copy = 0; $copy < 2; $copy++)
+                    @foreach ($allMembers as $member)
+                        <div class="flex-shrink-0 w-36 bg-white border-2 {{ $member['cls']['border'] }} rounded-xl p-3 text-center shadow-sm">
+                            {{-- Pas Foto --}}
+                            <div class="w-16 aspect-[3/4] rounded-lg mx-auto mb-2 overflow-hidden border-2 {{ $member['cls']['border_foto'] }} shadow-sm bg-white p-0.5">
+                                @if (!empty($member['foto']) && file_exists(public_path('images/' . $member['foto'])))
+                                    <img src="{{ asset('images/' . $member['foto']) }}" alt="{{ $member['nama'] }}" class="w-full h-full object-cover rounded-md">
+                                @else
+                                    <div class="w-full h-full bg-[#B91C1C] flex flex-col items-center justify-center text-white rounded-md shadow-inner">
+                                        <i class="fa-solid fa-user text-xl mb-0.5 text-white"></i>
+                                        <span class="text-[8px] font-bold uppercase tracking-wider text-white/90">Pas Foto</span>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <span class="inline-block {{ $member['cls']['bg'] }} {{ $member['cls']['text'] }} text-[9px] font-bold uppercase tracking-wide rounded-full px-2 py-0.5 mb-1 border {{ $member['cls']['badge_border'] }}">
+                                {{ $member['jabatan'] }}
+                            </span>
+
+                            <p class="text-[11px] font-bold text-gray-900 leading-snug">{{ $member['nama'] }}</p>
+                            @if (!empty($member['sub']))
+                                <p class="text-[10px] text-gray-500 mt-0.5">{{ $member['sub'] }}</p>
+                            @endif
+                        </div>
+                    @endforeach
+                @endfor
+            </div>
+            </div>
+        </div>
+
+        {{-- ══════════════════════════════════════════════════
+             DESKTOP / TABLET: Bagan Hierarki (≥ sm)
+        ══════════════════════════════════════════════════ --}}
         {{-- ── Bagan Org ── --}}
-        <div class="flex flex-col items-center gap-0">
+        <div class="hidden sm:flex flex-col items-center gap-0">
 
             {{-- LEVEL 1: PEMBINA --}}
             <div class="flex flex-col items-center w-full">

@@ -13,11 +13,6 @@ class StrukturController extends Controller
         return storage_path('app/profil_data.json');
     }
 
-    private function getPokjaPath()
-    {
-        return storage_path('app/pokja_data.json');
-    }
-
     private function getDefaultProfil()
     {
         return [
@@ -172,17 +167,17 @@ class StrukturController extends Controller
         $pokja4Foto = $handleUpload('pokja_4_foto', $profil['struktur']['pokja'][3]['foto'] ?? null);
 
         // Update bagian struktur, foto, dan periode
-        $cleanStr = function($str) {
-            return trim(preg_replace('/[\x{FFFC}\x{FFFD}\x{0000}-\x{001F}\x{007F}]/u', '', (string)$str));
+        $cleanStr = function ($str) {
+            return trim(preg_replace('/[\x{FFFC}\x{FFFD}\x{0000}-\x{001F}\x{007F}]/u', '', (string) $str));
         };
 
         $profil['periode'] = $cleanStr($validated['periode']);
         $profil['struktur'] = [
             'pembina' => [
                 'jabatan' => 'Pembina',
-                'nama'    => $cleanStr($validated['pembina_nama']),
-                'sub'     => $cleanStr($validated['pembina_sub'] ?? 'Kepala Desa Karang Tanjung'),
-                'foto'    => $pembinaFoto,
+                'nama' => $cleanStr($validated['pembina_nama']),
+                'sub' => $cleanStr($validated['pembina_sub'] ?? 'Kepala Desa Karang Tanjung'),
+                'foto' => $pembinaFoto,
             ],
             'pengurus_inti' => [
                 ['jabatan' => 'Ketua', 'nama' => $cleanStr($validated['ketua_nama']), 'foto' => $ketuaFoto],
@@ -202,27 +197,6 @@ class StrukturController extends Controller
 
         File::ensureDirectoryExists(storage_path('app'));
         File::put($path, json_encode($profil, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-
-        // Sinkronisasi ke data Pokja jika ada
-        $pokjaPath = $this->getPokjaPath();
-        if (File::exists($pokjaPath)) {
-            $pokjaList = json_decode(File::get($pokjaPath), true);
-            if (is_array($pokjaList)) {
-                $ketuaMapping = [
-                    1 => ['ketua' => $validated['pokja_1_ketua'], 'foto' => $pokja1Foto],
-                    2 => ['ketua' => $validated['pokja_2_ketua'], 'foto' => $pokja2Foto],
-                    3 => ['ketua' => $validated['pokja_3_ketua'], 'foto' => $pokja3Foto],
-                    4 => ['ketua' => $validated['pokja_4_ketua'], 'foto' => $pokja4Foto],
-                ];
-                foreach ($pokjaList as &$item) {
-                    if (isset($item['id']) && isset($ketuaMapping[$item['id']])) {
-                        $item['ketua'] = $ketuaMapping[$item['id']]['ketua'];
-                        $item['foto'] = $ketuaMapping[$item['id']]['foto'];
-                    }
-                }
-                File::put($pokjaPath, json_encode($pokjaList, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-            }
-        }
 
         return redirect()->route('admin.struktur.index')
             ->with('success', 'Data profil pengurus dan susunan struktur organisasi berhasil disimpan!');
