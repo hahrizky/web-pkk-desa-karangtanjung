@@ -27,7 +27,7 @@
             ['label' => 'Total Berita', 'value' => $totalBerita, 'icon' => 'fa-newspaper', 'color' => 'bg-emerald-50 text-emerald-600', 'route' => 'admin.berita.index'],
             ['label' => 'Agenda Kegiatan', 'value' => $totalAgenda, 'icon' => 'fa-calendar-days', 'color' => 'bg-amber-50 text-amber-600', 'route' => 'admin.agenda.index'],
             ['label' => 'Statistik Dasawisma', 'value' => $totalStatistik, 'icon' => 'fa-chart-pie', 'color' => 'bg-blue-50 text-blue-600', 'route' => 'admin.statistik.index'],
-            ['label' => 'Kelompok Kerja (Pokja)', 'value' => $totalPokja, 'icon' => 'fa-layer-group', 'color' => 'bg-purple-50 text-purple-600', 'route' => 'admin.pokja.index'],
+            ['label' => 'Struktur Organisasi', 'value' => $totalPengurus, 'icon' => 'fa-sitemap', 'color' => 'bg-purple-50 text-purple-600', 'route' => 'admin.struktur.index'],
         ];
     @endphp
 
