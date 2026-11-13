@@ -60,7 +60,7 @@
             <table class="w-full text-sm">
                 <thead>
                     <tr class="border-b-2 border-[#075B3C] bg-[#075B3C]">
-                        <th class="text-left font-semibold text-white px-6 py-3.5 text-xs uppercase tracking-wider w-10">#</th>
+                        <th class="text-left font-semibold text-white px-6 py-3.5 text-xs uppercase tracking-wider w-10">No.</th>
                         <th class="text-left font-semibold text-white px-6 py-3.5 text-xs uppercase tracking-wider">Indikator</th>
                         <th class="text-left font-semibold text-white px-4 py-3.5 text-xs uppercase tracking-wider hidden sm:table-cell">Deskripsi</th>
                         <th class="text-center font-semibold text-white px-4 py-3.5 text-xs uppercase tracking-wider">Jumlah</th>

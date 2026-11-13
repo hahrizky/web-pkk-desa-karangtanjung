@@ -30,7 +30,7 @@
             <p class="mt-1 text-sm text-gray-500">{{ $meta['deskripsi'] }}</p>
         </div>
 
-        <form action="{{ route('admin.statistik.update', $id) }}" method="POST">
+        <form id="statistik-form" action="{{ route('admin.statistik.update', $id) }}" method="POST">
             @csrf
             @method('PUT')
 
@@ -42,12 +42,43 @@
                    class="w-full px-3.5 py-3 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
 
             <div class="mt-6 pt-5 border-t border-gray-100 flex items-center justify-end gap-3">
-                <a href="{{ route('admin.statistik.index') }}" class="px-4 py-2 text-sm text-gray-600 hover:text-gray-800">Batal</a>
-                <button type="submit" class="bg-[#075B3C] text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#064e33] transition shadow-sm">
+                <button type="button" id="btn-cancel-statistik" onclick="resetStatistikForm()"
+                        class="hidden px-4 py-2 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold rounded-lg text-xs transition-colors shadow-sm flex items-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>Batalkan Perubahan</span>
+                </button>
+                <button type="submit" class="bg-[#075B3C] text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-[#064e33] transition shadow-sm cursor-pointer">
                     Simpan Jumlah
                 </button>
             </div>
         </form>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    const initialNilai = document.getElementById('nilai')?.value ?? '';
+
+    document.getElementById('nilai')?.addEventListener('input', (e) => {
+        const cancelBtn = document.getElementById('btn-cancel-statistik');
+        if (!cancelBtn) return;
+        if (e.target.value !== initialNilai) {
+            cancelBtn.classList.remove('hidden');
+        } else {
+            cancelBtn.classList.add('hidden');
+        }
+    });
+
+    function resetStatistikForm() {
+        const input = document.getElementById('nilai');
+        if (input) {
+            input.value = initialNilai;
+        }
+        const cancelBtn = document.getElementById('btn-cancel-statistik');
+        if (cancelBtn) {
+            cancelBtn.classList.add('hidden');
+        }
+    }
+</script>
+@endpush
 @endsection

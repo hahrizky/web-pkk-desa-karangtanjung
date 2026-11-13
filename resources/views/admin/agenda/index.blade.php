@@ -30,7 +30,7 @@
         <table class="w-full text-sm">
             <thead>
                 <tr class="border-b border-gray-100 bg-gray-50">
-                    <th class="text-left font-semibold text-gray-600 px-6 py-3.5 text-xs uppercase tracking-wider w-10">#</th>
+                    <th class="text-left font-semibold text-gray-600 px-6 py-3.5 text-xs uppercase tracking-wider w-10">No.</th>
                     <th class="text-left font-semibold text-gray-600 px-6 py-3.5 text-xs uppercase tracking-wider">Agenda</th>
                     <th class="text-left font-semibold text-gray-600 px-4 py-3.5 text-xs uppercase tracking-wider hidden md:table-cell">Tanggal</th>
                     <th class="text-left font-semibold text-gray-600 px-4 py-3.5 text-xs uppercase tracking-wider hidden lg:table-cell">Lokasi</th>
@@ -44,9 +44,9 @@
                         <td class="px-6 py-4 text-gray-400 text-xs">{{ $index + 1 }}</td>
                         <td class="px-6 py-4">
                             <div class="flex items-center gap-3">
-                                <div class="w-11 h-11 bg-amber-50 rounded-xl flex flex-col items-center justify-center flex-shrink-0">
-                                    <span class="text-xs font-bold text-amber-600 leading-none">{{ \Carbon\Carbon::parse($agenda['tanggal'])->format('d') }}</span>
-                                    <span class="text-[9px] text-amber-500 uppercase">{{ \Carbon\Carbon::parse($agenda['tanggal'])->locale('id')->isoFormat('MMM') }}</span>
+                                <div class="w-11 h-11 bg-[#075B3C] rounded-xl flex flex-col items-center justify-center flex-shrink-0">
+                                    <span class="text-xs font-bold text-white leading-none">{{ \Carbon\Carbon::parse($agenda['tanggal'])->format('d') }}</span>
+                                    <span class="text-[9px] text-white uppercase">{{ \Carbon\Carbon::parse($agenda['tanggal'])->locale('id')->isoFormat('MMM') }}</span>
                                 </div>
                                 <div class="min-w-0">
                                     <p class="font-semibold text-gray-800 leading-snug">{{ $agenda['judul'] }}</p>

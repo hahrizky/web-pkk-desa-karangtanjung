@@ -43,7 +43,7 @@
         </div>
     @endif
 
-    <form action="{{ route('admin.struktur.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+    <form id="struktur-form" action="{{ route('admin.struktur.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
         @method('PUT')
 
@@ -377,8 +377,13 @@
                 Format foto yang didukung: JPG, PNG, WEBP (maksimal 2MB per foto).
             </div>
             <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                <button type="button" id="btn-cancel-struktur" onclick="resetStrukturForm()"
+                        class="hidden w-full sm:w-auto px-5 py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold rounded-xl text-sm transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>Batalkan Perubahan</span>
+                </button>
                 <button type="submit"
-                        class="w-full sm:w-auto px-6 py-2.5 bg-[#075B3C] hover:bg-[#055030] text-white font-semibold rounded-xl text-sm transition-all shadow-sm flex items-center justify-center gap-2 active:scale-95">
+                        class="w-full sm:w-auto px-6 py-2.5 bg-[#075B3C] hover:bg-[#055030] text-white font-semibold rounded-xl text-sm transition-all shadow-sm flex items-center justify-center gap-2 active:scale-95 cursor-pointer">
                     <i class="fa-solid fa-floppy-disk"></i>
                     <span>Simpan Perubahan Struktur &amp; Foto</span>
                 </button>
@@ -388,4 +393,72 @@
     </form>
 
 </div>
+
+@push('scripts')
+<script>
+    let initialStrukturValues = {};
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('struktur-form');
+        if (!form) return;
+
+        const inputs = form.querySelectorAll('input:not([name="_token"]):not([name="_method"])');
+        inputs.forEach(el => {
+            if (el.type !== 'file') {
+                initialStrukturValues[el.name] = el.value;
+            }
+            el.addEventListener('input', checkStrukturDirty);
+            el.addEventListener('change', checkStrukturDirty);
+        });
+    });
+
+    function checkStrukturDirty() {
+        const cancelBtn = document.getElementById('btn-cancel-struktur');
+        if (!cancelBtn) return;
+
+        const form = document.getElementById('struktur-form');
+        let isDirty = false;
+
+        const inputs = form.querySelectorAll('input:not([name="_token"]):not([name="_method"])');
+        for (const el of inputs) {
+            if (el.type === 'file') {
+                if (el.files && el.files.length > 0) {
+                    isDirty = true;
+                    break;
+                }
+            } else {
+                if (initialStrukturValues[el.name] !== undefined && el.value !== initialStrukturValues[el.name]) {
+                    isDirty = true;
+                    break;
+                }
+            }
+        }
+
+        if (isDirty) {
+            cancelBtn.classList.remove('hidden');
+        } else {
+            cancelBtn.classList.add('hidden');
+        }
+    }
+
+    function resetStrukturForm() {
+        const form = document.getElementById('struktur-form');
+        if (!form) return;
+
+        const inputs = form.querySelectorAll('input:not([name="_token"]):not([name="_method"])');
+        inputs.forEach(el => {
+            if (el.type === 'file') {
+                el.value = '';
+            } else if (initialStrukturValues[el.name] !== undefined) {
+                el.value = initialStrukturValues[el.name];
+            }
+        });
+
+        const cancelBtn = document.getElementById('btn-cancel-struktur');
+        if (cancelBtn) {
+            cancelBtn.classList.add('hidden');
+        }
+    }
+</script>
+@endpush
 @endsection

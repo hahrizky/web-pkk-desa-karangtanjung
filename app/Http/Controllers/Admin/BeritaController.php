@@ -49,6 +49,9 @@ class BeritaController extends Controller
         $validated['penulis'] = $validated['penulis'] ?? 'Sekretariat TP. PKK Karangtanjung';
         $validated['status'] = 'published';
 
+        // Bersihkan tag paragraf kosong / &nbsp; dari editor
+        $validated['konten'] = preg_replace('/<p[^>]*>(\s|&nbsp;|<br\s*\/?>)*<\/p>/i', '', $validated['konten']);
+
         // Upload gambar jika ada
         if ($request->hasFile('gambar')) {
             $file = $request->file('gambar');
@@ -97,11 +100,23 @@ class BeritaController extends Controller
         ]);
 
         if ($request->hasFile('gambar')) {
+            // Hapus foto lama jika ada dan bukan gambar bawaan seeder (1.webp - 12.webp)
+            $oldImage = $item->gambar;
+            if ($oldImage && !preg_match('/^[1-9]\.webp$|^1[0-2]\.webp$/', $oldImage)) {
+                $oldPath = public_path('images/'.$oldImage);
+                if (File::exists($oldPath)) {
+                    File::delete($oldPath);
+                }
+            }
+
             $file = $request->file('gambar');
             $filename = time().'_'.Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$file->getClientOriginalExtension();
             $file->move(public_path('images'), $filename);
             $validated['gambar'] = $filename;
         }
+
+        // Bersihkan tag paragraf kosong / &nbsp; dari editor
+        $validated['konten'] = preg_replace('/<p[^>]*>(\s|&nbsp;|<br\s*\/?>)*<\/p>/i', '', $validated['konten']);
 
         $item->update($validated);
 
@@ -112,6 +127,16 @@ class BeritaController extends Controller
     public function destroy(int|string $id)
     {
         $item = Berita::findOrFail($id);
+
+        // Hapus file fisik gambar jika bukan gambar bawaan seeder (1.webp - 12.webp)
+        $oldImage = $item->gambar;
+        if ($oldImage && !preg_match('/^[1-9]\.webp$|^1[0-2]\.webp$/', $oldImage)) {
+            $oldPath = public_path('images/'.$oldImage);
+            if (File::exists($oldPath)) {
+                File::delete($oldPath);
+            }
+        }
+
         $item->delete();
 
         return redirect()->route('admin.berita.index')

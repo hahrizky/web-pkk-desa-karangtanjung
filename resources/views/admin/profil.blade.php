@@ -14,17 +14,17 @@
     </div>
 
     @if ($errors->any())
-        <div class="mb-5 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-xs">
-            <p class="font-bold mb-1">Ada data yang belum terisi dengan benar:</p>
-            <ul class="list-disc list-inside space-y-0.5">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    <div class="mb-5 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-xs">
+        <p class="font-bold mb-1">Ada data yang belum terisi dengan benar:</p>
+        <ul class="list-disc list-inside space-y-0.5">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
     @endif
 
-    <form action="{{ route('admin.profil.update') }}" method="POST" class="space-y-5">
+    <form id="profil-form" action="{{ route('admin.profil.update') }}" method="POST" class="space-y-5">
         @csrf @method('PUT')
 
         {{-- Identitas & Kontak Sekretariat (Sesuai Footer Website) --}}
@@ -46,8 +46,8 @@
                         <span>Alamat Lengkap Kantor / Sekretariat</span>
                     </label>
                     <input type="text" name="alamat" value="{{ old('alamat', $profil['alamat'] ?? 'Jl. Sunan Giri No.1 Desa Karangtanjung, Kec. Candi, Kab. Sidoarjo, Jawa Timur') }}"
-                           placeholder="Contoh: Jl. Sunan Giri No.1 Desa Karangtanjung, Kec. Candi, Kab. Sidoarjo, Jawa Timur (kosongkan untuk menyembunyikan)"
-                           class="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
+                        placeholder="Contoh: Jl. Sunan Giri No.1 Desa Karangtanjung, Kec. Candi, Kab. Sidoarjo, Jawa Timur (kosongkan untuk menyembunyikan)"
+                        class="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
                     <p class="text-[11px] text-gray-400 mt-1">Kosongkan jika ingin menyembunyikan baris alamat di footer</p>
                 </div>
 
@@ -59,8 +59,8 @@
                             <span>Telepon / WhatsApp Sekretariat</span>
                         </label>
                         <input type="text" name="telepon" value="{{ old('telepon', $profil['telepon'] ?? '') }}"
-                               placeholder="Contoh: +62 812-3456-7890 (kosongkan jika belum ada)"
-                               class="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
+                            placeholder="Contoh: +62 812-3456-7890 (kosongkan jika belum ada)"
+                            class="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
                         <p class="text-[11px] text-gray-400 mt-1">Kosongkan jika ingin menyembunyikan telepon di footer</p>
                     </div>
 
@@ -71,8 +71,8 @@
                             <span>Email Resmi PKK</span>
                         </label>
                         <input type="email" name="email" value="{{ old('email', $profil['email'] ?? '') }}"
-                               placeholder="Contoh: pkk.desakarangtanjung@gmail.com (kosongkan jika belum ada)"
-                               class="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
+                            placeholder="Contoh: pkk.desakarangtanjung@gmail.com (kosongkan jika belum ada)"
+                            class="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
                         <p class="text-[11px] text-gray-400 mt-1">Kosongkan jika ingin menyembunyikan email di footer</p>
                     </div>
                 </div>
@@ -84,8 +84,8 @@
                         <span>Jam Layanan Sekretariat</span>
                     </label>
                     <input type="text" name="jam_layanan" value="{{ old('jam_layanan', $profil['jam_layanan'] ?? 'Senin - Jumat (08.00 - 15.00 WIB)') }}"
-                           placeholder="Contoh: Senin - Jumat (08.00 - 15.00 WIB) (kosongkan untuk menyembunyikan)"
-                           class="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
+                        placeholder="Contoh: Senin - Jumat (08.00 - 15.00 WIB) (kosongkan untuk menyembunyikan)"
+                        class="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
                 </div>
             </div>
 
@@ -96,22 +96,22 @@
                     <div>
                         <label class="block text-[11px] font-medium text-gray-500 mb-1">Nama Desa</label>
                         <input type="text" name="nama_desa" value="{{ old('nama_desa', $profil['nama_desa'] ?? 'Karangtanjung') }}"
-                               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
                     </div>
                     <div>
                         <label class="block text-[11px] font-medium text-gray-500 mb-1">Kecamatan</label>
                         <input type="text" name="kecamatan" value="{{ old('kecamatan', $profil['kecamatan'] ?? 'Candi') }}"
-                               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
                     </div>
                     <div>
                         <label class="block text-[11px] font-medium text-gray-500 mb-1">Kabupaten</label>
                         <input type="text" name="kabupaten" value="{{ old('kabupaten', $profil['kabupaten'] ?? 'Sidoarjo') }}"
-                               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
                     </div>
                     <div>
                         <label class="block text-[11px] font-medium text-gray-500 mb-1">Provinsi</label>
                         <input type="text" name="provinsi" value="{{ old('provinsi', $profil['provinsi'] ?? 'Jawa Timur') }}"
-                               class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
+                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
                     </div>
                 </div>
             </div>
@@ -121,15 +121,14 @@
         <div class="bg-white rounded-xl border border-gray-200 p-5 sm:p-6 shadow-xs space-y-4">
             <div class="border-b border-gray-100 pb-3">
                 <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
-                    <i class="fa-solid fa-bullseye text-[#075B3C]"></i>
-                    <span>Visi &amp; Misi TP. PKK Desa Karangtanjung</span>
+                    <span>VISI &amp; MISI</span>
                 </h3>
             </div>
 
             <div>
                 <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Visi</label>
                 <textarea name="visi" rows="2"
-                          class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>{{ old('visi', $profil['visi'] ?? '') }}</textarea>
+                    class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>{{ old('visi', $profil['visi'] ?? '') }}</textarea>
             </div>
 
             {{-- Poin-Poin Misi Terstruktur --}}
@@ -140,7 +139,7 @@
                         <p class="text-[11px] text-gray-400 mt-0.5">Ubah judul dan uraian deskripsi setiap misi yang tampil di website publik</p>
                     </div>
                     <button type="button" id="btn-tambah-misi"
-                            class="px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-[#075B3C] border border-emerald-200 text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5 shadow-2xs">
+                        class="px-3 py-1.5 bg-[#075B3C] hover:bg-[#087A50] active:bg-[#16A36A] text-white border border-emerald-200 text-xs font-semibold rounded-lg transition-all duration-200 flex items-center gap-1.5 shadow-2xs">
                         <i class="fa-solid fa-plus text-[10px]"></i>
                         <span>Tambah Misi</span>
                     </button>
@@ -154,7 +153,7 @@
                                 Misi {{ sprintf('%02d', $loop->iteration) }}
                             </span>
                             <button type="button" onclick="hapusMisi(this)"
-                                    class="btn-hapus-misi text-gray-400 hover:text-red-500 text-xs transition-colors flex items-center gap-1">
+                                class="btn-hapus-misi text-gray-400 hover:text-red-500 text-xs transition-colors flex items-center gap-1">
                                 <i class="fa-regular fa-trash-can"></i>
                                 <span>Hapus</span>
                             </button>
@@ -162,14 +161,14 @@
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">Judul Misi</label>
                             <input type="text" name="misi[{{ $idx }}][judul]" value="{{ old('misi.'.$idx.'.judul', $m['judul'] ?? '') }}"
-                                   placeholder="Contoh: Ketahanan Mental & Gotong Royong"
-                                   class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
+                                placeholder="Contoh: Ketahanan Mental & Gotong Royong"
+                                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">Deskripsi Misi</label>
                             <textarea name="misi[{{ $idx }}][deskripsi]" rows="2"
-                                      placeholder="Tuliskan uraian detail misi ini..."
-                                      class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs sm:text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>{{ old('misi.'.$idx.'.deskripsi', $m['deskripsi'] ?? '') }}</textarea>
+                                placeholder="Tuliskan uraian detail misi ini..."
+                                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs sm:text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>{{ old('misi.'.$idx.'.deskripsi', $m['deskripsi'] ?? '') }}</textarea>
                         </div>
                     </div>
                     @endforeach
@@ -177,10 +176,15 @@
             </div>
         </div>
 
-        {{-- Tombol Simpan --}}
+        {{-- Tombol Simpan & Batal Perubahan --}}
         <div class="flex items-center justify-end gap-3 pt-2">
+            <button type="button" id="btn-cancel-profil" onclick="resetProfilForm()"
+                class="hidden px-5 py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold rounded-lg transition-all text-sm shadow-sm hover:shadow flex items-center gap-1.5 cursor-pointer">
+                <i class="fa-solid fa-rotate-left"></i>
+                <span>Batalkan Perubahan</span>
+            </button>
             <button type="submit"
-                    class="px-6 py-2.5 bg-[#075B3C] hover:bg-[#055030] text-white font-semibold rounded-lg transition-all text-sm shadow-xs flex items-center gap-2">
+                class="px-6 py-2.5 bg-[#075B3C] hover:bg-[#055030] text-white font-semibold rounded-lg transition-all text-sm shadow-xs flex items-center gap-2 cursor-pointer">
                 <i class="fa-solid fa-floppy-disk"></i>
                 <span>Simpan Perubahan Profil</span>
             </button>
@@ -214,10 +218,11 @@
         if (container.children.length > 1) {
             button.closest('.misi-item').remove();
             updateMisiBadges();
+            checkProfilDirty();
         }
     }
 
-    document.getElementById('btn-tambah-misi')?.addEventListener('click', function () {
+    document.getElementById('btn-tambah-misi')?.addEventListener('click', function() {
         const container = document.getElementById('misi-container');
         const count = container.children.length;
         const num = String(count + 1).padStart(2, '0');
@@ -250,8 +255,111 @@
         `;
         container.appendChild(div);
         updateMisiBadges();
+
+        // Tambahkan listener dirty check pada input misi baru
+        div.querySelectorAll('input, textarea').forEach(el => {
+            el.addEventListener('input', checkProfilDirty);
+            el.addEventListener('change', checkProfilDirty);
+        });
+        checkProfilDirty();
+
+        // Otomatis scroll dan fokus ke field Judul Misi yang baru dibuat
+        const newJudulInput = div.querySelector('input[type="text"]');
+        if (newJudulInput) {
+            div.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            });
+            setTimeout(() => {
+                newJudulInput.focus();
+            }, 300);
+        }
     });
 
-    document.addEventListener('DOMContentLoaded', updateMisiBadges);
+    let initialMisiHtml = '';
+    let initialProfilValues = {};
+
+    function saveInitialProfilState() {
+        const form = document.getElementById('profil-form');
+        if (!form) return;
+
+        const inputs = form.querySelectorAll('input:not([name="_token"]):not([name="_method"]), textarea');
+        initialProfilValues = {};
+        inputs.forEach(el => {
+            initialProfilValues[el.name || el.id] = el.value;
+            el.addEventListener('input', checkProfilDirty);
+            el.addEventListener('change', checkProfilDirty);
+        });
+
+        const misiContainer = document.getElementById('misi-container');
+        if (misiContainer) {
+            initialMisiHtml = misiContainer.innerHTML;
+        }
+    }
+
+    function checkProfilDirty() {
+        const cancelBtn = document.getElementById('btn-cancel-profil');
+        if (!cancelBtn) return;
+
+        const form = document.getElementById('profil-form');
+        let isDirty = false;
+
+        const inputs = form.querySelectorAll('input:not([name="_token"]):not([name="_method"]), textarea');
+        for (const el of inputs) {
+            const key = el.name || el.id;
+            if (initialProfilValues[key] === undefined || el.value !== initialProfilValues[key]) {
+                isDirty = true;
+                break;
+            }
+        }
+
+        const misiContainer = document.getElementById('misi-container');
+        if (!isDirty && misiContainer) {
+            const currentItemCount = misiContainer.querySelectorAll('.misi-item').length;
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = initialMisiHtml;
+            const initialItemCount = tempDiv.querySelectorAll('.misi-item').length;
+            if (currentItemCount !== initialItemCount) {
+                isDirty = true;
+            }
+        }
+
+        if (isDirty) {
+            cancelBtn.classList.remove('hidden');
+        } else {
+            cancelBtn.classList.add('hidden');
+        }
+    }
+
+    function resetProfilForm() {
+        const misiContainer = document.getElementById('misi-container');
+        if (misiContainer && initialMisiHtml) {
+            misiContainer.innerHTML = initialMisiHtml;
+            updateMisiBadges();
+        }
+
+        const form = document.getElementById('profil-form');
+        if (form) {
+            const inputs = form.querySelectorAll('input:not([name="_token"]):not([name="_method"]), textarea');
+            inputs.forEach(el => {
+                const key = el.name || el.id;
+                if (initialProfilValues[key] !== undefined) {
+                    el.value = initialProfilValues[key];
+                }
+            });
+        }
+
+        saveInitialProfilState();
+
+        const cancelBtn = document.getElementById('btn-cancel-profil');
+        if (cancelBtn) {
+            cancelBtn.classList.add('hidden');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        updateMisiBadges();
+        saveInitialProfilState();
+    });
 </script>
 @endsection
