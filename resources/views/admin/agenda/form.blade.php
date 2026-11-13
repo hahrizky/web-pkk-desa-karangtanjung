@@ -29,7 +29,7 @@
     @endif
 
     <div class="bg-white rounded-xl border border-gray-200 p-5 sm:p-6 shadow-xs">
-        <form action="{{ isset($agenda) ? route('admin.agenda.update', $agenda['id']) : route('admin.agenda.store') }}"
+        <form id="agenda-form" action="{{ isset($agenda) ? route('admin.agenda.update', $agenda['id']) : route('admin.agenda.store') }}"
               method="POST" class="space-y-4">
             @csrf
             @if(isset($agenda)) @method('PUT') @endif
@@ -106,12 +106,20 @@
             </div>
 
             <div class="pt-4 border-t border-gray-100 flex items-center justify-end gap-3">
-                <a href="{{ route('admin.agenda.index') }}"
-                   class="px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-600 font-medium rounded-lg text-xs transition-colors">
-                    Batal
-                </a>
+                @if(isset($agenda))
+                    <button type="button" id="btn-cancel-agenda" onclick="resetAgendaForm()"
+                            class="hidden px-4 py-2 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold rounded-lg text-xs transition-colors shadow-sm flex items-center gap-1.5 cursor-pointer">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Batalkan Perubahan</span>
+                    </button>
+                @else
+                    <a href="{{ route('admin.agenda.index') }}"
+                       class="px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-600 font-medium rounded-lg text-xs transition-colors">
+                        Batal
+                    </a>
+                @endif
                 <button type="submit"
-                        class="px-5 py-2 bg-[#075B3C] hover:bg-[#055030] text-white font-semibold rounded-lg text-xs transition-colors shadow-xs flex items-center gap-2">
+                        class="px-5 py-2 bg-[#075B3C] hover:bg-[#055030] text-white font-semibold rounded-lg text-xs transition-colors shadow-xs flex items-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-floppy-disk"></i>
                     <span>{{ isset($agenda) ? 'Simpan Perubahan' : 'Simpan Agenda' }}</span>
                 </button>
@@ -119,4 +127,61 @@
         </form>
     </div>
 </div>
+
+@push('scripts')
+<script>
+    let initialAgendaValues = {};
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('agenda-form');
+        if (!form) return;
+
+        const inputs = form.querySelectorAll('input:not([name="_token"]):not([name="_method"]), select, textarea');
+        inputs.forEach(el => {
+            initialAgendaValues[el.name] = el.value;
+            el.addEventListener('input', checkAgendaDirty);
+            el.addEventListener('change', checkAgendaDirty);
+        });
+    });
+
+    function checkAgendaDirty() {
+        const cancelBtn = document.getElementById('btn-cancel-agenda');
+        if (!cancelBtn) return;
+
+        const form = document.getElementById('agenda-form');
+        let isDirty = false;
+
+        const inputs = form.querySelectorAll('input:not([name="_token"]):not([name="_method"]), select, textarea');
+        for (const el of inputs) {
+            if (initialAgendaValues[el.name] !== undefined && el.value !== initialAgendaValues[el.name]) {
+                isDirty = true;
+                break;
+            }
+        }
+
+        if (isDirty) {
+            cancelBtn.classList.remove('hidden');
+        } else {
+            cancelBtn.classList.add('hidden');
+        }
+    }
+
+    function resetAgendaForm() {
+        const form = document.getElementById('agenda-form');
+        if (!form) return;
+
+        const inputs = form.querySelectorAll('input:not([name="_token"]):not([name="_method"]), select, textarea');
+        inputs.forEach(el => {
+            if (initialAgendaValues[el.name] !== undefined) {
+                el.value = initialAgendaValues[el.name];
+            }
+        });
+
+        const cancelBtn = document.getElementById('btn-cancel-agenda');
+        if (cancelBtn) {
+            cancelBtn.classList.add('hidden');
+        }
+    }
+</script>
+@endpush
 @endsection

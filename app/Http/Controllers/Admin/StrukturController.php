@@ -143,6 +143,14 @@ class StrukturController extends Controller
 
         $handleUpload = function ($key, $existing) use ($request, $uploadDir) {
             if ($request->hasFile($key)) {
+                // Hapus foto lama jika ada dan bukan sample/default
+                if ($existing && !str_contains($existing, 'default_pas_foto') && !str_contains($existing, 'sample_pas_foto')) {
+                    $oldPath = public_path('images/'.$existing);
+                    if (File::exists($oldPath)) {
+                        File::delete($oldPath);
+                    }
+                }
+
                 $file = $request->file($key);
                 $filename = $key.'_'.time().'.'.$file->getClientOriginalExtension();
                 $file->move($uploadDir, $filename);
