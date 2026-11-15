@@ -9,21 +9,25 @@ use Illuminate\Support\Str;
 
 class BeritaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $beritaList = Berita::latest('tanggal')->get()->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'judul' => $item->judul,
-                'kategori' => $item->kategori,
-                'tanggal' => $item->tanggal_formatted,
-                'tanggal_raw' => $item->tanggal ? $item->tanggal->format('Y-m-d') : date('Y-m-d'),
-                'ringkasan' => $item->ringkasan,
-                'konten' => $item->konten,
-                'gambar' => $item->gambar,
-                'penulis' => $item->penulis,
-            ];
-        })->all();
+        $query = Berita::latest('tanggal');
+
+        // Pencarian judul / ringkasan jika ada parameter
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function ($sub) use ($q) {
+                $sub->where('judul', 'like', "%{$q}%")
+                    ->orWhere('ringkasan', 'like', "%{$q}%");
+            });
+        }
+
+        // Filter kategori jika dipilih
+        if ($request->filled('kategori')) {
+            $query->where('kategori', $request->kategori);
+        }
+
+        $beritaList = $query->paginate(10)->withQueryString();
 
         return view('admin.berita.index', compact('beritaList'));
     }

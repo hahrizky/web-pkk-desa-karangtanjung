@@ -121,17 +121,17 @@ class StrukturController extends Controller
             'pokja_4_ketua' => 'required|string|max:150',
 
             // Validasi file foto
-            'pembina_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'ketua_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'wakil_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'sekretaris_1_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'sekretaris_2_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'bendahara_1_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'bendahara_2_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'pokja_1_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'pokja_2_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'pokja_3_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'pokja_4_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'pembina_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'ketua_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'wakil_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'sekretaris_1_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'sekretaris_2_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'bendahara_1_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'bendahara_2_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'pokja_1_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'pokja_2_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'pokja_3_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'pokja_4_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
         $path = $this->getProfilPath();
@@ -142,9 +142,12 @@ class StrukturController extends Controller
         File::ensureDirectoryExists($uploadDir);
 
         $handleUpload = function ($key, $existing) use ($request, $uploadDir) {
+            $deleteKey = 'hapus_'.$key;
+            $shouldDelete = $request->input($deleteKey) === '1' || $request->input($deleteKey) === 1;
+
             if ($request->hasFile($key)) {
                 // Hapus foto lama jika ada dan bukan sample/default
-                if ($existing && !str_contains($existing, 'default_pas_foto') && !str_contains($existing, 'sample_pas_foto')) {
+                if ($existing && ! str_contains($existing, 'default_pas_foto') && ! str_contains($existing, 'sample_pas_foto')) {
                     $oldPath = public_path('images/'.$existing);
                     if (File::exists($oldPath)) {
                         File::delete($oldPath);
@@ -156,6 +159,17 @@ class StrukturController extends Controller
                 $file->move($uploadDir, $filename);
 
                 return 'pengurus/'.$filename;
+            }
+
+            if ($shouldDelete) {
+                if ($existing && ! str_contains($existing, 'default_pas_foto') && ! str_contains($existing, 'sample_pas_foto')) {
+                    $oldPath = public_path('images/'.$existing);
+                    if (File::exists($oldPath)) {
+                        File::delete($oldPath);
+                    }
+                }
+
+                return null;
             }
 
             return $existing;

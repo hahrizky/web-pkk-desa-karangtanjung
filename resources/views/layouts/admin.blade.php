@@ -129,23 +129,35 @@
     </header>
 
     {{-- Page Content --}}
-    <main class="flex-1 p-4 md:p-6">
-        {{-- Flash Messages --}}
+    <main class="flex-1 p-4 md:p-6 bg-emerald-100">
+        {{-- Flash Messages (Floating Toast Notification) --}}
         @if(session('success'))
-            <div class="mb-4 flex items-center gap-3 bg-green-50 border border-green-200 text-green-800 px-4 py-3 rounded-xl text-sm" id="flash-success">
-                <i class="fa-solid fa-circle-check text-green-500"></i>
-                <span>{{ session('success') }}</span>
-                <button onclick="this.parentElement.remove()" class="ml-auto text-green-400 hover:text-green-600">
-                    <i class="fa-solid fa-xmark"></i>
+            <div id="flash-success"
+                 class="fixed top-6 right-6 z-50 flex items-center gap-3.5 bg-[#075B3C] text-white px-5 py-3.5 rounded-2xl shadow-xl border border-emerald-400/30 transition-all duration-300 transform translate-y-0 opacity-100 max-w-md animate-bounce-short">
+                <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0 text-white shadow-inner">
+                    <i class="fa-solid fa-check text-base"></i>
+                </div>
+                <div class="pr-2">
+                    <p class="text-xs uppercase tracking-wider font-extrabold text-emerald-200">Berhasil</p>
+                    <p class="text-sm font-semibold text-white leading-snug">{{ session('success') }}</p>
+                </div>
+                <button onclick="dismissToast(this.parentElement)" class="ml-auto text-white/70 hover:text-white p-1 rounded-lg transition-colors cursor-pointer">
+                    <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
         @endif
         @if(session('error'))
-            <div class="mb-4 flex items-center gap-3 bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-xl text-sm">
-                <i class="fa-solid fa-circle-xmark text-red-500"></i>
-                <span>{{ session('error') }}</span>
-                <button onclick="this.parentElement.remove()" class="ml-auto text-red-400 hover:text-red-600">
-                    <i class="fa-solid fa-xmark"></i>
+            <div id="flash-error"
+                 class="fixed top-6 right-6 z-50 flex items-center gap-3.5 bg-red-600 text-white px-5 py-3.5 rounded-2xl shadow-xl border border-red-300/40 transition-all duration-300 max-w-md">
+                <div class="w-8 h-8 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0 text-white shadow-inner">
+                    <i class="fa-solid fa-triangle-exclamation text-base"></i>
+                </div>
+                <div class="pr-2">
+                    <p class="text-xs uppercase tracking-wider font-extrabold text-red-100">Gagal</p>
+                    <p class="text-sm font-semibold text-white leading-snug">{{ session('error') }}</p>
+                </div>
+                <button onclick="dismissToast(this.parentElement)" class="ml-auto text-white/70 hover:text-white p-1 rounded-lg transition-colors cursor-pointer">
+                    <i class="fa-solid fa-xmark text-sm"></i>
                 </button>
             </div>
         @endif
@@ -190,22 +202,44 @@
         overlay.classList.toggle('hidden');
     }
 
-    // Auto hide flash after 4s
+    function dismissToast(toast) {
+        if (!toast) return;
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(-10px)';
+        setTimeout(() => toast.remove(), 300);
+    }
+
+    // Auto hide flash toast after 4s dengan animasi halus
     setTimeout(() => {
-        const flash = document.getElementById('flash-success');
-        if (flash) flash.remove();
-    }, 4000);
+        dismissToast(document.getElementById('flash-success'));
+        dismissToast(document.getElementById('flash-error'));
+    }, 4500);
 
     const confirmModal = document.getElementById('admin-confirm-modal');
+    const confirmTitle = document.getElementById('admin-confirm-title');
     const confirmMessage = document.getElementById('admin-confirm-message');
     const confirmSubmit = document.getElementById('admin-confirm-submit');
     let pendingConfirmForm = null;
+    let pendingConfirmCallback = null;
 
     function closeAdminConfirm() {
         confirmModal.classList.add('hidden');
         confirmModal.classList.remove('flex');
         confirmModal.setAttribute('aria-hidden', 'true');
         pendingConfirmForm = null;
+        pendingConfirmCallback = null;
+    }
+
+    function showAdminConfirm({ title = 'Konfirmasi Hapus', message = 'Yakin ingin menghapus data ini?', confirmText = 'Hapus', onConfirm = null }) {
+        if (confirmTitle) confirmTitle.textContent = title;
+        if (confirmMessage) confirmMessage.textContent = message;
+        if (confirmSubmit) confirmSubmit.textContent = confirmText;
+        pendingConfirmCallback = onConfirm;
+
+        confirmModal.classList.remove('hidden');
+        confirmModal.classList.add('flex');
+        confirmModal.setAttribute('aria-hidden', 'false');
+        confirmModal.querySelector('[data-confirm-cancel]').focus();
     }
 
     document.addEventListener('submit', event => {
@@ -214,7 +248,9 @@
 
         event.preventDefault();
         pendingConfirmForm = form;
+        if (confirmTitle) confirmTitle.textContent = form.dataset.confirmTitle || 'Hapus Data?';
         confirmMessage.textContent = form.dataset.confirmMessage;
+        if (confirmSubmit) confirmSubmit.textContent = 'Hapus';
         confirmModal.classList.remove('hidden');
         confirmModal.classList.add('flex');
         confirmModal.setAttribute('aria-hidden', 'false');
@@ -226,11 +262,17 @@
     });
 
     confirmSubmit.addEventListener('click', () => {
-        if (pendingConfirmForm) pendingConfirmForm.submit();
+        if (pendingConfirmCallback) {
+            const cb = pendingConfirmCallback;
+            closeAdminConfirm();
+            cb();
+        } else if (pendingConfirmForm) {
+            pendingConfirmForm.submit();
+        }
     });
 
     document.addEventListener('keydown', event => {
-        if (event.key === 'Escape' && pendingConfirmForm) closeAdminConfirm();
+        if (event.key === 'Escape' && (pendingConfirmForm || pendingConfirmCallback)) closeAdminConfirm();
     });
 </script>
 @stack('scripts')

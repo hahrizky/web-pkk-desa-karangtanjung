@@ -12,7 +12,7 @@
             <p class="text-xs text-gray-500 mt-0.5">Lengkapi formulir di bawah ini untuk mempublikasikan berita kegiatan</p>
         </div>
         <a href="{{ route('admin.berita.index') }}"
-            class="inline-flex items-center gap-1.5 text-xs text-white font-medium border border-gray-200 bg-[#075B3C] hover:bg-[#087A50] active:bg-[#16A36A] px-3 py-1.5 rounded-lg transition-all duration-200">
+            class="inline-flex items-center gap-1.5 text-xs text-white font-semibold bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] border border-transparent px-3 py-1.5 rounded-lg transition-all duration-200 shadow-sm cursor-pointer">
             <i class="fa-solid fa-arrow-left"></i>
             <span>Kembali</span>
         </a>
@@ -114,52 +114,32 @@
                     </p>
 
                     @if(!empty($berita['gambar']))
-                    <div id="current-photo-container" class="mb-3">
-                        <img src="{{ asset('images/' . $berita['gambar']) }}" alt="Foto saat ini"
+                    <div class="mb-3">
+                        <img id="current-photo-img" src="{{ asset('images/' . $berita['gambar']) }}" alt="Foto saat ini"
                             class="w-full h-36 object-cover rounded-lg border border-gray-200">
-                        <div class="flex items-center justify-between mt-1.5">
-                            <span class="text-[11px] text-gray-500 truncate max-w-[160px]">Foto saat ini: {{ $berita['gambar'] }}</span>
-                            <button type="button" onclick="toggleChangePhoto()"
-                                class="inline-flex items-center gap-1 text-[11px] font-semibold text-[#075B3C] hover:text-[#055030] hover:underline cursor-pointer">
-                                <i class="fa-solid fa-arrows-rotate"></i>
-                                <span>Ganti Foto</span>
-                            </button>
-                        </div>
+                        <span class="block text-[11px] text-gray-500 mt-1 truncate">Foto saat ini: {{ $berita['gambar'] }}</span>
                     </div>
-
-                    <div id="file-input-container" class="hidden">
-                        <div class="flex items-center justify-between mb-1">
-                            <span class="text-[11px] font-medium text-gray-600">Pilih foto baru:</span>
-                            <button type="button" onclick="cancelChangePhoto()"
-                                class="text-[11px] text-red-500 hover:text-red-700 hover:underline cursor-pointer">
-                                Batal ganti
-                            </button>
-                        </div>
-                        <input type="file" id="gambar-input" name="gambar" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
-                            class="block w-full text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-[#075B3C] hover:file:bg-emerald-100 cursor-pointer"
-                            onchange="previewImage(this)">
-                    </div>
-                    @else
-                    <input type="file" name="gambar" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
-                        class="block w-full text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-[#075B3C] hover:file:bg-emerald-100 cursor-pointer"
-                        onchange="previewImage(this)">
                     @endif
 
+                    <input type="file" id="gambar-input" name="gambar" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
+                        class="block w-full text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-[#075B3C] hover:file:bg-emerald-100 cursor-pointer"
+                        onchange="previewImage(this)">
+
                     <div id="preview-wrapper" class="hidden mt-2">
-                        <span class="block text-[11px] text-emerald-700 font-medium mb-1">Pratinjau foto yang akan diunggah:</span>
+                        <span class="block text-[11px] text-emerald-700 font-medium mb-1">Pratinjau foto baru:</span>
                         <img id="preview-img" src="" alt="Pratinjau" class="w-full h-36 object-cover rounded-lg border border-emerald-300">
                     </div>
                 </div>
 
                 <div class="pt-3 border-t border-gray-100 space-y-2">
                     <button type="submit"
-                        class="w-full bg-[#075B3C] hover:bg-[#055030] text-white font-semibold py-2.5 rounded-lg transition-all text-sm shadow-xs flex items-center justify-center gap-2 cursor-pointer">
+                        class="w-full bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white font-semibold py-2.5 rounded-lg transition-all duration-200 text-sm shadow-sm flex items-center justify-center gap-2 cursor-pointer">
                         <i class="fa-solid fa-floppy-disk"></i>
                         <span>{{ isset($berita) ? 'Simpan Perubahan' : 'Publikasikan Berita' }}</span>
                     </button>
                     @if(isset($berita))
                     <button type="button" id="btn-cancel-edit" onclick="resetFormChanges()"
-                        class="hidden w-full text-center bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold py-2.5 rounded-lg transition-all text-xs shadow-sm hover:shadow flex items-center justify-center gap-1.5 cursor-pointer">
+                        class="hidden w-full text-center bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold py-2 rounded-lg transition-all text-xs shadow-sm hover:shadow flex items-center justify-center gap-1.5 cursor-pointer">
                         <i class="fa-solid fa-rotate-left"></i>
                         <span>Batalkan Perubahan</span>
                     </button>
@@ -303,34 +283,18 @@
         }
 
         // Batalkan pemilihan foto jika ada
-        cancelChangePhoto();
+        const input = document.getElementById('gambar-input');
+        const previewWrapper = document.getElementById('preview-wrapper');
+        const preview = document.getElementById('preview-img');
+        if (input) input.value = '';
+        if (preview) preview.src = '';
+        if (previewWrapper) previewWrapper.classList.add('hidden');
 
         // Sembunyikan tombol batal lagi
         const cancelBtn = document.getElementById('btn-cancel-edit');
         if (cancelBtn) {
             cancelBtn.classList.add('hidden');
         }
-    }
-
-    function toggleChangePhoto() {
-        const inputContainer = document.getElementById('file-input-container');
-        const photoContainer = document.getElementById('current-photo-container');
-        if (inputContainer) {
-            inputContainer.classList.remove('hidden');
-        }
-    }
-
-    function cancelChangePhoto() {
-        const inputContainer = document.getElementById('file-input-container');
-        const input = document.getElementById('gambar-input');
-        const previewWrapper = document.getElementById('preview-wrapper');
-        const preview = document.getElementById('preview-img');
-
-        if (input) input.value = '';
-        if (preview) preview.src = '';
-        if (previewWrapper) previewWrapper.classList.add('hidden');
-        if (inputContainer) inputContainer.classList.add('hidden');
-        checkFormDirty();
     }
 
     function previewImage(input) {

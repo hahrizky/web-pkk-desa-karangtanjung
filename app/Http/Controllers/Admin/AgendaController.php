@@ -10,19 +10,25 @@ class AgendaController extends Controller
 {
     public function index()
     {
-        $agendaList = Agenda::orderBy('tanggal', 'asc')->get()->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'judul' => $item->judul,
-                'kategori' => $item->kategori,
-                'tanggal' => $item->tanggal_formatted,
-                'tanggal_raw' => $item->tanggal ? $item->tanggal->format('Y-m-d') : date('Y-m-d'),
-                'waktu' => $item->waktu,
-                'lokasi' => $item->lokasi,
-                'deskripsi' => $item->deskripsi,
-                'status' => $item->status,
-            ];
-        })->all();
+        $today = now()->startOfDay()->toDateString();
+
+        $agendaList = Agenda::orderByRaw("CASE WHEN tanggal >= '{$today}' THEN 0 ELSE 1 END")
+            ->orderByRaw("CASE WHEN tanggal >= '{$today}' THEN tanggal END ASC")
+            ->orderByRaw("CASE WHEN tanggal < '{$today}' THEN tanggal END DESC")
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'judul' => $item->judul,
+                    'kategori' => $item->kategori,
+                    'tanggal' => $item->tanggal_formatted,
+                    'tanggal_raw' => $item->tanggal ? $item->tanggal->format('Y-m-d') : date('Y-m-d'),
+                    'waktu' => $item->waktu,
+                    'lokasi' => $item->lokasi,
+                    'deskripsi' => $item->deskripsi,
+                    'status' => $item->status,
+                ];
+            })->all();
 
         return view('admin.agenda.index', compact('agendaList'));
     }

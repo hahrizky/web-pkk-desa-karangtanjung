@@ -184,7 +184,7 @@
                 <span>Batalkan Perubahan</span>
             </button>
             <button type="submit"
-                class="px-6 py-2.5 bg-[#075B3C] hover:bg-[#055030] text-white font-semibold rounded-lg transition-all text-sm shadow-xs flex items-center gap-2 cursor-pointer">
+                class="px-6 py-2.5 bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white font-semibold rounded-lg transition-all duration-200 text-sm shadow-sm flex items-center gap-2 cursor-pointer">
                 <i class="fa-solid fa-floppy-disk"></i>
                 <span>Simpan Perubahan Profil</span>
             </button>

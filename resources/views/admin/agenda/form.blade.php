@@ -11,7 +11,7 @@
             <h2 class="text-lg font-bold text-gray-800">{{ isset($agenda) ? 'Edit Agenda Kegiatan' : 'Tambah Agenda Baru' }}</h2>
             <p class="text-xs text-gray-500 mt-0.5">Jadwalkan kegiatan TP. PKK Desa Karangtanjung</p>
         </div>
-        <a href="{{ route('admin.agenda.index') }}" class="inline-flex items-center gap-1.5 text-xs text-gray-600 hover:text-[#075B3C] font-medium border border-gray-200 bg-white px-3 py-1.5 rounded-lg transition-colors">
+        <a href="{{ route('admin.agenda.index') }}" class="inline-flex items-center gap-1.5 text-xs text-white font-medium border border-gray-200 bg-[#2F9B45] active:bg-[#075B3C] px-3 py-1.5 rounded-lg transition-all duration-50">
             <i class="fa-solid fa-arrow-left"></i>
             <span>Kembali</span>
         </a>
@@ -119,7 +119,7 @@
                     </a>
                 @endif
                 <button type="submit"
-                        class="px-5 py-2 bg-[#075B3C] hover:bg-[#055030] text-white font-semibold rounded-lg text-xs transition-colors shadow-xs flex items-center gap-2 cursor-pointer">
+                        class="px-5 py-2 bg-[#2F9B45] active:bg-[#075B3C] text-white font-semibold rounded-lg text-xs transition-colors shadow-xs flex items-center gap-2 cursor-pointer">
                     <i class="fa-solid fa-floppy-disk"></i>
                     <span>{{ isset($agenda) ? 'Simpan Perubahan' : 'Simpan Agenda' }}</span>
                 </button>
