@@ -1,24 +1,26 @@
 @extends('layouts.admin')
 
-@section('title', 'Background Beranda')
-@section('page-title', 'Background Beranda')
+@section('title', 'Data Foto Background Beranda')
+@section('page-title', 'Data Foto Background Beranda')
 
 @section('content')
 <div class="space-y-6">
 
-    {{-- Header & Penjelasan Singkat --}}
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    {{-- Header & Penjelasan Singkat (Sesuai format Data Statistik Dasawisma) --}}
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-            <h1 class="text-xl sm:text-2xl font-extrabold text-gray-900 tracking-tight">Foto Background Beranda</h1>
-            <p class="text-xs sm:text-sm text-gray-500 mt-1">
-                Kelola foto latar belakang utama pada bagian Hero Beranda Website TP. PKK Desa Karangtanjung.
-            </p>
+            <h2 class="text-xl font-bold text-gray-800">Data Foto Background Beranda</h2>
+            <p class="text-sm text-gray-500 mt-0.5">Perbarui foto background yang ditampilkan di halaman beranda.</p>
         </div>
-        <div>
+        <div class="flex items-center gap-2">
+            <span class="inline-flex items-center gap-2 bg-emerald-50 text-[#075B3C] text-sm font-semibold px-4 py-2 rounded-xl border border-emerald-200">
+                <i class="fa-solid fa-image"></i>
+                Hero Beranda
+            </span>
             <a href="{{ url('/') }}" target="_blank"
-                class="inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-gray-50 text-gray-700 text-xs font-semibold rounded-xl border border-gray-200 shadow-2xs hover:shadow-xs transition-all">
-                <i class="fa-solid fa-arrow-up-right-from-square text-emerald-600"></i>
-                <span>Lihat di Website</span>
+                class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-[#075B3C] text-sm font-semibold px-4 py-2 rounded-xl border border-emerald-200 transition-colors shadow-2xs">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                <span>Lihat Website</span>
             </a>
         </div>
     </div>
@@ -187,7 +189,7 @@
                         </button>
 
                         <button type="submit" id="btn-submit" disabled
-                            class="w-full sm:w-auto flex-1 py-2.5 px-4 bg-[#075B3C] hover:bg-[#064e33] active:bg-[#053d28] disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-bold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
+                            class="w-full sm:w-auto flex-1 py-2.5 px-5 bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
                             <i class="fa-solid fa-floppy-disk"></i>
                             <span>Simpan Foto Background</span>
                         </button>
