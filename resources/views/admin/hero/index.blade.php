@@ -59,46 +59,49 @@
 
         {{-- Kolom Kiri: Pratinjau Langsung (Live Mockup) --}}
         <div class="lg:col-span-7 space-y-4">
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 sm:p-6">
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-2">
-                        <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Pratinjau Tampilan Saat Ini</h2>
+            {{-- Kotak Tabel/Card Warna Hijau persis Struktur Organisasi --}}
+            <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-4">
+                <div class="flex items-center justify-between border-b border-white/20 pb-3">
+                    <div>
+                        <h3 class="text-sm font-bold text-white">Pratinjau Tampilan Saat Ini</h3>
+                        <p class="text-[11px] text-white">Tampilan foto latar belakang pada bagian Hero Beranda</p>
                     </div>
                 </div>
 
-                {{-- Mockup Visual Hero Beranda --}}
-                <div class="relative w-full h-64 sm:h-72 rounded-xl overflow-hidden shadow-inner bg-emerald-950 flex items-center justify-center border border-gray-200">
-                    {{-- Foto Background Aktif --}}
-                    <img id="live-hero-img" src="{{ asset($currentHero) }}"
-                        alt="Hero Background TP PKK Desa Karangtanjung"
-                        class="absolute inset-0 w-full h-full object-cover object-top filter brightness-[0.55] contrast-[1.05] transition-all duration-300">
+                {{-- Mockup Visual Hero Beranda di dalam inner box mint (#ECFEF3) --}}
+                <div class="bg-[#ECFEF3] p-3 sm:p-4 rounded-xl border border-emerald-100">
+                    <div class="relative w-full h-64 sm:h-72 rounded-xl overflow-hidden shadow-inner bg-emerald-950 flex items-center justify-center border border-gray-200">
+                        {{-- Foto Background Aktif --}}
+                        <img id="live-hero-img" src="{{ asset($currentHero) }}"
+                            alt="Hero Background TP PKK Desa Karangtanjung"
+                            class="absolute inset-0 w-full h-full object-cover object-top filter brightness-[0.55] contrast-[1.05] transition-all duration-300">
 
-                    {{-- Gradient Overlay --}}
-                    <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/75 via-emerald-900/50 to-emerald-950/90"></div>
+                        {{-- Gradient Overlay --}}
+                        <div class="absolute inset-0 bg-gradient-to-b from-emerald-950/75 via-emerald-900/50 to-emerald-950/90"></div>
 
-                    {{-- Mockup Teks Hero --}}
-                    <div class="relative z-10 px-4 text-center max-w-md mx-auto pointer-events-none select-none">
-                        <span class="inline-block text-[10px] font-bold text-emerald-200 uppercase tracking-widest bg-emerald-900/80 px-2 py-0.5 rounded-md mb-2 border border-emerald-500/30">
-                            TP PKK DESA KARANGTANJUNG
-                        </span>
-                        <h3 class="text-base sm:text-lg font-extrabold text-white leading-snug drop-shadow-sm">
-                            Tim Penggerak Pemberdayaan dan Kesejahteraan Keluarga <span class="text-amber-300">Desa Karangtanjung</span>
-                        </h3>
-                        <p class="text-[11px] text-emerald-100/80 mt-1.5 line-clamp-2 leading-relaxed">
-                            Portal informasi kegiatan, program kerja, dan data statistik TP. PKK Desa Karangtanjung.
-                        </p>
+                        {{-- Mockup Teks Hero --}}
+                        <div class="relative z-10 px-4 text-center max-w-md mx-auto pointer-events-none select-none">
+                            <span class="inline-block text-[10px] font-bold text-emerald-200 uppercase tracking-widest bg-emerald-900/80 px-2 py-0.5 rounded-md mb-2 border border-emerald-500/30">
+                                TP PKK DESA KARANGTANJUNG
+                            </span>
+                            <h3 class="text-base sm:text-lg font-extrabold text-white leading-snug drop-shadow-sm">
+                                Tim Penggerak Pemberdayaan dan Kesejahteraan Keluarga <span class="text-amber-300">Desa Karangtanjung</span>
+                            </h3>
+                            <p class="text-[11px] text-emerald-100/80 mt-1.5 line-clamp-2 leading-relaxed">
+                                Portal informasi kegiatan, program kerja, dan data statistik TP. PKK Desa Karangtanjung.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
 
             {{-- Tips Panduan Foto yang Bagus --}}
-            <div class="bg-emerald-50/60 rounded-2xl border border-emerald-100 p-5">
-                <h3 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+            <div class="bg-[#ECFEF3] rounded-2xl border border-emerald-200 p-5 shadow-xs">
+                <h3 class="text-xs font-bold text-[#075B3C] uppercase tracking-wider mb-2 flex items-center gap-1.5">
                     <i class="fa-solid fa-lightbulb text-amber-500"></i>
                     <span>Panduan Pemilihan Foto Background</span>
                 </h3>
-                <ul class="text-xs text-emerald-800/90 space-y-1.5 leading-relaxed list-disc list-inside">
+                <ul class="text-xs text-emerald-900 space-y-1.5 leading-relaxed list-disc list-inside">
                     <li>Pilih foto dengan <strong>orientasi horizontal (landscape / mendatar)</strong> seperti rasio 16:9.</li>
                     <li>Rekomendasi resolusi minimal <strong>1920 &times; 1080 piksel</strong> agar tidak pecah/blur saat dibuka di layar komputer atau laptop.</li>
                     <li>Sistem website secara otomatis menambahkan lapisan filter gelap (overlay emerald) di atas foto, sehingga teks utama tetap jelas terbaca oleh pengunjung.</li>
@@ -108,14 +111,12 @@
 
         {{-- Kolom Kanan: Form Unggah Foto Baru --}}
         <div class="lg:col-span-5">
-            <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 sm:p-6 sticky top-6">
-                <div class="flex items-center gap-2 mb-4">
-                    <div class="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center text-sm font-bold">
-                        <i class="fa-solid fa-cloud-arrow-up"></i>
-                    </div>
+            {{-- Kotak Tabel/Card Warna Hijau persis Struktur Organisasi --}}
+            <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-4 sticky top-6">
+                <div class="flex items-center justify-between border-b border-white/20 pb-3">
                     <div>
-                        <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Unggah Background Baru</h2>
-                        <p class="text-xs text-gray-400">Pilih file gambar untuk mengganti background</p>
+                        <h3 class="text-sm font-bold text-white">Unggah Background Baru</h3>
+                        <p class="text-[11px] text-white">Pilih file gambar untuk mengganti background</p>
                     </div>
                 </div>
 
@@ -123,15 +124,15 @@
                     @csrf
                     @method('PUT')
 
-                    {{-- Area Upload Drag & Drop / File Input --}}
-                    <div>
-                        <label for="hero_background" class="block text-xs font-bold text-gray-700 mb-1.5">
+                    {{-- Area Upload Drag & Drop di dalam inner box mint (#ECFEF3) --}}
+                    <div class="bg-[#ECFEF3] p-4 rounded-xl border border-emerald-100 space-y-2">
+                        <label for="hero_background" class="block text-xs font-bold text-gray-700 uppercase tracking-wider">
                             Pilih File Gambar <span class="text-red-500">*</span>
                         </label>
 
                         <div id="dropzone"
                             onclick="document.getElementById('hero_background').click()"
-                            class="relative border-2 border-dashed border-gray-300 hover:border-emerald-600 rounded-xl p-5 text-center cursor-pointer transition-colors bg-gray-50/50 hover:bg-emerald-50/30 group">
+                            class="relative border-2 border-dashed border-emerald-300 hover:border-emerald-600 rounded-xl p-5 text-center cursor-pointer transition-colors bg-white hover:bg-emerald-50/50 group">
 
                             <input type="file" id="hero_background" name="hero_background" accept="image/jpeg,image/png,image/jpg,image/webp" class="hidden" required>
 
@@ -140,10 +141,10 @@
                                 <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 mx-auto flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
                                     <i class="fa-solid fa-camera"></i>
                                 </div>
-                                <div class="text-xs text-gray-600 font-medium">
-                                    <span class="text-emerald-700 font-bold group-hover:underline">Klik di sini untuk memilih foto</span>
+                                <div class="text-xs text-gray-700 font-medium">
+                                    <span class="text-[#075B3C] font-bold group-hover:underline">Klik di sini untuk memilih foto</span>
                                 </div>
-                                <p class="text-[11px] text-gray-400">
+                                <p class="text-[11px] text-gray-500">
                                     Format: JPG, JPEG, PNG, atau WEBP (Maks. 5 MB)
                                 </p>
                             </div>
@@ -157,7 +158,7 @@
                                     <span id="new-file-name" class="font-semibold text-gray-800 truncate max-w-[200px]">file.jpg</span>
                                     <span id="new-file-size" class="text-gray-500 text-[11px]">0 KB</span>
                                 </div>
-                                <p class="text-[11px] text-emerald-700 font-medium">
+                                <p class="text-[11px] text-[#075B3C] font-medium">
                                     <i class="fa-solid fa-arrows-rotate mr-1"></i> Klik untuk mengganti file lain
                                 </p>
                             </div>
@@ -165,18 +166,18 @@
                     </div>
 
                     {{-- Informasi Spesifikasi --}}
-                    <div class="bg-gray-50 rounded-xl p-3 border border-gray-100 text-[11px] text-gray-600 space-y-1">
+                    <div class="bg-[#ECFEF3] rounded-xl p-3.5 border border-emerald-100 text-[11px] text-gray-700 space-y-1.5 font-medium">
                         <div class="flex items-center justify-between">
-                            <span class="text-gray-500">Maksimal Ukuran:</span>
-                            <span class="font-semibold text-gray-800">5 MB</span>
+                            <span class="text-gray-600">Maksimal Ukuran:</span>
+                            <span class="font-bold text-gray-900">5 MB</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-gray-500">Format yang didukung:</span>
-                            <span class="font-semibold text-gray-800">JPG, PNG, WEBP</span>
+                            <span class="text-gray-600">Format yang didukung:</span>
+                            <span class="font-bold text-gray-900">JPG, PNG, WEBP</span>
                         </div>
                         <div class="flex items-center justify-between">
-                            <span class="text-gray-500">Orientasi:</span>
-                            <span class="font-semibold text-gray-800">Landscape (Mendatar)</span>
+                            <span class="text-gray-600">Orientasi:</span>
+                            <span class="font-bold text-gray-900">Landscape (Mendatar)</span>
                         </div>
                     </div>
 
@@ -189,7 +190,7 @@
                         </button>
 
                         <button type="submit" id="btn-submit" disabled
-                            class="w-full sm:w-auto flex-1 py-2.5 px-5 bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed text-white text-sm font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
+                            class="w-full sm:w-auto flex-1 py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed">
                             <i class="fa-solid fa-floppy-disk"></i>
                             <span>Simpan Foto Background</span>
                         </button>
@@ -222,7 +223,10 @@
             if (previewContainer) previewContainer.classList.add('hidden');
             if (previewImg) previewImg.src = '';
             if (liveHeroImg) liveHeroImg.src = originalHeroSrc;
-            if (btnSubmit) btnSubmit.disabled = true;
+            if (btnSubmit) {
+                btnSubmit.disabled = true;
+                btnSubmit.className = 'w-full sm:w-auto flex-1 py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed';
+            }
             if (btnCancel) btnCancel.classList.add('hidden');
         };
 
@@ -255,6 +259,7 @@
                 placeholder.classList.add('hidden');
                 previewContainer.classList.remove('hidden');
                 btnSubmit.disabled = false;
+                btnSubmit.className = 'w-full sm:w-auto flex-1 py-2.5 px-5 bg-white hover:bg-emerald-50 active:bg-emerald-100 text-[#075B3C] font-bold rounded-xl text-sm transition-all duration-200 shadow-sm flex items-center justify-center gap-2 active:scale-95 cursor-pointer';
                 if (btnCancel) btnCancel.classList.remove('hidden');
 
                 // Update juga preview di mockup kiri agar admin bisa langsung melihat preview
