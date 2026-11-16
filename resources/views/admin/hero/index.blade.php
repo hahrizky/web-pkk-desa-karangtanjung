@@ -12,15 +12,11 @@
             <h2 class="text-xl font-bold text-gray-800">Data Foto Background Beranda</h2>
             <p class="text-sm text-gray-500 mt-0.5">Perbarui foto background yang ditampilkan di halaman beranda.</p>
         </div>
-        <div class="flex items-center gap-2">
-            <span class="inline-flex items-center gap-2 bg-emerald-50 text-[#075B3C] text-sm font-semibold px-4 py-2 rounded-xl border border-emerald-200">
-                <i class="fa-solid fa-image"></i>
-                Hero Beranda
-            </span>
+        <div>
             <a href="{{ url('/') }}" target="_blank"
                 class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-[#075B3C] text-sm font-semibold px-4 py-2 rounded-xl border border-emerald-200 transition-colors shadow-2xs">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                <span>Lihat Website</span>
+                <span>Lihat di Website</span>
             </a>
         </div>
     </div>
