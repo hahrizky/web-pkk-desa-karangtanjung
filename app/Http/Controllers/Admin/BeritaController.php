@@ -9,21 +9,25 @@ use Illuminate\Support\Str;
 
 class BeritaController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $beritaList = Berita::latest('tanggal')->get()->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'judul' => $item->judul,
-                'kategori' => $item->kategori,
-                'tanggal' => $item->tanggal_formatted,
-                'tanggal_raw' => $item->tanggal ? $item->tanggal->format('Y-m-d') : date('Y-m-d'),
-                'ringkasan' => $item->ringkasan,
-                'konten' => $item->konten,
-                'gambar' => $item->gambar,
-                'penulis' => $item->penulis,
-            ];
-        })->all();
+        $query = Berita::latest('tanggal');
+
+        // Pencarian judul / ringkasan jika ada parameter
+        if ($request->filled('q')) {
+            $q = $request->q;
+            $query->where(function ($sub) use ($q) {
+                $sub->where('judul', 'like', "%{$q}%")
+                    ->orWhere('ringkasan', 'like', "%{$q}%");
+            });
+        }
+
+        // Filter kategori jika dipilih
+        if ($request->filled('kategori')) {
+            $query->where('kategori', $request->kategori);
+        }
+
+        $beritaList = $query->paginate(10)->withQueryString();
 
         return view('admin.berita.index', compact('beritaList'));
     }
@@ -48,6 +52,9 @@ class BeritaController extends Controller
         $validated['slug'] = Str::slug($validated['judul']).'-'.time();
         $validated['penulis'] = $validated['penulis'] ?? 'Sekretariat TP. PKK Karangtanjung';
         $validated['status'] = 'published';
+
+        // Bersihkan tag paragraf kosong / &nbsp; dari editor
+        $validated['konten'] = preg_replace('/<p[^>]*>(\s|&nbsp;|<br\s*\/?>)*<\/p>/i', '', $validated['konten']);
 
         // Upload gambar jika ada
         if ($request->hasFile('gambar')) {
@@ -97,11 +104,23 @@ class BeritaController extends Controller
         ]);
 
         if ($request->hasFile('gambar')) {
+            // Hapus foto lama jika ada dan bukan gambar bawaan seeder (1.webp - 12.webp)
+            $oldImage = $item->gambar;
+            if ($oldImage && !preg_match('/^[1-9]\.webp$|^1[0-2]\.webp$/', $oldImage)) {
+                $oldPath = public_path('images/'.$oldImage);
+                if (File::exists($oldPath)) {
+                    File::delete($oldPath);
+                }
+            }
+
             $file = $request->file('gambar');
             $filename = time().'_'.Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$file->getClientOriginalExtension();
             $file->move(public_path('images'), $filename);
             $validated['gambar'] = $filename;
         }
+
+        // Bersihkan tag paragraf kosong / &nbsp; dari editor
+        $validated['konten'] = preg_replace('/<p[^>]*>(\s|&nbsp;|<br\s*\/?>)*<\/p>/i', '', $validated['konten']);
 
         $item->update($validated);
 
@@ -112,6 +131,16 @@ class BeritaController extends Controller
     public function destroy(int|string $id)
     {
         $item = Berita::findOrFail($id);
+
+        // Hapus file fisik gambar jika bukan gambar bawaan seeder (1.webp - 12.webp)
+        $oldImage = $item->gambar;
+        if ($oldImage && !preg_match('/^[1-9]\.webp$|^1[0-2]\.webp$/', $oldImage)) {
+            $oldPath = public_path('images/'.$oldImage);
+            if (File::exists($oldPath)) {
+                File::delete($oldPath);
+            }
+        }
+
         $item->delete();
 
         return redirect()->route('admin.berita.index')

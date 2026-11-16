@@ -39,14 +39,20 @@
             @endif
 
             <!-- Isi Berita -->
-            <div class="prose max-w-none text-[#1F2937] leading-relaxed space-y-4 text-sm sm:text-base mb-10">
+            <div class="prose prose-sm sm:prose-base max-w-none text-[#1F2937] leading-relaxed mb-10
+                        prose-headings:text-gray-900 prose-headings:font-bold
+                        prose-p:mb-4 prose-p:leading-relaxed prose-a:text-[#075B3C] prose-a:underline
+                        prose-ul:list-disc prose-ol:list-decimal
+                        prose-blockquote:border-l-4 prose-blockquote:border-[#075B3C] prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600
+                        prose-table:border-collapse prose-td:border prose-td:border-gray-200 prose-td:px-3 prose-td:py-2 prose-th:border prose-th:border-gray-200 prose-th:px-3 prose-th:py-2 prose-th:bg-gray-50
+                        [&>p:empty]:hidden [&>p>br:only-child]:hidden [&>p]:empty:hidden">
                 <p class="font-medium text-base sm:text-lg text-gray-700 leading-relaxed border-l-4 border-[#075B3C] pl-4 italic bg-[#F3FBF6] py-3 rounded-r-xl">
                     {{ $berita['deskripsi'] }}
                 </p>
 
-                <p>
-                    {{ $berita['isi'] }}
-                </p>
+                <div class="article-body text-left sm:text-justify leading-relaxed [text-justify:inter-word] [hyphens:auto]">
+                    {!! $berita['isi'] !!}
+                </div>
 
             </div>
 

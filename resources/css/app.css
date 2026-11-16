@@ -38,3 +38,24 @@
 .scrollbar-hide::-webkit-scrollbar {
     display: none;
 }
+
+/* Styling konten artikel berita & pembersihan tag kosong CKEditor */
+.article-body p:empty,
+.article-body p:has(> br:only-child) {
+    display: none;
+}
+
+/* Jika admin / browser menyertakan justify, cegah celah renggang abnormal di mobile */
+.article-body[style*="justify"],
+.article-body p[style*="justify"] {
+    text-align: left !important;
+}
+
+@media (min-width: 640px) {
+    .article-body[style*="justify"],
+    .article-body p[style*="justify"] {
+        text-align: justify !important;
+        text-justify: inter-word;
+        hyphens: auto;
+    }
+}

@@ -4,13 +4,20 @@
 @section('page-title', 'Struktur Organisasi TP. PKK')
 
 @section('content')
+<style>
+    .photo-preview-box img.hidden,
+    .photo-preview-box .photo-icon.hidden {
+        display: none !important;
+    }
+</style>
+
 <div class="max-w-4xl mx-auto space-y-6">
 
     {{-- Top Action / Intro Bar --}}
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-[#075B3C] p-5 rounded-2xl border border-gray-100 shadow-xs">
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 bg-[#2F9B45] p-5 rounded-2xl border border-gray-100 shadow-xs">
         <div>
             <div class="flex items-center gap-2">
-                <h2 class="text-base font-bold text-white">Kelola Profil &amp; Foto Pengurus Organisasi<h2>
+                <h2 class="text-base font-bold text-white">Kelola Profil &amp; Foto Pengurus Organisasi</h2>
             </div>
             <p class="text-xs text-white mt-1">
                 Perubahan otomatis tampil di bagan dan daftar profil pengurus halaman publik.
@@ -18,41 +25,34 @@
         </div>
         <div class="flex items-center gap-2 flex-shrink-0">
             <a href="{{ route('profil') }}#struktur" target="_blank"
-               class="inline-flex items-center gap-1.5 px-3 py-2 bg-[#ECFEF3] hover:bg-emerald-100 text-gray-700 text-xs font-semibold rounded-lg border border-gray-200 transition-colors">
+                class="inline-flex items-center gap-1.5 px-3 py-2 bg-[#ECFEF3] hover:bg-emerald-100 text-gray-700 text-xs font-semibold rounded-lg border border-gray-200 transition-colors">
                 <i class="fa-solid fa-arrow-up-right-from-square text-[11px] text-gray-500"></i>
                 <span>Lihat di Website</span>
             </a>
         </div>
     </div>
 
-    @if (session('success'))
-        <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-xl text-xs flex items-center gap-2.5 shadow-xs">
-            <i class="fa-solid fa-circle-check text-emerald-600 text-sm"></i>
-            <span class="font-medium">{{ session('success') }}</span>
-        </div>
-    @endif
-
     @if (isset($errors) && $errors->any())
-        <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-xs">
-            <p class="font-bold mb-1">Ada data yang belum terisi dengan benar:</p>
-            <ul class="list-disc list-inside space-y-0.5">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
+    <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-xs">
+        <p class="font-bold mb-1">Ada data yang belum terisi dengan benar:</p>
+        <ul class="list-disc list-inside space-y-0.5">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
     @endif
 
-    <form action="{{ route('admin.struktur.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+    <form id="struktur-form" action="{{ route('admin.struktur.update') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
         @csrf
         @method('PUT')
 
         {{-- 1. PEMBINA & PIMPINAN UTAMA --}}
-        <div class="bg-[#075B3C] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-5">
+        <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-5">
             <div class="flex items-center justify-between border-b border-gray-100 pb-3">
                 <div class="flex items-center gap-2.5">
                     <div>
-                        <h3 class="text-sm font-bold text-white">1. Pembina & Pimpinan Utama</h3>
+                        <h3 class="text-sm font-bold text-white">1. Pembina &amp; Pimpinan Utama</h3>
                         <p class="text-[11px] text-white">Kepala Desa dan Pimpinan Tim Penggerak PKK</p>
                     </div>
                 </div>
@@ -64,9 +64,9 @@
                     Periode Kepengurusan <span class="text-red-500">*</span>
                 </label>
                 <input type="text" name="periode"
-                       value="{{ old('periode', $struktur['periode']) }}"
-                       placeholder="Contoh: 2024 - 2029"
-                       class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
+                    value="{{ old('periode', $struktur['periode']) }}"
+                    placeholder="Contoh: 2024 - 2029"
+                    class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
                 <p class="text-[11px] text-gray-400 mt-1">Ditampilkan di header bagan dan galeri profil organisasi</p>
             </div>
 
@@ -77,28 +77,20 @@
                         <label class="block text-xs font-bold text-amber-900 uppercase tracking-wider">
                             Nama Pembina <span class="text-red-500">*</span>
                         </label>
-                        <span class="text-[10px] bg-[#075B3C] text-white font-semibold px-2 py-0.5 rounded">Kepala Desa</span>
+                        <span class="text-[10px] bg-[#2F9B45] text-white font-semibold px-2 py-0.5 rounded">Kepala Desa</span>
                     </div>
                     <input type="text" name="pembina_nama"
-                           value="{{ old('pembina_nama', $struktur['pembina_nama']) }}"
-                           placeholder="Contoh: Atmo"
-                           class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
+                        value="{{ old('pembina_nama', $struktur['pembina_nama']) }}"
+                        placeholder="Contoh: Atmo"
+                        class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
                     <input type="hidden" name="pembina_sub" value="{{ $struktur['pembina_sub'] }}">
 
-                    {{-- Upload Foto Pembina --}}
-                    <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">Foto Profil Pembina</label>
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-amber-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
-                                @if (!empty($struktur['pembina_foto']) && file_exists(public_path('images/' . $struktur['pembina_foto'])))
-                                    <img src="{{ asset('images/' . $struktur['pembina_foto']) }}" class="w-full h-full object-cover">
-                                @else
-                                    <i class="fa-solid fa-user-tie text-xs text-amber-700"></i>
-                                @endif
-                            </div>
-                            <input type="file" name="pembina_foto" accept="image/*" class="text-xs text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] font-medium file:bg-emerald-100 file:text-emerald-800 hover:file:bg-emerald-200">
-                        </div>
-                    </div>
+                    @include('admin.struktur._foto_field', [
+                        'field' => 'pembina_foto',
+                        'label' => 'Foto Profil Pembina',
+                        'borderColor' => 'border-amber-200',
+                        'iconClass' => 'fa-user-tie text-amber-700',
+                    ])
                 </div>
 
                 {{-- Ketua --}}
@@ -107,27 +99,19 @@
                         <label class="block text-xs font-bold text-emerald-900 uppercase tracking-wider">
                             Ketua TP. PKK <span class="text-red-500">*</span>
                         </label>
-                        <span class="text-[10px] bg-[#075B3C] text-white font-semibold px-2 py-0.5 rounded">Ketua Umum</span>
+                        <span class="text-[10px] bg-[#2F9B45] text-white font-semibold px-2 py-0.5 rounded">Ketua Umum</span>
                     </div>
                     <input type="text" name="ketua_nama"
-                           value="{{ old('ketua_nama', $struktur['ketua_nama']) }}"
-                           placeholder="Nama lengkap Ketua beserta gelar"
-                           class="w-full bg-white border border-gray-300 rounded-lg px-2.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
+                        value="{{ old('ketua_nama', $struktur['ketua_nama']) }}"
+                        placeholder="Nama lengkap Ketua beserta gelar"
+                        class="w-full bg-white border border-gray-300 rounded-lg px-2.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
 
-                    {{-- Upload Foto Ketua --}}
-                    <div>
-                        <label class="block text-[11px] font-semibold text-gray-600 mb-1">Foto Profil Ketua</label>
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
-                                @if (!empty($struktur['ketua_foto']) && file_exists(public_path('images/' . $struktur['ketua_foto'])))
-                                    <img src="{{ asset('images/' . $struktur['ketua_foto']) }}" class="w-full h-full object-cover">
-                                @else
-                                    <i class="fa-solid fa-user-large text-xs text-emerald-700"></i>
-                                @endif
-                            </div>
-                            <input type="file" name="ketua_foto" accept="image/*" class="text-xs text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] font-medium file:bg-emerald-100 file:text-emerald-800 hover:file:bg-emerald-200">
-                        </div>
-                    </div>
+                    @include('admin.struktur._foto_field', [
+                        'field' => 'ketua_foto',
+                        'label' => 'Foto Profil Ketua',
+                        'borderColor' => 'border-emerald-200',
+                        'iconClass' => 'fa-user-large text-emerald-700',
+                    ])
                 </div>
             </div>
 
@@ -137,62 +121,50 @@
                     <label class="block text-xs font-bold text-emerald-900 uppercase tracking-wider">
                         Wakil Ketua TP. PKK <span class="text-red-500">*</span>
                     </label>
-                    <span class="text-[10px] bg-[#075B3C] text-white font-semibold px-2 py-0.5 rounded">Wakil</span>
+                    <span class="text-[10px] bg-[#2F9B45] text-white font-semibold px-2 py-0.5 rounded">Wakil</span>
                 </div>
                 <input type="text" name="wakil_nama"
-                       value="{{ old('wakil_nama', $struktur['wakil_nama']) }}"
-                       placeholder="Nama lengkap Wakil Ketua"
-                       class="w-full bg-white border border-gray-300 rounded-lg px-2.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
+                    value="{{ old('wakil_nama', $struktur['wakil_nama']) }}"
+                    placeholder="Nama lengkap Wakil Ketua"
+                    class="w-full bg-white border border-gray-300 rounded-lg px-2.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
 
-                {{-- Upload Foto Wakil --}}
-                <div>
-                    <label class="block text-[11px] font-semibold text-gray-600 mb-1">Foto Profil Wakil Ketua</label>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
-                            @if (!empty($struktur['wakil_foto']) && file_exists(public_path('images/' . $struktur['wakil_foto'])))
-                                <img src="{{ asset('images/' . $struktur['wakil_foto']) }}" class="w-full h-full object-cover">
-                            @else
-                                <i class="fa-solid fa-user text-xs text-emerald-700"></i>
-                            @endif
-                        </div>
-                        <input type="file" name="wakil_foto" accept="image/*" class="text-xs text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] font-medium file:bg-emerald-100 file:text-emerald-800 hover:file:bg-emerald-200">
-                    </div>
-                </div>
+                @include('admin.struktur._foto_field', [
+                    'field' => 'wakil_foto',
+                    'label' => 'Foto Profil Wakil Ketua',
+                    'borderColor' => 'border-emerald-200',
+                    'iconClass' => 'fa-user text-emerald-700',
+                ])
             </div>
         </div>
 
         {{-- 2. SEKRETARIAT & KEUANGAN --}}
-        <div class="bg-[#075B3C] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-5">
+        <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-5">
             <div class="flex items-center justify-between border-b border-gray-100 pb-3">
                 <div class="flex items-center gap-2.5">
                     <div>
-                        <h3 class="text-sm font-bold text-white">2. Sekretaris & Bendahara</h3>
+                        <h3 class="text-sm font-bold text-white">2. Sekretaris &amp; Bendahara</h3>
                         <p class="text-[11px] text-white">Pengurus administrasi dan perbendaharaan PKK</p>
                     </div>
                 </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
                 {{-- Sekretaris I --}}
                 <div class="p-4 rounded-xl border border-blue-100 bg-[#ECFEF3] space-y-2.5">
                     <label class="block text-xs font-bold text-blue-900 uppercase tracking-wider">
                         Sekretaris I <span class="text-red-500">*</span>
                     </label>
                     <input type="text" name="sekretaris_1"
-                           value="{{ old('sekretaris_1', $struktur['sekretaris_1']) }}"
-                           placeholder="Nama Sekretaris I"
-                           class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-medium text-gray-800" required>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-blue-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
-                            @if (!empty($struktur['sekretaris_1_foto']) && file_exists(public_path('images/' . $struktur['sekretaris_1_foto'])))
-                                <img src="{{ asset('images/' . $struktur['sekretaris_1_foto']) }}" class="w-full h-full object-cover">
-                            @else
-                                <i class="fa-solid fa-user text-xs text-blue-600"></i>
-                            @endif
-                        </div>
-                        <input type="file" name="sekretaris_1_foto" accept="image/*" class="text-xs text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] font-medium file:bg-emerald-100 file:text-emerald-800 hover:file:bg-emerald-200">
-                    </div>
+                        value="{{ old('sekretaris_1', $struktur['sekretaris_1']) }}"
+                        placeholder="Nama Sekretaris I"
+                        class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-medium text-gray-800" required>
+
+                    @include('admin.struktur._foto_field', [
+                        'field' => 'sekretaris_1_foto',
+                        'label' => 'Foto Profil Sekretaris I',
+                        'borderColor' => 'border-blue-200',
+                        'iconClass' => 'fa-user text-blue-600',
+                    ])
                 </div>
 
                 {{-- Sekretaris II --}}
@@ -201,19 +173,16 @@
                         Sekretaris II <span class="text-red-500">*</span>
                     </label>
                     <input type="text" name="sekretaris_2"
-                           value="{{ old('sekretaris_2', $struktur['sekretaris_2']) }}"
-                           placeholder="Nama Sekretaris II"
-                           class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-medium text-gray-800" required>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-blue-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
-                            @if (!empty($struktur['sekretaris_2_foto']) && file_exists(public_path('images/' . $struktur['sekretaris_2_foto'])))
-                                <img src="{{ asset('images/' . $struktur['sekretaris_2_foto']) }}" class="w-full h-full object-cover">
-                            @else
-                                <i class="fa-solid fa-user text-xs text-blue-600"></i>
-                            @endif
-                        </div>
-                        <input type="file" name="sekretaris_2_foto" accept="image/*" class="text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[11px] file:bg-emerald-100 file:text-emerald-800 hover:file:bg-emerald-200">
-                    </div>
+                        value="{{ old('sekretaris_2', $struktur['sekretaris_2']) }}"
+                        placeholder="Nama Sekretaris II"
+                        class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 font-medium text-gray-800" required>
+
+                    @include('admin.struktur._foto_field', [
+                        'field' => 'sekretaris_2_foto',
+                        'label' => 'Foto Profil Sekretaris II',
+                        'borderColor' => 'border-blue-200',
+                        'iconClass' => 'fa-user text-blue-600',
+                    ])
                 </div>
 
                 {{-- Bendahara I --}}
@@ -222,19 +191,16 @@
                         Bendahara I <span class="text-red-500">*</span>
                     </label>
                     <input type="text" name="bendahara_1"
-                           value="{{ old('bendahara_1', $struktur['bendahara_1']) }}"
-                           placeholder="Nama Bendahara I"
-                           class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 font-medium text-gray-800" required>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-amber-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
-                            @if (!empty($struktur['bendahara_1_foto']) && file_exists(public_path('images/' . $struktur['bendahara_1_foto'])))
-                                <img src="{{ asset('images/' . $struktur['bendahara_1_foto']) }}" class="w-full h-full object-cover">
-                            @else
-                                <i class="fa-solid fa-user text-xs text-amber-600"></i>
-                            @endif
-                        </div>
-                        <input type="file" name="bendahara_1_foto" accept="image/*" class="text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[11px] file:bg-emerald-100 file:text-emerald-800 hover:file:bg-emerald-200">
-                    </div>
+                        value="{{ old('bendahara_1', $struktur['bendahara_1']) }}"
+                        placeholder="Nama Bendahara I"
+                        class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 font-medium text-gray-800" required>
+
+                    @include('admin.struktur._foto_field', [
+                        'field' => 'bendahara_1_foto',
+                        'label' => 'Foto Profil Bendahara I',
+                        'borderColor' => 'border-amber-200',
+                        'iconClass' => 'fa-user text-amber-600',
+                    ])
                 </div>
 
                 {{-- Bendahara II --}}
@@ -243,25 +209,22 @@
                         Bendahara II <span class="text-red-500">*</span>
                     </label>
                     <input type="text" name="bendahara_2"
-                           value="{{ old('bendahara_2', $struktur['bendahara_2']) }}"
-                           placeholder="Nama Bendahara II"
-                           class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 font-medium text-gray-800" required>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-amber-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
-                            @if (!empty($struktur['bendahara_2_foto']) && file_exists(public_path('images/' . $struktur['bendahara_2_foto'])))
-                                <img src="{{ asset('images/' . $struktur['bendahara_2_foto']) }}" class="w-full h-full object-cover">
-                            @else
-                                <i class="fa-solid fa-user text-xs text-amber-600"></i>
-                            @endif
-                        </div>
-                        <input type="file" name="bendahara_2_foto" accept="image/*" class="text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[11px] file:bg-emerald-100 file:text-emerald-800 hover:file:bg-emerald-200">
-                    </div>
+                        value="{{ old('bendahara_2', $struktur['bendahara_2']) }}"
+                        placeholder="Nama Bendahara II"
+                        class="w-full bg-white border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 font-medium text-gray-800" required>
+
+                    @include('admin.struktur._foto_field', [
+                        'field' => 'bendahara_2_foto',
+                        'label' => 'Foto Profil Bendahara II',
+                        'borderColor' => 'border-amber-200',
+                        'iconClass' => 'fa-user text-amber-600',
+                    ])
                 </div>
             </div>
         </div>
 
         {{-- 3. KETUA KELOMPOK KERJA (POKJA I - IV) --}}
-        <div class="bg-[#075B3C] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-5">
+        <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-5">
             <div class="flex items-center justify-between border-b border-gray-100 pb-3">
                 <div class="flex items-center gap-2.5">
                     <div>
@@ -271,102 +234,37 @@
                 </div>
             </div>
 
+            @php
+                $pokjaList = [
+                    ['kode' => 'POKJA I', 'field' => 'pokja_1', 'nama' => 'pokja_1_ketua', 'desc' => 'Karakter & Gotong Royong'],
+                    ['kode' => 'POKJA II', 'field' => 'pokja_2', 'nama' => 'pokja_2_ketua', 'desc' => 'Pendidikan & Ekonomi UP2K'],
+                    ['kode' => 'POKJA III', 'field' => 'pokja_3', 'nama' => 'pokja_3_ketua', 'desc' => 'Pangan (HATINYA PKK) & Sandang'],
+                    ['kode' => 'POKJA IV', 'field' => 'pokja_4', 'nama' => 'pokja_4_ketua', 'desc' => 'Kesehatan, Posyandu & Stunting'],
+                ];
+            @endphp
+
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {{-- Pokja I --}}
+                @foreach ($pokjaList as $pk)
                 <div class="p-4 rounded-xl border border-gray-200 hover:border-emerald-300 transition-colors bg-[#ECFEF3] space-y-2.5">
                     <div class="flex items-center justify-between">
                         <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                            POKJA I
+                            {{ $pk['kode'] }}
                         </span>
-                        <span class="text-[10px] text-gray-400">Karakter &amp; Gotong Royong</span>
+                        <span class="text-[10px] text-gray-400">{{ $pk['desc'] }}</span>
                     </div>
-                    <input type="text" name="pokja_1_ketua"
-                           value="{{ old('pokja_1_ketua', $struktur['pokja_1_ketua']) }}"
-                           placeholder="Nama Ketua Pokja I"
-                           class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
-                            @if (!empty($struktur['pokja_1_foto']) && file_exists(public_path('images/' . $struktur['pokja_1_foto'])))
-                                <img src="{{ asset('images/' . $struktur['pokja_1_foto']) }}" class="w-full h-full object-cover">
-                            @else
-                                <i class="fa-solid fa-user text-xs text-emerald-700"></i>
-                            @endif
-                        </div>
-                        <input type="file" name="pokja_1_foto" accept="image/*" class="text-xs text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] font-medium file:bg-emerald-100 file:text-emerald-800 hover:file:bg-emerald-200">
-                    </div>
-                </div>
+                    <input type="text" name="{{ $pk['nama'] }}"
+                        value="{{ old($pk['nama'], $struktur[$pk['nama']]) }}"
+                        placeholder="Nama Ketua {{ $pk['kode'] }}"
+                        class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
 
-                {{-- Pokja II --}}
-                <div class="p-4 rounded-xl border border-gray-200 hover:border-emerald-300 transition-colors bg-[#ECFEF3] space-y-2.5">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                            POKJA II
-                        </span>
-                        <span class="text-[10px] text-gray-400">Pendidikan &amp; Ekonomi UP2K</span>
-                    </div>
-                    <input type="text" name="pokja_2_ketua"
-                           value="{{ old('pokja_2_ketua', $struktur['pokja_2_ketua']) }}"
-                           placeholder="Nama Ketua Pokja II"
-                           class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
-                            @if (!empty($struktur['pokja_2_foto']) && file_exists(public_path('images/' . $struktur['pokja_2_foto'])))
-                                <img src="{{ asset('images/' . $struktur['pokja_2_foto']) }}" class="w-full h-full object-cover">
-                            @else
-                                <i class="fa-solid fa-user text-xs text-emerald-700"></i>
-                            @endif
-                        </div>
-                        <input type="file" name="pokja_2_foto" accept="image/*" class="text-xs text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] font-medium file:bg-emerald-100 file:text-emerald-800 hover:file:bg-emerald-200">
-                    </div>
+                    @include('admin.struktur._foto_field', [
+                        'field' => $pk['field'] . '_foto',
+                        'label' => 'Foto Profil Ketua ' . $pk['kode'],
+                        'borderColor' => 'border-emerald-200',
+                        'iconClass' => 'fa-user text-emerald-700',
+                    ])
                 </div>
-
-                {{-- Pokja III --}}
-                <div class="p-4 rounded-xl border border-gray-200 hover:border-emerald-300 transition-colors bg-[#ECFEF3] space-y-2.5">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                            POKJA III
-                        </span>
-                        <span class="text-[10px] text-gray-400">Pangan (HATINYA PKK) &amp; Sandang</span>
-                    </div>
-                    <input type="text" name="pokja_3_ketua"
-                           value="{{ old('pokja_3_ketua', $struktur['pokja_3_ketua']) }}"
-                           placeholder="Nama Ketua Pokja III"
-                           class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
-                            @if (!empty($struktur['pokja_3_foto']) && file_exists(public_path('images/' . $struktur['pokja_3_foto'])))
-                                <img src="{{ asset('images/' . $struktur['pokja_3_foto']) }}" class="w-full h-full object-cover">
-                            @else
-                                <i class="fa-solid fa-user text-xs text-emerald-700"></i>
-                            @endif
-                        </div>
-                        <input type="file" name="pokja_3_foto" accept="image/*" class="text-xs text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] font-medium file:bg-emerald-100 file:text-emerald-800 hover:file:bg-emerald-200">
-                    </div>
-                </div>
-
-                {{-- Pokja IV --}}
-                <div class="p-4 rounded-xl border border-gray-200 hover:border-emerald-300 transition-colors bg-[#ECFEF3] space-y-2.5">
-                    <div class="flex items-center justify-between">
-                        <span class="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                            POKJA IV
-                        </span>
-                        <span class="text-[10px] text-gray-400">Kesehatan, Posyandu &amp; Stunting</span>
-                    </div>
-                    <input type="text" name="pokja_4_ketua"
-                           value="{{ old('pokja_4_ketua', $struktur['pokja_4_ketua']) }}"
-                           placeholder="Nama Ketua Pokja IV"
-                           class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-600/20 focus:border-emerald-600 font-medium text-gray-800" required>
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-12 rounded-md overflow-hidden bg-white border border-emerald-200 flex-shrink-0 flex items-center justify-center shadow-2xs">
-                            @if (!empty($struktur['pokja_4_foto']) && file_exists(public_path('images/' . $struktur['pokja_4_foto'])))
-                                <img src="{{ asset('images/' . $struktur['pokja_4_foto']) }}" class="w-full h-full object-cover">
-                            @else
-                                <i class="fa-solid fa-user text-xs text-emerald-700"></i>
-                            @endif
-                        </div>
-                        <input type="file" name="pokja_4_foto" accept="image/*" class="text-xs text-gray-500 file:mr-2 file:py-1 file:px-2.5 file:rounded-md file:border-0 file:text-[11px] font-medium file:bg-emerald-100 file:text-emerald-800 hover:file:bg-emerald-200">
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
 
@@ -374,11 +272,16 @@
         <div class="sticky bottom-4 z-10 bg-white/95 backdrop-blur-sm p-4 rounded-2xl border border-gray-200 shadow-md flex items-center justify-between gap-4">
             <div class="text-xs text-gray-500 hidden sm:block">
                 <i class="fa-solid fa-circle-info text-emerald-600 mr-1"></i>
-                Format foto yang didukung: JPG, PNG, WEBP (maksimal 2MB per foto).
+                Format foto yang didukung: JPG, PNG, WEBP (maksimal 5MB per foto).
             </div>
             <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
-                <button type="submit"
-                        class="w-full sm:w-auto px-6 py-2.5 bg-[#075B3C] hover:bg-[#055030] text-white font-semibold rounded-xl text-sm transition-all shadow-sm flex items-center justify-center gap-2 active:scale-95">
+                <button type="button" id="btn-cancel-struktur" onclick="resetStrukturForm()"
+                    class="hidden w-full sm:w-auto px-5 py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold rounded-xl text-sm transition-all shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
+                    <i class="fa-solid fa-rotate-left"></i>
+                    <span>Batalkan Perubahan</span>
+                </button>
+                <button type="submit" id="btn-submit-struktur" disabled
+                    class="w-full sm:w-auto px-6 py-2.5 bg-gray-300 text-gray-500 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed">
                     <i class="fa-solid fa-floppy-disk"></i>
                     <span>Simpan Perubahan Struktur &amp; Foto</span>
                 </button>
@@ -388,4 +291,239 @@
     </form>
 
 </div>
+
+@push('scripts')
+<script>
+    let initialStrukturValues = {};
+    let initialPreviewHTML = {};
+
+    function hideIconShowImage(previewBox, src) {
+        let img = previewBox.querySelector('img');
+        if (!img) {
+            img = document.createElement('img');
+            img.className = 'photo-img w-full h-full object-cover';
+            previewBox.prepend(img);
+        }
+        if (src) img.src = src;
+        img.classList.remove('hidden');
+        img.style.setProperty('display', 'block', 'important');
+
+        const icon = previewBox.querySelector('.photo-icon') || previewBox.querySelector('i');
+        if (icon) {
+            icon.classList.add('hidden');
+            icon.style.setProperty('display', 'none', 'important');
+        }
+    }
+
+    function showIconHideImage(previewBox) {
+        const img = previewBox.querySelector('img');
+        if (img) {
+            img.classList.add('hidden');
+            img.style.setProperty('display', 'none', 'important');
+        }
+        const icon = previewBox.querySelector('.photo-icon') || previewBox.querySelector('i');
+        if (icon) {
+            icon.classList.remove('hidden');
+            icon.style.removeProperty('display');
+            icon.style.setProperty('display', 'inline-block', 'important');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const form = document.getElementById('struktur-form');
+        if (!form) return;
+
+        // Simpan nilai awal semua input teks dan hidden
+        const inputs = form.querySelectorAll('input:not([name="_token"]):not([name="_method"])');
+        inputs.forEach(el => {
+            if (el.type !== 'file') {
+                initialStrukturValues[el.name] = el.value;
+            }
+            el.addEventListener('input', checkStrukturDirty);
+            el.addEventListener('change', checkStrukturDirty);
+        });
+
+        // Simpan markup awal kotak preview, sembunyikan icon jika ada foto, dan pasang listener file
+        document.querySelectorAll('.photo-field-wrapper').forEach(wrapper => {
+            const field = wrapper.dataset.field;
+            const previewBox = wrapper.querySelector('.photo-preview-box');
+            if (previewBox) {
+                const img = previewBox.querySelector('img');
+                const icon = previewBox.querySelector('.photo-icon') || previewBox.querySelector('i');
+                if (img && !img.classList.contains('hidden')) {
+                    if (icon) {
+                        icon.classList.add('hidden');
+                        icon.style.setProperty('display', 'none', 'important');
+                    }
+                }
+            }
+            if (previewBox && field) {
+                initialPreviewHTML[field] = previewBox.innerHTML;
+            }
+
+            const fileInput = wrapper.querySelector('.photo-file-input');
+            if (fileInput && field) {
+                fileInput.addEventListener('change', function() {
+                    handlePhotoPreview(this, field);
+                });
+            }
+        });
+    });
+
+    // 1. Konfirmasi Hapus Foto dengan Alert Dialog Modal
+    function confirmDeletePhoto(field) {
+        if (typeof showAdminConfirm === 'function') {
+            showAdminConfirm({
+                title: 'Hapus Foto Pengurus?',
+                message: 'Yakin ingin menghapus foto pengurus ini? Anda dapat memilih foto pengganti atau membiarkannya kosong.',
+                confirmText: 'Ya, Hapus Foto',
+                onConfirm: () => {
+                    executeDeletePhoto(field);
+                }
+            });
+        } else {
+            if (confirm('Yakin ingin menghapus foto pengurus ini?')) {
+                executeDeletePhoto(field);
+            }
+        }
+    }
+
+    function executeDeletePhoto(field) {
+        const wrapper = document.querySelector(`.photo-field-wrapper[data-field="${field}"]`);
+        if (!wrapper) return;
+
+        const deleteFlag = wrapper.querySelector('.delete-flag-input');
+        if (deleteFlag) deleteFlag.value = '1';
+
+        const existingActions = wrapper.querySelector('.photo-existing-actions');
+        if (existingActions) existingActions.classList.add('hidden');
+
+        const uploadActions = wrapper.querySelector('.photo-upload-actions');
+        if (uploadActions) uploadActions.classList.remove('hidden');
+
+        const previewBox = wrapper.querySelector('.photo-preview-box');
+        if (previewBox) {
+            showIconHideImage(previewBox);
+            previewBox.classList.add('ring-2', 'ring-red-400/50', 'border-red-300');
+        }
+
+        checkStrukturDirty();
+    }
+
+    // 2. Pratinjau Langsung saat File Baru Dipilih
+    function handlePhotoPreview(input, field) {
+        const wrapper = input.closest('.photo-field-wrapper');
+        if (!wrapper) return;
+
+        const previewBox = wrapper.querySelector('.photo-preview-box');
+        if (!previewBox) return;
+
+        const file = input.files && input.files[0];
+
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                hideIconShowImage(previewBox, e.target.result);
+                previewBox.classList.remove('ring-red-400/50', 'border-red-300');
+                previewBox.classList.add('ring-2', 'ring-emerald-500');
+            };
+            reader.readAsDataURL(file);
+        }
+
+        checkStrukturDirty();
+    }
+
+    // 3. Cek Perubahan Form (Aktifkan Simpan / Batalkan)
+    function checkStrukturDirty() {
+        const cancelBtn = document.getElementById('btn-cancel-struktur');
+        if (!cancelBtn) return;
+
+        const form = document.getElementById('struktur-form');
+        let isDirty = false;
+
+        const inputs = form.querySelectorAll('input:not([name="_token"]):not([name="_method"])');
+        for (const el of inputs) {
+            if (el.type === 'file') {
+                if (el.files && el.files.length > 0) {
+                    isDirty = true;
+                    break;
+                }
+            } else {
+                if (initialStrukturValues[el.name] !== undefined && el.value !== initialStrukturValues[el.name]) {
+                    isDirty = true;
+                    break;
+                }
+            }
+        }
+
+        const submitBtn = document.getElementById('btn-submit-struktur');
+
+        if (isDirty) {
+            cancelBtn.classList.remove('hidden');
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.className = 'w-full sm:w-auto px-6 py-2.5 bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white font-semibold rounded-xl text-sm transition-all duration-200 shadow-sm flex items-center justify-center gap-2 active:scale-95 cursor-pointer';
+            }
+        } else {
+            cancelBtn.classList.add('hidden');
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.className = 'w-full sm:w-auto px-6 py-2.5 bg-gray-300 text-gray-500 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed';
+            }
+        }
+    }
+
+    // 4. Reset seluruh form kembali ke kondisi semula
+    function resetStrukturForm() {
+        const form = document.getElementById('struktur-form');
+        if (!form) return;
+
+        // Reset semua input ke initial values
+        const inputs = form.querySelectorAll('input:not([name="_token"]):not([name="_method"])');
+        inputs.forEach(el => {
+            if (el.type === 'file') {
+                el.value = '';
+            } else if (initialStrukturValues[el.name] !== undefined) {
+                el.value = initialStrukturValues[el.name];
+            }
+        });
+
+        // Reset tampilan setiap wrapper foto
+        document.querySelectorAll('.photo-field-wrapper').forEach(wrapper => {
+            const field = wrapper.dataset.field;
+            const existingActions = wrapper.querySelector('.photo-existing-actions');
+            const uploadActions = wrapper.querySelector('.photo-upload-actions');
+            const previewBox = wrapper.querySelector('.photo-preview-box');
+
+            if (existingActions) {
+                existingActions.classList.remove('hidden');
+            }
+            if (uploadActions && existingActions) {
+                uploadActions.classList.add('hidden');
+            }
+            if (previewBox && initialPreviewHTML[field]) {
+                previewBox.innerHTML = initialPreviewHTML[field];
+                const img = previewBox.querySelector('img');
+                if (img) {
+                    hideIconShowImage(previewBox);
+                } else {
+                    showIconHideImage(previewBox);
+                }
+                previewBox.classList.remove('ring-2', 'ring-emerald-500', 'ring-red-400/50', 'border-red-300');
+            }
+        });
+
+        const cancelBtn = document.getElementById('btn-cancel-struktur');
+        if (cancelBtn) {
+            cancelBtn.classList.add('hidden');
+        }
+
+        const submitBtn = document.getElementById('btn-submit-struktur');
+        if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.className = 'w-full sm:w-auto px-6 py-2.5 bg-gray-300 text-gray-500 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed';
+        }
+    }
+</script>
+@endpush
 @endsection
