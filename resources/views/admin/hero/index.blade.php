@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Data Foto Background Beranda')
-@section('page-title', 'Data Foto Background Beranda')
+@section('title', 'Foto Background Beranda')
+@section('page-title', 'Foto Background Beranda')
 
 @section('content')
 <div class="space-y-6">
@@ -9,7 +9,7 @@
     {{-- Header & Penjelasan Singkat (Sesuai format Data Statistik Dasawisma) --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
-            <h2 class="text-xl font-bold text-gray-800">Data Foto Background Beranda</h2>
+            <h2 class="text-xl font-bold text-gray-800">Kelola Foto Background Beranda</h2>
             <p class="text-sm text-gray-500 mt-0.5">Perbarui foto background yang ditampilkan di halaman beranda.</p>
         </div>
         <div>
@@ -100,7 +100,6 @@
                 <ul class="text-xs text-emerald-900 space-y-1.5 leading-relaxed list-disc list-inside">
                     <li>Pilih foto dengan <strong>orientasi horizontal (landscape / mendatar)</strong> seperti rasio 16:9.</li>
                     <li>Rekomendasi resolusi minimal <strong>1920 &times; 1080 piksel</strong> agar tidak pecah/blur saat dibuka di layar komputer atau laptop.</li>
-                    <li>Sistem website secara otomatis menambahkan lapisan filter gelap (overlay emerald) di atas foto, sehingga teks utama tetap jelas terbaca oleh pengunjung.</li>
                 </ul>
             </div>
         </div>
