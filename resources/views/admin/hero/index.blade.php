@@ -63,17 +63,6 @@
                         <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
                         <h2 class="text-sm font-bold text-gray-900 uppercase tracking-wider">Pratinjau Tampilan Saat Ini</h2>
                     </div>
-                    @if($isCustom)
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
-                            <i class="fa-solid fa-check"></i>
-                            <span>Foto Kustom Aktif</span>
-                        </span>
-                    @else
-                        <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-semibold bg-gray-100 text-gray-700 border border-gray-200">
-                            <i class="fa-solid fa-image"></i>
-                            <span>Foto Bawaan (Default)</span>
-                        </span>
-                    @endif
                 </div>
 
                 {{-- Mockup Visual Hero Beranda --}}
@@ -98,33 +87,7 @@
                             Portal informasi kegiatan, program kerja, dan data statistik TP. PKK Desa Karangtanjung.
                         </p>
                     </div>
-
-                    {{-- Badge status di dalam gambar --}}
-                    <div class="absolute bottom-2.5 right-2.5 z-10">
-                        <span class="bg-black/60 backdrop-blur-xs text-white text-[10px] px-2 py-1 rounded-md font-mono">
-                            {{ $isCustom ? 'Kustom' : 'Bawaan' }}: {{ basename($currentHero) }}
-                        </span>
-                    </div>
                 </div>
-
-                {{-- Tombol Kembalikan ke Default (Hanya jika sedang memakai kustom) --}}
-                @if($isCustom)
-                <div class="mt-4 pt-4 border-t border-gray-100 flex items-center justify-between">
-                    <p class="text-xs text-gray-500">
-                        Sedang menggunakan foto unggahan kustom.
-                    </p>
-                    <form action="{{ route('admin.hero.update') }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin mengembalikan foto background ke foto bawaan (pelantikan pengurus)?');">
-                        @csrf
-                        @method('PUT')
-                        <input type="hidden" name="reset_default" value="1">
-                        <button type="submit"
-                            class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 hover:text-red-700 text-xs font-semibold rounded-lg border border-red-200 transition-colors cursor-pointer shadow-2xs">
-                            <i class="fa-solid fa-rotate-left text-[11px]"></i>
-                            <span>Kembalikan ke Foto Bawaan</span>
-                        </button>
-                    </form>
-                </div>
-                @endif
             </div>
 
             {{-- Tips Panduan Foto yang Bagus --}}
