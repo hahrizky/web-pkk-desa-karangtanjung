@@ -68,6 +68,12 @@
             <span>Statistik Dasawisma</span>
         </a>
 
+        <a href="{{ route('admin.hero.index') }}"
+           class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all {{ request()->routeIs('admin.hero.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-image w-5 text-center"></i>
+            <span>Background Beranda</span>
+        </a>
+
         <p class="text-xs text-white/40 font-semibold uppercase tracking-widest px-3 mt-4 mb-2">Sistem</p>
 
         <a href="{{ route('admin.profil') }}"

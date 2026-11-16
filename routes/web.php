@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AgendaController as AdminAgendaController;
 use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BeritaController as AdminBeritaController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\HeroController as AdminHeroController;
 use App\Http\Controllers\Admin\ProfilController as AdminProfilController;
 use App\Http\Controllers\Admin\StatistikController as AdminStatistikController;
 use App\Http\Controllers\Admin\StrukturController as AdminStrukturController;
@@ -66,4 +67,8 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // Profil Desa
     Route::get('/profil', [AdminProfilController::class, 'index'])->name('profil');
     Route::put('/profil', [AdminProfilController::class, 'update'])->name('profil.update');
+
+    // Background Beranda (Hero)
+    Route::get('/hero', [AdminHeroController::class, 'index'])->name('hero.index');
+    Route::put('/hero', [AdminHeroController::class, 'update'])->name('hero.update');
 });

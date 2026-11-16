@@ -141,9 +141,15 @@
                 </a>
 
                 <a href="{{ route('admin.struktur.index') }}"
-                    class="flex flex-col items-center gap-2 p-3 bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white rounded-xl transition-all duration-200 text-center active:scale-95 shadow-sm cursor-pointer col-span-2">
+                    class="flex flex-col items-center gap-2 p-3 bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white rounded-xl transition-all duration-200 text-center active:scale-95 shadow-sm cursor-pointer">
                     <i class="fa-solid fa-sitemap text-lg text-cyan-300"></i>
-                    <span class="text-xs font-semibold">Ganti Nama Struktur Organisasi</span>
+                    <span class="text-xs font-semibold">Struktur Organisasi</span>
+                </a>
+
+                <a href="{{ route('admin.hero.index') }}"
+                    class="flex flex-col items-center gap-2 p-3 bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white rounded-xl transition-all duration-200 text-center active:scale-95 shadow-sm cursor-pointer">
+                    <i class="fa-solid fa-image text-lg text-emerald-200"></i>
+                    <span class="text-xs font-semibold">Background Beranda</span>
                 </a>
             </div>
         </div>

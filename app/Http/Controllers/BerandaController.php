@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Admin\StatistikController;
 use App\Models\Berita;
+use Illuminate\Support\Facades\File;
 use Throwable;
 
 class BerandaController extends Controller
@@ -95,6 +96,20 @@ class BerandaController extends Controller
             ],
         ];
 
-        return view('beranda', compact('statistik', 'kegiatan', 'pokja', 'galeri'));
+        // 4. Foto Hero Background Beranda (Dapat diatur dari CMS Admin)
+        $heroBackground = 'images/5.webp';
+        try {
+            $profilPath = storage_path('app/profil_data.json');
+            if (File::exists($profilPath)) {
+                $profilData = json_decode(File::get($profilPath), true) ?? [];
+                if (!empty($profilData['hero_background']) && File::exists(public_path($profilData['hero_background']))) {
+                    $heroBackground = $profilData['hero_background'];
+                }
+            }
+        } catch (Throwable $e) {
+            $heroBackground = 'images/5.webp';
+        }
+
+        return view('beranda', compact('statistik', 'kegiatan', 'pokja', 'galeri', 'heroBackground'));
     }
 }
