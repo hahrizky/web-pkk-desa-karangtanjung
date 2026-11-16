@@ -103,3 +103,4 @@ class HeroController extends Controller
             ->with('info', 'Tidak ada perubahan foto yang dipilih.');
     }
 }
+

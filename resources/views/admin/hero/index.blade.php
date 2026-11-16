@@ -215,10 +215,16 @@
                         </div>
                     </div>
 
-                    {{-- Tombol Simpan --}}
-                    <div class="pt-2">
+                    {{-- Tombol Aksi Simpan & Batalkan --}}
+                    <div class="pt-2 flex flex-col sm:flex-row items-center gap-2">
+                        <button type="button" id="btn-cancel-hero" onclick="resetHeroForm()"
+                            class="hidden w-full sm:w-auto flex-1 py-2.5 px-4 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>Batalkan Perubahan</span>
+                        </button>
+
                         <button type="submit" id="btn-submit" disabled
-                            class="w-full py-2.5 px-4 bg-[#075B3C] hover:bg-[#064e33] active:bg-[#053d28] disabled:bg-gray-300 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-bold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
+                            class="w-full sm:w-auto flex-1 py-2.5 px-4 bg-[#075B3C] hover:bg-[#064e33] active:bg-[#053d28] disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed text-white text-xs sm:text-sm font-bold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer">
                             <i class="fa-solid fa-floppy-disk"></i>
                             <span>Simpan Foto Background</span>
                         </button>
@@ -241,14 +247,26 @@
         const fileNameEl = document.getElementById('new-file-name');
         const fileSizeEl = document.getElementById('new-file-size');
         const btnSubmit = document.getElementById('btn-submit');
+        const btnCancel = document.getElementById('btn-cancel-hero');
         const liveHeroImg = document.getElementById('live-hero-img');
+        const originalHeroSrc = liveHeroImg ? liveHeroImg.src : '';
+
+        window.resetHeroForm = function() {
+            if (fileInput) fileInput.value = '';
+            if (placeholder) placeholder.classList.remove('hidden');
+            if (previewContainer) previewContainer.classList.add('hidden');
+            if (previewImg) previewImg.src = '';
+            if (liveHeroImg) liveHeroImg.src = originalHeroSrc;
+            if (btnSubmit) btnSubmit.disabled = true;
+            if (btnCancel) btnCancel.classList.add('hidden');
+        };
 
         if (!fileInput) return;
 
         fileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
             if (!file) {
-                btnSubmit.disabled = true;
+                resetHeroForm();
                 return;
             }
 
@@ -256,8 +274,7 @@
             const maxSize = 5 * 1024 * 1024;
             if (file.size > maxSize) {
                 alert('Ukuran file melebihi batas maksimal 5 MB. Silakan pilih file lain yang lebih kecil.');
-                fileInput.value = '';
-                btnSubmit.disabled = true;
+                resetHeroForm();
                 return;
             }
 
@@ -273,6 +290,7 @@
                 placeholder.classList.add('hidden');
                 previewContainer.classList.remove('hidden');
                 btnSubmit.disabled = false;
+                if (btnCancel) btnCancel.classList.remove('hidden');
 
                 // Update juga preview di mockup kiri agar admin bisa langsung melihat preview
                 if (liveHeroImg) {
@@ -286,3 +304,4 @@
 @endpush
 
 @endsection
+
