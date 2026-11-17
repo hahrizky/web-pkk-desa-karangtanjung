@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
-@section('title', 'Foto Background Beranda')
-@section('page-title', 'Foto Background Beranda')
+@section('title', 'Form Kelola Foto Background Beranda dan Profil Tim Pengurus')
+@section('page-title', 'Form Kelola Foto Background Beranda dan Profil Tim Pengurus')
 
 @section('content')
 <div class="space-y-6">
@@ -60,7 +60,7 @@
                 <div class="flex items-center justify-between border-b border-white/20 pb-3">
                     <div>
                         <h3 class="text-sm font-bold text-white">Pratinjau Tampilan Saat Ini</h3>
-                        <p class="text-[11px] text-white">Tampilan foto latar belakang pada bagian Hero Beranda</p>
+                        <p class="text-[11px] text-white">Tampilan foto latar belakang pada bagian Halaman Beranda</p>
                     </div>
                 </div>
 
@@ -199,22 +199,36 @@
     {{-- ══════════════════════════════════════════════════════
          SECTION 2: FOTO TIM "TENTANG KAMI" (HALAMAN PROFIL)
     ══════════════════════════════════════════════════════ --}}
-    <div class="mt-8">
-        <h2 class="text-xl font-bold text-gray-800">Kelola Foto Tim Profil</h2>
-        <p class="text-sm text-gray-500 mt-0.5 mb-6">Perbarui foto tim yang ditampilkan di bagian "Tentang Kami" pada halaman Profil.</p>
+    <div class="mt-12 pt-8 border-t border-gray-200">
+        {{-- Header & Penjelasan Singkat (Sesuai format Data Statistik Dasawisma & Hero Beranda) --}}
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+            <div>
+                <h2 class="text-xl font-bold text-gray-800">Kelola Foto Background Profil Tim Pengurus</h2>
+                <p class="text-sm text-gray-500 mt-0.5">Perbarui foto background profil tim pengurus yang ditampilkan di halaman profil.</p>
+            </div>
+            <div>
+                <a href="{{ url('/profil') }}" target="_blank"
+                    class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-[#075B3C] text-sm font-semibold px-4 py-2 rounded-xl border border-emerald-200 transition-colors shadow-2xs">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <span>Lihat di Website</span>
+                </a>
+            </div>
+        </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
             {{-- Kolom Kiri: Pratinjau Foto Tim --}}
             <div class="lg:col-span-7 space-y-4">
+                {{-- Kotak Tabel/Card Warna Hijau persis Struktur Organisasi & Hero Beranda --}}
                 <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-4">
                     <div class="flex items-center justify-between border-b border-white/20 pb-3">
                         <div>
-                            <h3 class="text-sm font-bold text-white">Pratinjau Foto Tim Saat Ini</h3>
-                            <p class="text-[11px] text-white">Tampilan foto tim pada bagian "Tentang Kami" halaman Profil</p>
+                            <h3 class="text-sm font-bold text-white">Pratinjau Tampilan Saat Ini</h3>
+                            <p class="text-[11px] text-white">Tampilan foto latar belakang pada bagian Halaman Profil</p>
                         </div>
                     </div>
 
+                    {{-- Mockup Visual Profil di dalam inner box mint (#ECFEF3) --}}
                     <div class="bg-[#ECFEF3] p-3 sm:p-4 rounded-xl border border-emerald-100">
                         <div class="relative w-full h-64 sm:h-72 rounded-xl overflow-hidden shadow-inner bg-gray-100 border border-gray-200">
                             <img id="live-tim-img" src="{{ asset($currentFotoTim) }}"
@@ -225,126 +239,109 @@
                                 <p class="text-[11px] text-emerald-200">Kec. Candi, Kab. Sidoarjo</p>
                             </div>
                         </div>
-
-                        {{-- Status Foto --}}
-                        <div class="mt-3 flex items-center gap-2">
-                            @if($isCustomFotoTim)
-                                <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">
-                                    <i class="fa-solid fa-circle-check text-emerald-600"></i> Foto Kustom Aktif
-                                </span>
-                            @else
-                                <span class="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-700 bg-amber-100 px-3 py-1 rounded-full">
-                                    <i class="fa-solid fa-image text-amber-500"></i> Foto Bawaan (Default)
-                                </span>
-                            @endif
-                        </div>
                     </div>
+                </div>
 
-                    {{-- Panduan --}}
-                    <div class="bg-[#ECFEF3] p-4 rounded-xl border border-emerald-100">
-                        <h4 class="text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                            <i class="fa-solid fa-lightbulb text-amber-500"></i> Panduan Foto
-                        </h4>
-                        <ul class="space-y-1.5 text-[12px] text-emerald-800">
-                            <li class="flex items-start gap-2">
-                                <i class="fa-solid fa-check text-emerald-600 mt-0.5 flex-shrink-0 text-[10px]"></i>
-                                <span>Foto posisi landscape (mendatar) & ukuran ≥ 800×500 px agar tidak pecah</span>
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <i class="fa-solid fa-check text-emerald-600 mt-0.5 flex-shrink-0 text-[10px]"></i>
-                                <span>Format JPG, PNG, atau WEBP — maksimal 5 MB</span>
-                            </li>
-                        </ul>
-                    </div>
+                {{-- Tips Panduan Foto yang Bagus --}}
+                <div class="bg-[#ECFEF3] rounded-2xl border border-emerald-200 p-5 shadow-xs">
+                    <h3 class="text-xs font-bold text-[#075B3C] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-lightbulb text-amber-500"></i>
+                        <span>Panduan Pemilihan Foto Background</span>
+                    </h3>
+                    <ul class="text-xs text-emerald-900 space-y-1.5 leading-relaxed list-disc list-inside">
+                        <li>Pilih foto dengan <strong>orientasi horizontal (landscape / mendatar)</strong> seperti rasio 16:9.</li>
+                        <li>Rekomendasi resolusi minimal <strong>1920 &times; 1080 piksel</strong> agar tidak pecah/blur saat dibuka di layar komputer atau laptop.</li>
+                    </ul>
                 </div>
             </div>
 
-            {{-- Kolom Kanan: Form Upload Foto Tim --}}
-            <div class="lg:col-span-5 space-y-4">
-                <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs">
-                    <div class="border-b border-white/20 pb-3 mb-4">
-                        <h3 class="text-sm font-bold text-white">Ganti Foto Tim Profil</h3>
-                        <p class="text-[11px] text-white/80 mt-0.5">Unggah foto baru untuk menggantikan yang ada</p>
+            {{-- Kolom Kanan: Form Unggah Foto Baru Tim (Persis sama dengan Beranda) --}}
+            <div class="lg:col-span-5">
+                {{-- Kotak Tabel/Card Warna Hijau persis Struktur Organisasi & Hero Beranda --}}
+                <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-4 sticky top-6">
+                    <div class="flex items-center justify-between border-b border-white/20 pb-3">
+                        <div>
+                            <h3 class="text-sm font-bold text-white">Unggah Background Baru</h3>
+                            <p class="text-[11px] text-white">Pilih file gambar untuk mengganti background</p>
+                        </div>
                     </div>
 
-                    <form id="form-foto-tim" action="{{ route('admin.hero.foto-tim.update') }}" method="POST" enctype="multipart/form-data">
-                        @csrf @method('PUT')
+                    <form id="form-foto-tim" action="{{ route('admin.hero.foto-tim.update') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                        @csrf
+                        @method('PUT')
 
-                        <div class="bg-[#ECFEF3] p-4 rounded-xl border border-emerald-100 space-y-4">
-                            {{-- Upload Area Foto Tim --}}
-                            <div>
-                                <label class="block text-xs font-bold text-emerald-900 uppercase tracking-wider mb-2">
-                                    Pilih Foto Tim
-                                </label>
-                                <label for="foto_tim"
-                                    class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-emerald-300 rounded-xl cursor-pointer hover:border-emerald-500 hover:bg-emerald-50/60 transition-all group">
-                                    <div id="tim-upload-placeholder">
-                                        <div class="flex flex-col items-center gap-2 text-emerald-700 group-hover:text-emerald-900">
-                                            <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
-                                            <p class="text-xs font-semibold">Klik untuk pilih foto tim</p>
-                                            <p class="text-[11px] text-emerald-600">JPG, PNG, WEBP — Maks. 5 MB</p>
-                                        </div>
+                        {{-- Area Upload Drag & Drop di dalam inner box mint (#ECFEF3) --}}
+                        <div class="bg-[#ECFEF3] p-4 rounded-xl border border-emerald-100 space-y-2">
+                            <label for="foto_tim" class="block text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                Pilih File Gambar <span class="text-red-500">*</span>
+                            </label>
+
+                            <div id="dropzone-tim"
+                                onclick="document.getElementById('foto_tim').click()"
+                                class="relative border-2 border-dashed border-emerald-300 hover:border-emerald-600 rounded-xl p-5 text-center cursor-pointer transition-colors bg-white hover:bg-emerald-50/50 group">
+
+                                <input type="file" id="foto_tim" name="foto_tim" accept="image/jpeg,image/png,image/jpg,image/webp" class="hidden" required>
+
+                                {{-- Tampilan Kosong (Belum Memilih File) --}}
+                                <div id="tim-upload-placeholder" class="space-y-2">
+                                    <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 mx-auto flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                        <i class="fa-solid fa-camera"></i>
                                     </div>
-                                    <div id="tim-preview-container" class="hidden w-full h-full relative">
-                                        <img id="tim-preview-img" src="" alt="Preview"
-                                            class="w-full h-full object-cover rounded-xl">
+                                    <div class="text-xs text-gray-700 font-medium">
+                                        <span class="text-[#075B3C] font-bold group-hover:underline">Klik di sini untuk memilih foto</span>
                                     </div>
-                                </label>
-                                <input type="file" id="foto_tim" name="foto_tim" accept="image/jpeg,image/png,image/webp" class="hidden">
-                            </div>
+                                    <p class="text-[11px] text-gray-500">
+                                        Format: JPG, JPEG, PNG, atau WEBP (Maks. 5 MB)
+                                    </p>
+                                </div>
 
-                            {{-- Info File --}}
-                            <div id="tim-file-info" class="hidden text-[11px] text-emerald-800 bg-emerald-50 rounded-lg px-3 py-2 border border-emerald-200">
-                                <span class="font-semibold">File:</span>
-                                <span id="tim-file-name">-</span>
-                                <span class="ml-2 font-semibold">Ukuran:</span>
-                                <span id="tim-file-size">-</span>
-                            </div>
-
-                            {{-- Tombol Aksi --}}
-                            <div class="flex flex-col sm:flex-row items-center gap-2 pt-1">
-                                <button type="button" id="btn-cancel-tim" onclick="resetTimForm()"
-                                    class="hidden w-full sm:w-auto flex-1 py-2.5 px-4 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-sm flex items-center justify-center gap-1.5 cursor-pointer">
-                                    <i class="fa-solid fa-rotate-left"></i>
-                                    <span>Batalkan</span>
-                                </button>
-                                <button type="submit" id="btn-submit-tim" disabled
-                                    class="w-full sm:w-auto flex-1 py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm flex items-center justify-center gap-2 cursor-not-allowed">
-                                    <i class="fa-solid fa-floppy-disk"></i>
-                                    <span>Simpan Foto Tim</span>
-                                </button>
+                                {{-- Pratinjau File yang Baru Dipilih (Awalnya Sembunyi) --}}
+                                <div id="tim-preview-container" class="hidden space-y-2">
+                                    <div class="w-full h-40 rounded-lg overflow-hidden bg-black/5 relative border border-gray-200">
+                                        <img id="tim-preview-img" src="" alt="Pratinjau File Baru" class="w-full h-full object-cover object-top">
+                                    </div>
+                                    <div class="flex items-center justify-between text-xs pt-1">
+                                        <span id="tim-file-name" class="font-semibold text-gray-800 truncate max-w-[200px]">file.jpg</span>
+                                        <span id="tim-file-size" class="text-gray-500 text-[11px]">0 KB</span>
+                                    </div>
+                                    <p class="text-[11px] text-[#075B3C] font-medium">
+                                        <i class="fa-solid fa-arrows-rotate mr-1"></i> Klik untuk mengganti file lain
+                                    </p>
+                                </div>
                             </div>
                         </div>
 
-                        {{-- Reset ke Default --}}
-                        @if($isCustomFotoTim)
-                        <div class="mt-4 bg-[#ECFEF3] p-4 rounded-xl border border-emerald-100">
-                            <p class="text-xs text-emerald-800 mb-3">
-                                <i class="fa-solid fa-circle-info text-emerald-600 mr-1"></i>
-                                Kembalikan ke foto bawaan sistem jika ingin menghapus foto kustom.
-                            </p>
-                            <form action="{{ route('admin.hero.foto-tim.update') }}" method="POST">
-                                @csrf @method('PUT')
-                                <input type="hidden" name="reset_foto_tim" value="1">
-                                <button type="submit"
-                                    onclick="return confirm('Reset foto tim ke foto bawaan?')"
-                                    class="w-full py-2 px-4 bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 cursor-pointer transition-colors">
-                                    <i class="fa-solid fa-arrow-rotate-left"></i>
-                                    <span>Reset ke Foto Default</span>
-                                </button>
-                            </form>
+                        {{-- Informasi Spesifikasi --}}
+                        <div class="bg-[#ECFEF3] rounded-xl p-3.5 border border-emerald-100 text-[11px] text-gray-700 space-y-1.5 font-medium">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Maksimal Ukuran:</span>
+                                <span class="font-bold text-gray-900">5 MB</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Format yang didukung:</span>
+                                <span class="font-bold text-gray-900">JPG, PNG, WEBP</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Orientasi:</span>
+                                <span class="font-bold text-gray-900">Landscape (Mendatar)</span>
+                            </div>
                         </div>
-                        @endif
+
+                        {{-- Tombol Aksi Simpan & Batalkan --}}
+                        <div class="pt-2 flex flex-col sm:flex-row items-center gap-2">
+                            <button type="button" id="btn-cancel-tim" onclick="resetTimForm()"
+                                class="hidden w-full sm:w-auto flex-1 py-2.5 px-4 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                                <i class="fa-solid fa-rotate-left"></i>
+                                <span>Batalkan Perubahan</span>
+                            </button>
+
+                            <button type="submit" id="btn-submit-tim" disabled
+                                class="w-full sm:w-auto flex-1 py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                <span>Simpan Foto Background</span>
+                            </button>
+                        </div>
                     </form>
-
-                    {{-- Link ke halaman Profil --}}
-                    <div class="mt-4">
-                        <a href="{{ url('/profil') }}" target="_blank"
-                            class="inline-flex items-center gap-2 bg-emerald-50 hover:bg-emerald-100 text-[#075B3C] text-xs font-semibold px-3 py-2 rounded-xl border border-emerald-200 transition-colors w-full justify-center">
-                            <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                            <span>Lihat Halaman Profil</span>
-                        </a>
-                    </div>
                 </div>
             </div>
 
@@ -422,64 +419,67 @@
     });
 
     // ── Foto Tim Profil ──────────────────────────────────────
-    const timFileInput  = document.getElementById('foto_tim');
-    const timPlaceholder = document.getElementById('tim-upload-placeholder');
-    const timPreviewContainer = document.getElementById('tim-preview-container');
-    const timPreviewImg = document.getElementById('tim-preview-img');
-    const timFileNameEl = document.getElementById('tim-file-name');
-    const timFileSizeEl = document.getElementById('tim-file-size');
-    const timFileInfo   = document.getElementById('tim-file-info');
-    const btnSubmitTim  = document.getElementById('btn-submit-tim');
-    const btnCancelTim  = document.getElementById('btn-cancel-tim');
-    const livTimImg     = document.getElementById('live-tim-img');
-    const originalTimSrc = livTimImg ? livTimImg.src : '';
+    document.addEventListener('DOMContentLoaded', () => {
+        const timFileInput  = document.getElementById('foto_tim');
+        const timPlaceholder = document.getElementById('tim-upload-placeholder');
+        const timPreviewContainer = document.getElementById('tim-preview-container');
+        const timPreviewImg = document.getElementById('tim-preview-img');
+        const timFileNameEl = document.getElementById('tim-file-name');
+        const timFileSizeEl = document.getElementById('tim-file-size');
+        const btnSubmitTim  = document.getElementById('btn-submit-tim');
+        const btnCancelTim  = document.getElementById('btn-cancel-tim');
+        const livTimImg     = document.getElementById('live-tim-img');
+        const originalTimSrc = livTimImg ? livTimImg.src : '';
 
-    window.resetTimForm = function() {
-        if (timFileInput)        timFileInput.value = '';
-        if (timPlaceholder)      timPlaceholder.classList.remove('hidden');
-        if (timPreviewContainer) timPreviewContainer.classList.add('hidden');
-        if (timPreviewImg)       timPreviewImg.src = '';
-        if (timFileInfo)         timFileInfo.classList.add('hidden');
-        if (livTimImg)           livTimImg.src = originalTimSrc;
-        if (btnSubmitTim) {
-            btnSubmitTim.disabled = true;
-            btnSubmitTim.className = 'w-full sm:w-auto flex-1 py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm flex items-center justify-center gap-2 cursor-not-allowed';
-        }
-        if (btnCancelTim) btnCancelTim.classList.add('hidden');
-    };
+        window.resetTimForm = function() {
+            if (timFileInput)        timFileInput.value = '';
+            if (timPlaceholder)      timPlaceholder.classList.remove('hidden');
+            if (timPreviewContainer) timPreviewContainer.classList.add('hidden');
+            if (timPreviewImg)       timPreviewImg.src = '';
+            if (livTimImg)           livTimImg.src = originalTimSrc;
+            if (btnSubmitTim) {
+                btnSubmitTim.disabled = true;
+                btnSubmitTim.className = 'w-full sm:w-auto flex-1 py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed';
+            }
+            if (btnCancelTim) btnCancelTim.classList.add('hidden');
+        };
 
-    if (timFileInput) {
+        if (!timFileInput) return;
+
         timFileInput.addEventListener('change', (e) => {
             const file = e.target.files[0];
-            if (!file) { resetTimForm(); return; }
-
-            const maxSize = 5 * 1024 * 1024;
-            if (file.size > maxSize) {
-                alert('Ukuran file melebihi batas maksimal 5 MB. Silakan pilih file lain.');
+            if (!file) {
                 resetTimForm();
                 return;
             }
 
-            if (timFileNameEl) timFileNameEl.textContent = file.name;
-            if (timFileSizeEl) timFileSizeEl.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
-            if (timFileInfo)   timFileInfo.classList.remove('hidden');
+            const maxSize = 5 * 1024 * 1024;
+            if (file.size > maxSize) {
+                alert('Ukuran file melebihi batas maksimal 5 MB. Silakan pilih file lain yang lebih kecil.');
+                resetTimForm();
+                return;
+            }
+
+            timFileNameEl.textContent = file.name;
+            timFileSizeEl.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
 
             const reader2 = new FileReader();
             reader2.onload = (ev) => {
                 const result = ev.target.result;
-                if (timPreviewImg)       timPreviewImg.src = result;
-                if (timPlaceholder)      timPlaceholder.classList.add('hidden');
-                if (timPreviewContainer) timPreviewContainer.classList.remove('hidden');
-                if (livTimImg)           livTimImg.src = result;
-                if (btnSubmitTim) {
-                    btnSubmitTim.disabled = false;
-                    btnSubmitTim.className = 'w-full sm:w-auto flex-1 py-2.5 px-5 bg-white hover:bg-emerald-50 active:bg-emerald-100 text-[#075B3C] font-bold rounded-xl text-sm transition-all duration-200 shadow-sm flex items-center justify-center gap-2 active:scale-95 cursor-pointer';
-                }
+                timPreviewImg.src = result;
+                timPlaceholder.classList.add('hidden');
+                timPreviewContainer.classList.remove('hidden');
+                btnSubmitTim.disabled = false;
+                btnSubmitTim.className = 'w-full sm:w-auto flex-1 py-2.5 px-5 bg-white hover:bg-emerald-50 active:bg-emerald-100 text-[#075B3C] font-bold rounded-xl text-sm transition-all duration-200 shadow-sm flex items-center justify-center gap-2 active:scale-95 cursor-pointer';
                 if (btnCancelTim) btnCancelTim.classList.remove('hidden');
+
+                if (livTimImg) {
+                    livTimImg.src = result;
+                }
             };
             reader2.readAsDataURL(file);
         });
-    }
+    });
 </script>
 @endpush
 
