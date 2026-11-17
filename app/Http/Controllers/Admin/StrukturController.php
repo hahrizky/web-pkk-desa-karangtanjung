@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class StrukturController extends Controller
 {
@@ -51,13 +52,37 @@ class StrukturController extends Controller
         ];
     }
 
+    /** Read the shared profile document without allowing malformed or partial data to break the CMS. */
+    private function readProfil(): array
+    {
+        $path = $this->getProfilPath();
+        if (! File::exists($path)) {
+            return $this->getDefaultProfil();
+        }
+
+        $profil = json_decode(File::get($path), true);
+
+        return is_array($profil) ? array_replace_recursive($this->getDefaultProfil(), $profil) : $this->getDefaultProfil();
+    }
+
+    private function deleteManagedPhoto(mixed $photo): void
+    {
+        if (! is_string($photo) || ! str_starts_with($photo, 'pengurus/') || str_contains($photo, '..') || str_contains($photo, 'default_pas_foto') || str_contains($photo, 'sample_pas_foto')) {
+            return;
+        }
+
+        $path = public_path('images/'.$photo);
+        if (File::exists($path)) {
+            File::delete($path);
+        }
+    }
+
     /**
      * Tampilkan formulir kelola struktur organisasi dan foto profil
      */
     public function index()
     {
-        $path = $this->getProfilPath();
-        $profil = File::exists($path) ? (json_decode(File::get($path), true) ?? $this->getDefaultProfil()) : $this->getDefaultProfil();
+        $profil = $this->readProfil();
 
         $struktur = [
             'periode' => $profil['periode'] ?? '2024 - 2029',
@@ -135,7 +160,20 @@ class StrukturController extends Controller
         ]);
 
         $path = $this->getProfilPath();
-        $profil = File::exists($path) ? (json_decode(File::get($path), true) ?? $this->getDefaultProfil()) : $this->getDefaultProfil();
+        $profil = $this->readProfil();
+        $oldPhotos = [
+            $profil['struktur']['pembina']['foto'] ?? null,
+            $profil['struktur']['pengurus_inti'][0]['foto'] ?? null,
+            $profil['struktur']['pengurus_inti'][1]['foto'] ?? null,
+            $profil['struktur']['pengurus_inti'][2]['foto'] ?? null,
+            $profil['struktur']['pengurus_inti'][3]['foto'] ?? null,
+            $profil['struktur']['pengurus_inti'][4]['foto'] ?? null,
+            $profil['struktur']['pengurus_inti'][5]['foto'] ?? null,
+            $profil['struktur']['pokja'][0]['foto'] ?? null,
+            $profil['struktur']['pokja'][1]['foto'] ?? null,
+            $profil['struktur']['pokja'][2]['foto'] ?? null,
+            $profil['struktur']['pokja'][3]['foto'] ?? null,
+        ];
 
         // Helper untuk memproses file upload
         $uploadDir = public_path('images/pengurus');
@@ -146,29 +184,14 @@ class StrukturController extends Controller
             $shouldDelete = $request->input($deleteKey) === '1' || $request->input($deleteKey) === 1;
 
             if ($request->hasFile($key)) {
-                // Hapus foto lama jika ada dan bukan sample/default
-                if ($existing && ! str_contains($existing, 'default_pas_foto') && ! str_contains($existing, 'sample_pas_foto')) {
-                    $oldPath = public_path('images/'.$existing);
-                    if (File::exists($oldPath)) {
-                        File::delete($oldPath);
-                    }
-                }
-
                 $file = $request->file($key);
-                $filename = $key.'_'.time().'.'.$file->getClientOriginalExtension();
+                $filename = $key.'_'.Str::uuid().'.'.$file->getClientOriginalExtension();
                 $file->move($uploadDir, $filename);
 
                 return 'pengurus/'.$filename;
             }
 
             if ($shouldDelete) {
-                if ($existing && ! str_contains($existing, 'default_pas_foto') && ! str_contains($existing, 'sample_pas_foto')) {
-                    $oldPath = public_path('images/'.$existing);
-                    if (File::exists($oldPath)) {
-                        File::delete($oldPath);
-                    }
-                }
-
                 return null;
             }
 
@@ -218,7 +241,21 @@ class StrukturController extends Controller
         ];
 
         File::ensureDirectoryExists(storage_path('app'));
-        File::put($path, json_encode($profil, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        $json = json_encode($profil, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
+        $temporaryPath = $path.'.'.Str::uuid().'.tmp';
+        File::put($temporaryPath, $json);
+        File::move($temporaryPath, $path, true);
+
+        // Remove replaced/deleted uploads only after the new profile document is safely in place.
+        $newPhotos = [
+            $pembinaFoto, $ketuaFoto, $wakilFoto, $sekretaris1Foto, $sekretaris2Foto,
+            $bendahara1Foto, $bendahara2Foto, $pokja1Foto, $pokja2Foto, $pokja3Foto, $pokja4Foto,
+        ];
+        foreach ($oldPhotos as $index => $oldPhoto) {
+            if ($oldPhoto !== $newPhotos[$index]) {
+                $this->deleteManagedPhoto($oldPhoto);
+            }
+        }
 
         return redirect()->route('admin.struktur.index')
             ->with('success', 'Data profil pengurus dan susunan struktur organisasi berhasil disimpan!');

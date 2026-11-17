@@ -5,7 +5,7 @@
     $iconClass = $iconClass ?? 'fa-user text-emerald-700';
 @endphp
 
-<div class="photo-field-wrapper space-y-1.5" data-field="{{ $field }}">
+<div class="photo-field-wrapper space-y-1.5" data-field="{{ $field }}" data-has-photo="{{ $hasPhoto ? '1' : '0' }}">
     <label class="block text-[11px] font-semibold text-gray-600">{{ $label }}</label>
     <div class="flex flex-wrap items-center gap-3">
         <div class="photo-preview-box w-10 h-12 rounded-md overflow-hidden bg-white {{ $borderColor }} flex-shrink-0 flex items-center justify-center shadow-2xs transition-all">

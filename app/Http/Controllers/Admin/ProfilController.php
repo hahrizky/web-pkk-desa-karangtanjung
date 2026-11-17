@@ -16,15 +16,15 @@ class ProfilController extends Controller
     private function getDefaultData()
     {
         return [
-            'nama_desa' => 'Karangtanjung',
-            'kecamatan' => 'Candi',
-            'kabupaten' => 'Sidoarjo',
-            'provinsi' => 'Jawa Timur',
-            'periode' => '2024 - 2029',
-            'alamat' => 'Jl. Sunan Giri No.1 Desa Karangtanjung, Kec. Candi, Kab. Sidoarjo, Jawa Timur',
+            'nama_desa' => '',
+            'kecamatan' => '',
+            'kabupaten' => '',
+            'provinsi' => '',
+            'periode' => '',
+            'alamat' => '',
             'telepon' => '',
             'email' => '',
-            'jam_layanan' => 'Senin - Jumat (08.00 - 15.00 WIB)',
+            'jam_layanan' => '',
             'visi' => 'Terwujudnya Keluarga Karangtanjung yang Beriman, Berakhlak Mulia, Sehat, Sejahtera, Maju, dan Mandiri Berbasis Ketahanan Desa yang Berkelanjutan',
             'misi' => [
                 [
@@ -68,6 +68,51 @@ class ProfilController extends Controller
         ];
     }
 
+    private function parseMisiFromString(string $rawMisi, ?callable $cleanStr = null): array
+    {
+        $defaultTitles = [
+            'Ketahanan Mental & Gotong Royong',
+            'Kualitas Pendidikan & Pola Asuh Anak',
+            'Ketahanan Pangan & Kemandirian UP2K',
+            'Kesehatan Keluarga & Kelestarian Lingkungan',
+        ];
+        $lines = preg_split('/\r\n|\r|\n/', trim($rawMisi));
+        $converted = [];
+        $i = 0;
+        foreach ($lines as $line) {
+            $line = trim($line);
+            if ($line === '') continue;
+            $cleanLine = preg_replace('/^\s*(\d+[\.\)]|\-|\*)\s*/', '', $line);
+            if (str_contains($cleanLine, ':')) {
+                $parts = explode(':', $cleanLine, 2);
+                $judul = trim($parts[0]);
+                $deskripsi = trim($parts[1]);
+            } elseif (str_contains($cleanLine, ' - ')) {
+                $parts = explode(' - ', $cleanLine, 2);
+                $judul = trim($parts[0]);
+                $deskripsi = trim($parts[1]);
+            } else {
+                $judul = $defaultTitles[$i] ?? ('Program Misi ' . sprintf('%02d', $i + 1));
+                $deskripsi = $cleanLine;
+            }
+
+            if ($cleanStr) {
+                $judul = $cleanStr($judul);
+                $deskripsi = $cleanStr($deskripsi, true);
+            }
+
+            if ($judul !== '' || $deskripsi !== '') {
+                $converted[] = [
+                    'judul' => $judul !== '' ? $judul : 'Program Misi',
+                    'deskripsi' => $deskripsi,
+                ];
+            }
+            $i++;
+        }
+
+        return !empty($converted) ? $converted : $this->getDefaultData()['misi'];
+    }
+
     public function index()
     {
         $path = $this->getStoragePath();
@@ -79,34 +124,7 @@ class ProfilController extends Controller
 
         // Konversi jika misi masih berupa string lama
         if (isset($profil['misi']) && is_string($profil['misi'])) {
-            $defaultTitles = [
-                'Ketahanan Mental & Gotong Royong',
-                'Kualitas Pendidikan & Pola Asuh Anak',
-                'Ketahanan Pangan & Kemandirian UP2K',
-                'Kesehatan Keluarga & Kelestarian Lingkungan',
-            ];
-            $lines = preg_split('/\r\n|\r|\n/', trim($profil['misi']));
-            $converted = [];
-            $i = 0;
-            foreach ($lines as $line) {
-                $line = trim($line);
-                if ($line === '') continue;
-                $cleanLine = preg_replace('/^\s*(\d+[\.\)]|\-|\*)\s*/', '', $line);
-                if (str_contains($cleanLine, ':')) {
-                    $parts = explode(':', $cleanLine, 2);
-                    $converted[] = ['judul' => trim($parts[0]), 'deskripsi' => trim($parts[1])];
-                } elseif (str_contains($cleanLine, ' - ')) {
-                    $parts = explode(' - ', $cleanLine, 2);
-                    $converted[] = ['judul' => trim($parts[0]), 'deskripsi' => trim($parts[1])];
-                } else {
-                    $converted[] = [
-                        'judul' => $defaultTitles[$i] ?? ('Program Misi ' . sprintf('%02d', $i + 1)),
-                        'deskripsi' => $cleanLine,
-                    ];
-                }
-                $i++;
-            }
-            $profil['misi'] = !empty($converted) ? $converted : $this->getDefaultData()['misi'];
+            $profil['misi'] = $this->parseMisiFromString($profil['misi']);
         }
 
         return view('admin.profil', compact('profil'));
@@ -140,6 +158,12 @@ class ProfilController extends Controller
             $cleaned[$key] = is_string($val) ? $cleanStr($val, in_array($key, ['visi', 'alamat'])) : $val;
         }
 
+        // Normalisasi field opsional agar selalu string
+        $cleaned['alamat'] = $cleaned['alamat'] ?? '';
+        $cleaned['telepon'] = $cleaned['telepon'] ?? '';
+        $cleaned['email'] = $cleaned['email'] ?? '';
+        $cleaned['jam_layanan'] = $cleaned['jam_layanan'] ?? '';
+
         // Pengolahan data Misi (Array Judul & Deskripsi)
         $misiList = [];
         $rawMisi = $request->input('misi');
@@ -156,29 +180,7 @@ class ProfilController extends Controller
                 }
             }
         } elseif (is_string($rawMisi)) {
-            $lines = preg_split('/\r\n|\r|\n/', trim($rawMisi));
-            $i = 0;
-            $defaultTitles = [
-                'Ketahanan Mental & Gotong Royong',
-                'Kualitas Pendidikan & Pola Asuh Anak',
-                'Ketahanan Pangan & Kemandirian UP2K',
-                'Kesehatan Keluarga & Kelestarian Lingkungan',
-            ];
-            foreach ($lines as $line) {
-                $line = trim($line);
-                if ($line === '') continue;
-                $cleanLine = preg_replace('/^\s*(\d+[\.\)]|\-|\*)\s*/', '', $line);
-                if (str_contains($cleanLine, ':')) {
-                    $parts = explode(':', $cleanLine, 2);
-                    $misiList[] = ['judul' => trim($parts[0]), 'deskripsi' => trim($parts[1])];
-                } else {
-                    $misiList[] = [
-                        'judul' => $defaultTitles[$i] ?? ('Program Misi ' . sprintf('%02d', $i + 1)),
-                        'deskripsi' => $cleanLine,
-                    ];
-                }
-                $i++;
-            }
+            $misiList = $this->parseMisiFromString($rawMisi, $cleanStr);
         }
 
         if (empty($misiList)) {
@@ -192,13 +194,7 @@ class ProfilController extends Controller
             ? (json_decode(File::get($path), true) ?? $this->getDefaultData())
             : $this->getDefaultData();
 
-        $data = array_merge($data, $cleaned, [
-            'alamat' => $cleaned['alamat'] ?? '',
-            'telepon' => $cleaned['telepon'] ?? '',
-            'email' => $cleaned['email'] ?? '',
-            'jam_layanan' => $cleaned['jam_layanan'] ?? '',
-            'misi' => $cleaned['misi'],
-        ]);
+        $data = array_merge($data, $cleaned);
 
         File::ensureDirectoryExists(storage_path('app'));
         File::put($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));

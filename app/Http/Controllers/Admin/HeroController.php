@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class HeroController extends Controller
 {
@@ -17,8 +18,11 @@ class HeroController extends Controller
     {
         $path = $this->getStoragePath();
         if (File::exists($path)) {
-            return json_decode(File::get($path), true) ?? [];
+            $data = json_decode(File::get($path), true);
+
+            return is_array($data) ? $data : [];
         }
+
         return [];
     }
 
@@ -26,7 +30,29 @@ class HeroController extends Controller
     {
         $path = $this->getStoragePath();
         File::ensureDirectoryExists(dirname($path));
-        File::put($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES));
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_THROW_ON_ERROR);
+        $temporaryPath = $path.'.'.Str::uuid().'.tmp';
+
+        if (File::put($temporaryPath, $json) === false) {
+            throw new \RuntimeException('Tidak dapat menulis data background beranda.');
+        }
+
+        if (! rename($temporaryPath, $path)) {
+            File::delete($temporaryPath);
+            throw new \RuntimeException('Tidak dapat menyimpan data background beranda.');
+        }
+    }
+
+    private function deleteManagedHero(?string $hero): void
+    {
+        if (! $hero || ! str_starts_with($hero, 'images/hero/') || str_contains($hero, '..')) {
+            return;
+        }
+
+        $path = public_path($hero);
+        if (File::exists($path)) {
+            File::delete($path);
+        }
     }
 
     public function index()
@@ -60,15 +86,9 @@ class HeroController extends Controller
 
         // Opsi 1: Reset ke Foto Default Awal
         if ($request->input('reset_default') === '1' || $request->input('reset_default') === 1) {
-            if ($existing && $existing !== 'images/5.webp') {
-                $oldPath = public_path($existing);
-                if (File::exists($oldPath)) {
-                    File::delete($oldPath);
-                }
-            }
-
             $data['hero_background'] = null;
             $this->saveProfilData($data);
+            $this->deleteManagedHero($existing);
 
             return redirect()->route('admin.hero.index')
                 ->with('success', 'Foto background beranda berhasil dikembalikan ke foto bawaan (default).');
@@ -79,21 +99,19 @@ class HeroController extends Controller
             $uploadDir = public_path('images/hero');
             File::ensureDirectoryExists($uploadDir);
 
-            // Hapus file custom lama jika ada
-            if ($existing && $existing !== 'images/5.webp') {
-                $oldPath = public_path($existing);
-                if (File::exists($oldPath)) {
-                    File::delete($oldPath);
-                }
-            }
-
             $file = $request->file('hero_background');
             $extension = $file->getClientOriginalExtension() ?: 'jpg';
-            $filename = 'hero_bg_' . time() . '.' . $extension;
+            $filename = 'hero_bg_' . Str::uuid() . '.' . $extension;
             $file->move($uploadDir, $filename);
 
             $data['hero_background'] = 'images/hero/' . $filename;
-            $this->saveProfilData($data);
+            try {
+                $this->saveProfilData($data);
+            } catch (\Throwable $exception) {
+                $this->deleteManagedHero($data['hero_background']);
+                throw $exception;
+            }
+            $this->deleteManagedHero($existing);
 
             return redirect()->route('admin.hero.index')
                 ->with('success', 'Foto background beranda berhasil diperbarui.');

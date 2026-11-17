@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Berita;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 
 class BeritaController extends Controller
@@ -57,14 +58,22 @@ class BeritaController extends Controller
         $validated['konten'] = preg_replace('/<p[^>]*>(\s|&nbsp;|<br\s*\/?>)*<\/p>/i', '', $validated['konten']);
 
         // Upload gambar jika ada
+        $uploadedImage = null;
         if ($request->hasFile('gambar')) {
             $file = $request->file('gambar');
-            $filename = time().'_'.Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$file->getClientOriginalExtension();
+            $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
+            File::ensureDirectoryExists(public_path('images'));
             $file->move(public_path('images'), $filename);
             $validated['gambar'] = $filename;
+            $uploadedImage = $filename;
         }
 
-        Berita::create($validated);
+        try {
+            Berita::create($validated);
+        } catch (\Throwable $exception) {
+            $this->deleteManagedImage($uploadedImage);
+            throw $exception;
+        }
 
         return redirect()->route('admin.berita.index')
             ->with('success', 'Berita berhasil dipublikasikan!');
@@ -103,26 +112,30 @@ class BeritaController extends Controller
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
+        $uploadedImage = null;
+        $oldImage = $item->gambar;
         if ($request->hasFile('gambar')) {
-            // Hapus foto lama jika ada dan bukan gambar bawaan seeder (1.webp - 12.webp)
-            $oldImage = $item->gambar;
-            if ($oldImage && !preg_match('/^[1-9]\.webp$|^1[0-2]\.webp$/', $oldImage)) {
-                $oldPath = public_path('images/'.$oldImage);
-                if (File::exists($oldPath)) {
-                    File::delete($oldPath);
-                }
-            }
-
             $file = $request->file('gambar');
-            $filename = time().'_'.Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)).'.'.$file->getClientOriginalExtension();
+            $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
+            File::ensureDirectoryExists(public_path('images'));
             $file->move(public_path('images'), $filename);
             $validated['gambar'] = $filename;
+            $uploadedImage = $filename;
         }
 
         // Bersihkan tag paragraf kosong / &nbsp; dari editor
         $validated['konten'] = preg_replace('/<p[^>]*>(\s|&nbsp;|<br\s*\/?>)*<\/p>/i', '', $validated['konten']);
 
-        $item->update($validated);
+        try {
+            $item->update($validated);
+        } catch (\Throwable $exception) {
+            $this->deleteManagedImage($uploadedImage);
+            throw $exception;
+        }
+
+        if ($uploadedImage !== null) {
+            $this->deleteManagedImage($oldImage);
+        }
 
         return redirect()->route('admin.berita.index')
             ->with('success', 'Berita berhasil diperbarui!');
@@ -132,18 +145,23 @@ class BeritaController extends Controller
     {
         $item = Berita::findOrFail($id);
 
-        // Hapus file fisik gambar jika bukan gambar bawaan seeder (1.webp - 12.webp)
         $oldImage = $item->gambar;
-        if ($oldImage && !preg_match('/^[1-9]\.webp$|^1[0-2]\.webp$/', $oldImage)) {
-            $oldPath = public_path('images/'.$oldImage);
-            if (File::exists($oldPath)) {
-                File::delete($oldPath);
-            }
-        }
-
         $item->delete();
+        $this->deleteManagedImage($oldImage);
 
         return redirect()->route('admin.berita.index')
             ->with('success', 'Berita berhasil dihapus!');
+    }
+
+    private function deleteManagedImage(?string $image): void
+    {
+        if (! $image || basename($image) !== $image || preg_match('/^(?:[1-9]|1[0-2])\.webp$/', $image)) {
+            return;
+        }
+
+        $path = public_path('images/'.$image);
+        if (File::exists($path)) {
+            File::delete($path);
+        }
     }
 }

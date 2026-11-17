@@ -37,6 +37,7 @@ class AuthController extends Controller
             ->first();
 
         if ($user && Hash::check($request->password, $user->password)) {
+            $request->session()->regenerate();
             session([
                 'admin_logged_in' => true,
                 'admin_id' => $user->id,
@@ -56,7 +57,8 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->session()->forget(['admin_logged_in', 'admin_id', 'admin_name', 'admin_username']);
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
 
         return redirect()->route('admin.login')
             ->with('success', 'Anda telah keluar dari sistem.');

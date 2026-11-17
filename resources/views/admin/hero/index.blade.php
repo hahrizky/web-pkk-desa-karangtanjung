@@ -177,17 +177,17 @@
                     </div>
 
                     {{-- Tombol Aksi Simpan & Batalkan --}}
-                    <div class="pt-2 flex flex-col sm:flex-row items-center gap-2">
-                        <button type="button" id="btn-cancel-hero" onclick="resetHeroForm()"
-                            class="hidden w-full sm:w-auto flex-1 py-2.5 px-4 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-                            <i class="fa-solid fa-rotate-left"></i>
-                            <span>Batalkan Perubahan</span>
+                    <div class="pt-2 flex flex-col items-stretch gap-2">
+                        <button type="submit" id="btn-submit" disabled
+                            class="w-full py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>Simpan Perubahan</span>
                         </button>
 
-                        <button type="submit" id="btn-submit" disabled
-                            class="w-full sm:w-auto flex-1 py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed">
-                            <i class="fa-solid fa-floppy-disk"></i>
-                            <span>Simpan Foto Background</span>
+                        <button type="button" id="btn-cancel-hero" onclick="resetHeroForm()"
+                            class="hidden w-full py-2.5 px-4 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>Batalkan Perubahan</span>
                         </button>
                     </div>
                 </form>
@@ -220,7 +220,7 @@
             if (liveHeroImg) liveHeroImg.src = originalHeroSrc;
             if (btnSubmit) {
                 btnSubmit.disabled = true;
-                btnSubmit.className = 'w-full sm:w-auto flex-1 py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed';
+                btnSubmit.className = 'w-full py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed';
             }
             if (btnCancel) btnCancel.classList.add('hidden');
         };
@@ -254,7 +254,7 @@
                 placeholder.classList.add('hidden');
                 previewContainer.classList.remove('hidden');
                 btnSubmit.disabled = false;
-                btnSubmit.className = 'w-full sm:w-auto flex-1 py-2.5 px-5 bg-white hover:bg-emerald-50 active:bg-emerald-100 text-[#075B3C] font-bold rounded-xl text-sm transition-all duration-200 shadow-sm flex items-center justify-center gap-2 active:scale-95 cursor-pointer';
+                btnSubmit.className = 'w-full py-2.5 px-5 bg-white hover:bg-emerald-50 active:bg-emerald-100 text-[#075B3C] font-bold rounded-xl text-sm transition-all duration-200 shadow-sm flex items-center justify-center gap-2 active:scale-95 cursor-pointer';
                 if (btnCancel) btnCancel.classList.remove('hidden');
 
                 // Update juga preview di mockup kiri agar admin bisa langsung melihat preview
