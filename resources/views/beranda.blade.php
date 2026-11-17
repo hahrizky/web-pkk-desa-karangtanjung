@@ -7,8 +7,8 @@
 <!-- ================= 1. HERO SECTION ================= -->
 <section id="beranda" class="relative min-h-[580px] lg:min-h-[640px] flex items-center justify-center overflow-hidden bg-emerald-950">
     
-    <!-- Foto Dokumentasi Pelantikan PKK -->
-    <img src="{{ asset('images/5.webp') }}"
+    <!-- Foto Dokumentasi Pelantikan PKK / Hero Background (Dapat diubah via CMS Admin) -->
+    <img src="{{ asset($heroBackground ?? 'images/5.webp') }}"
         alt="Dokumentasi TP PKK Desa Karangtanjung"
         class="absolute inset-0 w-full h-full object-cover object-top filter brightness-[0.55] contrast-[1.05]">
 
