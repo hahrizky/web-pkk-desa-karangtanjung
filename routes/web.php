@@ -71,4 +71,5 @@ Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
     // Background Beranda (Hero)
     Route::get('/hero', [AdminHeroController::class, 'index'])->name('hero.index');
     Route::put('/hero', [AdminHeroController::class, 'update'])->name('hero.update');
+    Route::put('/hero/foto-tim', [AdminHeroController::class, 'updateFotoTim'])->name('hero.foto-tim.update');
 });
