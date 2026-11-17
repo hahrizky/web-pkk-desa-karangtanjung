@@ -47,7 +47,7 @@
         <a href="{{ route('admin.hero.index') }}"
            class="sidebar-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-all {{ request()->routeIs('admin.hero.*') ? 'active' : '' }}">
             <i class="fa-solid fa-image w-5 text-center"></i>
-            <span>Beranda</span>
+            <span>Background</span>
         </a>
 
         <a href="{{ route('admin.berita.index') }}"
