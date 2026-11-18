@@ -59,16 +59,19 @@ class BeritaController extends Controller
 
         // Upload gambar jika ada
         $uploadedImage = null;
+        $uploadFile = null;
         if ($request->hasFile('gambar')) {
-            $file = $request->file('gambar');
-            $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
-            File::ensureDirectoryExists(public_path('images'));
-            $file->move(public_path('images'), $filename);
+            $uploadFile = $request->file('gambar');
+            $filename = Str::uuid().'.'.$uploadFile->getClientOriginalExtension();
             $validated['gambar'] = $filename;
             $uploadedImage = $filename;
         }
 
         try {
+            if ($uploadFile) {
+                File::ensureDirectoryExists(public_path('images'));
+                $uploadFile->move(public_path('images'), $uploadedImage);
+            }
             Berita::create($validated);
         } catch (\Throwable $exception) {
             $this->deleteManagedImage($uploadedImage);
@@ -113,12 +116,11 @@ class BeritaController extends Controller
         ]);
 
         $uploadedImage = null;
+        $uploadFile = null;
         $oldImage = $item->gambar;
         if ($request->hasFile('gambar')) {
-            $file = $request->file('gambar');
-            $filename = Str::uuid().'.'.$file->getClientOriginalExtension();
-            File::ensureDirectoryExists(public_path('images'));
-            $file->move(public_path('images'), $filename);
+            $uploadFile = $request->file('gambar');
+            $filename = Str::uuid().'.'.$uploadFile->getClientOriginalExtension();
             $validated['gambar'] = $filename;
             $uploadedImage = $filename;
         }
@@ -127,6 +129,10 @@ class BeritaController extends Controller
         $validated['konten'] = preg_replace('/<p[^>]*>(\s|&nbsp;|<br\s*\/?>)*<\/p>/i', '', $validated['konten']);
 
         try {
+            if ($uploadFile) {
+                File::ensureDirectoryExists(public_path('images'));
+                $uploadFile->move(public_path('images'), $uploadedImage);
+            }
             $item->update($validated);
         } catch (\Throwable $exception) {
             $this->deleteManagedImage($uploadedImage);

@@ -31,7 +31,7 @@
 
             <!-- Gambar Utama Dokumentasi -->
             @if (!empty($berita['gambar']))
-            <div class="rounded-2xl overflow-hidden border border-[#D1D5DB] shadow-sm mb-8 bg-gray-100 max-h-[460px]">
+            <div class="rounded-2xl overflow-hidden border border-[#D1D5DB] shadow-sm mb-8 bg-gray-100 max-h-[600px]">
                 <img src="{{ asset('images/' . $berita['gambar']) }}"
                      alt="{{ $berita['judul'] }}"
                      class="w-full h-full object-cover">

@@ -70,7 +70,8 @@ class InformasiController extends Controller
 
     public function index(Request $request)
     {
-        $allBerita = collect($this->getBeritaData());
+        $beritaData = $this->getBeritaData();
+        $allBerita = collect($beritaData);
 
         if ($request->filled('q')) {
             $q = mb_strtolower($request->input('q'));
@@ -113,7 +114,7 @@ class InformasiController extends Controller
         // Dan otomatis bertambah tiap pergantian tahun baru (date('Y'))
         $startYear = 2024;
         $currentYear = (int) date('Y');
-        $dbYears = collect($this->getBeritaData())->pluck('tahun')->filter()->map(fn ($y) => (int) $y)->all();
+        $dbYears = collect($beritaData)->pluck('tahun')->filter()->map(fn ($y) => (int) $y)->all();
         $minYear = ! empty($dbYears) ? min(min($dbYears), $startYear) : $startYear;
         $maxYear = ! empty($dbYears) ? max(max($dbYears), $currentYear) : $currentYear;
         $tahunList = range($maxYear, $minYear);

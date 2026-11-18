@@ -6,7 +6,7 @@
 @section('content')
 <div class="space-y-6">
 
-    {{-- Header & Penjelasan Singkat (Sesuai format Data Statistik Dasawisma) --}}
+    {{-- Header halaman --}}
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
             <h2 class="text-xl font-bold text-gray-800">Kelola Foto Background Beranda</h2>
@@ -51,11 +51,10 @@
     @endif
 
     {{-- Grid Konten Utama: Pratinjau & Form Upload --}}
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
         {{-- Kolom Kiri: Pratinjau Langsung (Live Mockup) --}}
-        <div class="lg:col-span-7 space-y-4">
-            {{-- Kotak Tabel/Card Warna Hijau persis Struktur Organisasi --}}
+        <div id="left-col-hero" class="lg:col-span-7 space-y-4">
             <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-4">
                 <div class="flex items-center justify-between border-b border-white/20 pb-3">
                     <div>
@@ -105,9 +104,8 @@
         </div>
 
         {{-- Kolom Kanan: Form Unggah Foto Baru --}}
-        <div class="lg:col-span-5">
-            {{-- Kotak Tabel/Card Warna Hijau persis Struktur Organisasi --}}
-            <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-4 sticky top-6">
+        <div id="right-col-hero" class="lg:col-span-5">
+            <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-6 sm:p-6 shadow-xs space-y-6">
                 <div class="flex items-center justify-between border-b border-white/20 pb-3">
                     <div>
                         <h3 class="text-sm font-bold text-white">Unggah Background Baru</h3>
@@ -115,25 +113,25 @@
                     </div>
                 </div>
 
-                <form id="hero-upload-form" action="{{ route('admin.hero.update') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                <form id="hero-upload-form" action="{{ route('admin.hero.update') }}" method="POST" enctype="multipart/form-data" class="space-y-3">
                     @csrf
                     @method('PUT')
 
                     {{-- Area Upload Drag & Drop di dalam inner box mint (#ECFEF3) --}}
-                    <div class="bg-[#ECFEF3] p-4 rounded-xl border border-emerald-100 space-y-2">
+                    <div class="bg-[#ECFEF3] p-3 rounded-xl border border-emerald-100 space-y-1.5">
                         <label for="hero_background" class="block text-xs font-bold text-gray-700 uppercase tracking-wider">
                             Pilih File Gambar <span class="text-red-500">*</span>
                         </label>
 
                         <div id="dropzone"
                             onclick="document.getElementById('hero_background').click()"
-                            class="relative border-2 border-dashed border-emerald-300 hover:border-emerald-600 rounded-xl p-5 text-center cursor-pointer transition-colors bg-white hover:bg-emerald-50/50 group">
+                            class="relative border-2 border-dashed border-emerald-300 hover:border-emerald-600 rounded-xl p-3.5 text-center cursor-pointer transition-colors bg-white hover:bg-emerald-50/50 group">
 
                             <input type="file" id="hero_background" name="hero_background" accept="image/jpeg,image/png,image/jpg,image/webp" class="hidden" required>
 
                             {{-- Tampilan Kosong (Belum Memilih File) --}}
-                            <div id="upload-placeholder" class="space-y-2">
-                                <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 mx-auto flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                            <div id="upload-placeholder" class="space-y-1.5">
+                                <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 mx-auto flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
                                     <i class="fa-solid fa-camera"></i>
                                 </div>
                                 <div class="text-xs text-gray-700 font-medium">
@@ -145,12 +143,12 @@
                             </div>
 
                             {{-- Pratinjau File yang Baru Dipilih (Awalnya Sembunyi) --}}
-                            <div id="new-preview-container" class="hidden space-y-2">
-                                <div class="w-full h-40 rounded-lg overflow-hidden bg-black/5 relative border border-gray-200">
+                            <div id="new-preview-container" class="hidden space-y-1.5">
+                                <div class="w-full h-32 rounded-lg overflow-hidden bg-black/5 relative border border-gray-200">
                                     <img id="new-preview-img" src="" alt="Pratinjau File Baru" class="w-full h-full object-cover object-top">
                                 </div>
-                                <div class="flex items-center justify-between text-xs pt-1">
-                                    <span id="new-file-name" class="font-semibold text-gray-800 truncate max-w-[200px]">file.jpg</span>
+                                <div class="flex items-center justify-between text-xs">
+                                    <span id="new-file-name" class="font-semibold text-gray-800 truncate max-w-[180px]">file.jpg</span>
                                     <span id="new-file-size" class="text-gray-500 text-[11px]">0 KB</span>
                                 </div>
                                 <p class="text-[11px] text-[#075B3C] font-medium">
@@ -160,7 +158,7 @@
                         </div>
                     </div>
 
-                    {{-- Informasi Spesifikasi --}}
+                    {{-- Informasi Ketentuan Upload file --}}
                     <div class="bg-[#ECFEF3] rounded-xl p-3.5 border border-emerald-100 text-[11px] text-gray-700 space-y-1.5 font-medium">
                         <div class="flex items-center justify-between">
                             <span class="text-gray-600">Maksimal Ukuran:</span>
@@ -177,17 +175,17 @@
                     </div>
 
                     {{-- Tombol Aksi Simpan & Batalkan --}}
-                    <div class="pt-2 flex flex-col sm:flex-row items-center gap-2">
-                        <button type="button" id="btn-cancel-hero" onclick="resetHeroForm()"
-                            class="hidden w-full sm:w-auto flex-1 py-2.5 px-4 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-                            <i class="fa-solid fa-rotate-left"></i>
-                            <span>Batalkan Perubahan</span>
-                        </button>
-
+                    <div class="pt-1 flex flex-col items-stretch gap-2">
                         <button type="submit" id="btn-submit" disabled
-                            class="w-full sm:w-auto flex-1 py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed">
+                            class="w-full py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed">
                             <i class="fa-solid fa-floppy-disk"></i>
                             <span>Simpan Foto Background</span>
+                        </button>
+
+                        <button type="button" id="btn-cancel-hero" onclick="resetHeroForm()"
+                            class="hidden w-full py-2.5 px-5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-sm font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-rotate-left"></i>
+                            <span>Batalkan Perubahan</span>
                         </button>
                     </div>
                 </form>
@@ -200,7 +198,7 @@
          SECTION 2: FOTO TIM "TENTANG KAMI" (HALAMAN PROFIL)
     ══════════════════════════════════════════════════════ --}}
     <div class="mt-12 pt-8 border-t border-gray-200">
-        {{-- Header & Penjelasan Singkat (Sesuai format Data Statistik Dasawisma & Hero Beranda) --}}
+        {{-- Header bagian foto tim --}}
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
             <div>
                 <h2 class="text-xl font-bold text-gray-800">Kelola Foto Background Profil Tim Pengurus</h2>
@@ -215,11 +213,10 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
 
             {{-- Kolom Kiri: Pratinjau Foto Tim --}}
-            <div class="lg:col-span-7 space-y-4">
-                {{-- Kotak Tabel/Card Warna Hijau persis Struktur Organisasi & Hero Beranda --}}
+            <div id="left-col-tim" class="lg:col-span-7 space-y-4">
                 <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-4">
                     <div class="flex items-center justify-between border-b border-white/20 pb-3">
                         <div>
@@ -255,10 +252,9 @@
                 </div>
             </div>
 
-            {{-- Kolom Kanan: Form Unggah Foto Baru Tim (Persis sama dengan Beranda) --}}
-            <div class="lg:col-span-5">
-                {{-- Kotak Tabel/Card Warna Hijau persis Struktur Organisasi & Hero Beranda --}}
-                <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-4 sticky top-6">
+            {{-- Form unggah foto tim --}}
+            <div id="right-col-tim" class="lg:col-span-5">
+                <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-3">
                     <div class="flex items-center justify-between border-b border-white/20 pb-3">
                         <div>
                             <h3 class="text-sm font-bold text-white">Unggah Background Baru</h3>
@@ -266,25 +262,25 @@
                         </div>
                     </div>
 
-                    <form id="form-foto-tim" action="{{ route('admin.hero.foto-tim.update') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                    <form id="form-foto-tim" action="{{ route('admin.hero.foto-tim.update') }}" method="POST" enctype="multipart/form-data" class="space-y-3">
                         @csrf
                         @method('PUT')
 
                         {{-- Area Upload Drag & Drop di dalam inner box mint (#ECFEF3) --}}
-                        <div class="bg-[#ECFEF3] p-4 rounded-xl border border-emerald-100 space-y-2">
+                        <div class="bg-[#ECFEF3] p-3 rounded-xl border border-emerald-100 space-y-1.5">
                             <label for="foto_tim" class="block text-xs font-bold text-gray-700 uppercase tracking-wider">
                                 Pilih File Gambar <span class="text-red-500">*</span>
                             </label>
 
                             <div id="dropzone-tim"
                                 onclick="document.getElementById('foto_tim').click()"
-                                class="relative border-2 border-dashed border-emerald-300 hover:border-emerald-600 rounded-xl p-5 text-center cursor-pointer transition-colors bg-white hover:bg-emerald-50/50 group">
+                                class="relative border-2 border-dashed border-emerald-300 hover:border-emerald-600 rounded-xl p-3.5 text-center cursor-pointer transition-colors bg-white hover:bg-emerald-50/50 group">
 
                                 <input type="file" id="foto_tim" name="foto_tim" accept="image/jpeg,image/png,image/jpg,image/webp" class="hidden" required>
 
                                 {{-- Tampilan Kosong (Belum Memilih File) --}}
-                                <div id="tim-upload-placeholder" class="space-y-2">
-                                    <div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-700 mx-auto flex items-center justify-center text-xl group-hover:scale-110 transition-transform">
+                                <div id="tim-upload-placeholder" class="space-y-1.5">
+                                    <div class="w-10 h-10 rounded-full bg-emerald-100 text-emerald-700 mx-auto flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
                                         <i class="fa-solid fa-camera"></i>
                                     </div>
                                     <div class="text-xs text-gray-700 font-medium">
@@ -296,12 +292,12 @@
                                 </div>
 
                                 {{-- Pratinjau File yang Baru Dipilih (Awalnya Sembunyi) --}}
-                                <div id="tim-preview-container" class="hidden space-y-2">
-                                    <div class="w-full h-40 rounded-lg overflow-hidden bg-black/5 relative border border-gray-200">
+                                <div id="tim-preview-container" class="hidden space-y-1.5">
+                                    <div class="w-full h-32 rounded-lg overflow-hidden bg-black/5 relative border border-gray-200">
                                         <img id="tim-preview-img" src="" alt="Pratinjau File Baru" class="w-full h-full object-cover object-top">
                                     </div>
-                                    <div class="flex items-center justify-between text-xs pt-1">
-                                        <span id="tim-file-name" class="font-semibold text-gray-800 truncate max-w-[200px]">file.jpg</span>
+                                    <div class="flex items-center justify-between text-xs">
+                                        <span id="tim-file-name" class="font-semibold text-gray-800 truncate max-w-[180px]">file.jpg</span>
                                         <span id="tim-file-size" class="text-gray-500 text-[11px]">0 KB</span>
                                     </div>
                                     <p class="text-[11px] text-[#075B3C] font-medium">
@@ -328,17 +324,17 @@
                         </div>
 
                         {{-- Tombol Aksi Simpan & Batalkan --}}
-                        <div class="pt-2 flex flex-col sm:flex-row items-center gap-2">
-                            <button type="button" id="btn-cancel-tim" onclick="resetTimForm()"
-                                class="hidden w-full sm:w-auto flex-1 py-2.5 px-4 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-xs sm:text-sm font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 cursor-pointer">
-                                <i class="fa-solid fa-rotate-left"></i>
-                                <span>Batalkan Perubahan</span>
-                            </button>
-
+                        <div class="pt-1 flex flex-col items-stretch gap-2">
                             <button type="submit" id="btn-submit-tim" disabled
-                                class="w-full sm:w-auto flex-1 py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed">
+                                class="w-full py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed">
                                 <i class="fa-solid fa-floppy-disk"></i>
                                 <span>Simpan Foto Background</span>
+                            </button>
+
+                            <button type="button" id="btn-cancel-tim" onclick="resetTimForm()"
+                                class="hidden w-full py-2.5 px-5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white text-sm font-semibold rounded-xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-1.5 cursor-pointer">
+                                <i class="fa-solid fa-rotate-left"></i>
+                                <span>Batalkan Perubahan</span>
                             </button>
                         </div>
                     </form>
@@ -353,131 +349,89 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const fileInput = document.getElementById('hero_background');
-        const placeholder = document.getElementById('upload-placeholder');
-        const previewContainer = document.getElementById('new-preview-container');
-        const previewImg = document.getElementById('new-preview-img');
-        const fileNameEl = document.getElementById('new-file-name');
-        const fileSizeEl = document.getElementById('new-file-size');
-        const btnSubmit = document.getElementById('btn-submit');
-        const btnCancel = document.getElementById('btn-cancel-hero');
-        const liveHeroImg = document.getElementById('live-hero-img');
-        const originalHeroSrc = liveHeroImg ? liveHeroImg.src : '';
+        const disabledButtonClasses = 'w-full py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed';
+        const enabledButtonClasses = 'w-full py-2.5 px-5 bg-white hover:bg-emerald-50 active:bg-emerald-100 text-[#075B3C] font-bold rounded-xl text-sm transition-all duration-200 shadow-sm flex items-center justify-center gap-2 active:scale-95 cursor-pointer';
 
-        window.resetHeroForm = function() {
-            if (fileInput) fileInput.value = '';
-            if (placeholder) placeholder.classList.remove('hidden');
-            if (previewContainer) previewContainer.classList.add('hidden');
-            if (previewImg) previewImg.src = '';
-            if (liveHeroImg) liveHeroImg.src = originalHeroSrc;
-            if (btnSubmit) {
-                btnSubmit.disabled = true;
-                btnSubmit.className = 'w-full sm:w-auto flex-1 py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed';
-            }
-            if (btnCancel) btnCancel.classList.add('hidden');
+        const setupImageUpload = (config) => {
+            const input = document.getElementById(config.input);
+            const placeholder = document.getElementById(config.placeholder);
+            const previewContainer = document.getElementById(config.previewContainer);
+            const previewImage = document.getElementById(config.previewImage);
+            const fileName = document.getElementById(config.fileName);
+            const fileSize = document.getElementById(config.fileSize);
+            const submitButton = document.getElementById(config.submitButton);
+            const cancelButton = document.getElementById(config.cancelButton);
+            const liveImage = document.getElementById(config.liveImage);
+            const originalImage = liveImage ? liveImage.src : '';
+
+            const reset = () => {
+                input.value = '';
+                placeholder.classList.remove('hidden');
+                previewContainer.classList.add('hidden');
+                previewImage.src = '';
+                if (liveImage) liveImage.src = originalImage;
+                submitButton.disabled = true;
+                submitButton.className = disabledButtonClasses;
+                cancelButton.classList.add('hidden');
+            };
+
+            window[config.resetFunction] = reset;
+
+            input.addEventListener('change', (event) => {
+                const selectedFile = event.target.files[0];
+                if (!selectedFile) {
+                    reset();
+                    return;
+                }
+
+                if (selectedFile.size > 5 * 1024 * 1024) {
+                    alert('Ukuran file melebihi batas maksimal 5 MB. Silakan pilih file lain yang lebih kecil.');
+                    reset();
+                    return;
+                }
+
+                fileName.textContent = selectedFile.name;
+                fileSize.textContent = (selectedFile.size / (1024 * 1024)).toFixed(2) + ' MB';
+
+                const reader = new FileReader();
+                reader.onload = (loadEvent) => {
+                    const result = loadEvent.target.result;
+                    previewImage.src = result;
+                    placeholder.classList.add('hidden');
+                    previewContainer.classList.remove('hidden');
+                    submitButton.disabled = false;
+                    submitButton.className = enabledButtonClasses;
+                    cancelButton.classList.remove('hidden');
+                    if (liveImage) liveImage.src = result;
+                };
+                reader.readAsDataURL(selectedFile);
+            });
         };
 
-        if (!fileInput) return;
-
-        fileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) {
-                resetHeroForm();
-                return;
-            }
-
-            // Validasi ukuran maks 5MB di sisi klien
-            const maxSize = 5 * 1024 * 1024;
-            if (file.size > maxSize) {
-                alert('Ukuran file melebihi batas maksimal 5 MB. Silakan pilih file lain yang lebih kecil.');
-                resetHeroForm();
-                return;
-            }
-
-            // Tampilkan info file
-            fileNameEl.textContent = file.name;
-            fileSizeEl.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
-
-            // Preview menggunakan FileReader
-            const reader = new FileReader();
-            reader.onload = (event) => {
-                const result = event.target.result;
-                previewImg.src = result;
-                placeholder.classList.add('hidden');
-                previewContainer.classList.remove('hidden');
-                btnSubmit.disabled = false;
-                btnSubmit.className = 'w-full sm:w-auto flex-1 py-2.5 px-5 bg-white hover:bg-emerald-50 active:bg-emerald-100 text-[#075B3C] font-bold rounded-xl text-sm transition-all duration-200 shadow-sm flex items-center justify-center gap-2 active:scale-95 cursor-pointer';
-                if (btnCancel) btnCancel.classList.remove('hidden');
-
-                // Update juga preview di mockup kiri agar admin bisa langsung melihat preview
-                if (liveHeroImg) {
-                    liveHeroImg.src = result;
-                }
-            };
-            reader.readAsDataURL(file);
+        setupImageUpload({
+            input: 'hero_background',
+            placeholder: 'upload-placeholder',
+            previewContainer: 'new-preview-container',
+            previewImage: 'new-preview-img',
+            fileName: 'new-file-name',
+            fileSize: 'new-file-size',
+            submitButton: 'btn-submit',
+            cancelButton: 'btn-cancel-hero',
+            liveImage: 'live-hero-img',
+            resetFunction: 'resetHeroForm',
         });
-    });
 
-    // ── Foto Tim Profil ──────────────────────────────────────
-    document.addEventListener('DOMContentLoaded', () => {
-        const timFileInput  = document.getElementById('foto_tim');
-        const timPlaceholder = document.getElementById('tim-upload-placeholder');
-        const timPreviewContainer = document.getElementById('tim-preview-container');
-        const timPreviewImg = document.getElementById('tim-preview-img');
-        const timFileNameEl = document.getElementById('tim-file-name');
-        const timFileSizeEl = document.getElementById('tim-file-size');
-        const btnSubmitTim  = document.getElementById('btn-submit-tim');
-        const btnCancelTim  = document.getElementById('btn-cancel-tim');
-        const livTimImg     = document.getElementById('live-tim-img');
-        const originalTimSrc = livTimImg ? livTimImg.src : '';
-
-        window.resetTimForm = function() {
-            if (timFileInput)        timFileInput.value = '';
-            if (timPlaceholder)      timPlaceholder.classList.remove('hidden');
-            if (timPreviewContainer) timPreviewContainer.classList.add('hidden');
-            if (timPreviewImg)       timPreviewImg.src = '';
-            if (livTimImg)           livTimImg.src = originalTimSrc;
-            if (btnSubmitTim) {
-                btnSubmitTim.disabled = true;
-                btnSubmitTim.className = 'w-full sm:w-auto flex-1 py-2.5 px-5 bg-white/70 text-gray-400 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed';
-            }
-            if (btnCancelTim) btnCancelTim.classList.add('hidden');
-        };
-
-        if (!timFileInput) return;
-
-        timFileInput.addEventListener('change', (e) => {
-            const file = e.target.files[0];
-            if (!file) {
-                resetTimForm();
-                return;
-            }
-
-            const maxSize = 5 * 1024 * 1024;
-            if (file.size > maxSize) {
-                alert('Ukuran file melebihi batas maksimal 5 MB. Silakan pilih file lain yang lebih kecil.');
-                resetTimForm();
-                return;
-            }
-
-            timFileNameEl.textContent = file.name;
-            timFileSizeEl.textContent = (file.size / (1024 * 1024)).toFixed(2) + ' MB';
-
-            const reader2 = new FileReader();
-            reader2.onload = (ev) => {
-                const result = ev.target.result;
-                timPreviewImg.src = result;
-                timPlaceholder.classList.add('hidden');
-                timPreviewContainer.classList.remove('hidden');
-                btnSubmitTim.disabled = false;
-                btnSubmitTim.className = 'w-full sm:w-auto flex-1 py-2.5 px-5 bg-white hover:bg-emerald-50 active:bg-emerald-100 text-[#075B3C] font-bold rounded-xl text-sm transition-all duration-200 shadow-sm flex items-center justify-center gap-2 active:scale-95 cursor-pointer';
-                if (btnCancelTim) btnCancelTim.classList.remove('hidden');
-
-                if (livTimImg) {
-                    livTimImg.src = result;
-                }
-            };
-            reader2.readAsDataURL(file);
+        setupImageUpload({
+            input: 'foto_tim',
+            placeholder: 'tim-upload-placeholder',
+            previewContainer: 'tim-preview-container',
+            previewImage: 'tim-preview-img',
+            fileName: 'tim-file-name',
+            fileSize: 'tim-file-size',
+            submitButton: 'btn-submit-tim',
+            cancelButton: 'btn-cancel-tim',
+            liveImage: 'live-tim-img',
+            resetFunction: 'resetTimForm',
         });
     });
 </script>
