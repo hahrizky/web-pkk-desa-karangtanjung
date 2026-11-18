@@ -9,10 +9,7 @@
         <h2 class="text-xl font-bold text-gray-800">Agenda Kegiatan</h2>
         <p class="text-sm text-gray-500 mt-0.5">Total <strong>{{ count($agendaList) }}</strong> agenda</p>
     </div>
-    <a href="{{ route('admin.agenda.create') }}"
-        class="inline-flex items-center gap-2 bg-[#2F9B45] active:bg-[#075B3C] text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-colors duration-50">
-        <i class="fa-solid fa-plus"></i> Tambah Agenda
-    </a>
+    <x-admin.btn-add :href="route('admin.agenda.create')" text="Tambah Agenda" />
 </div>
 
 {{-- Search --}}
@@ -72,21 +69,12 @@
                     </td>
 
                     <td class="px-4 py-4">
-                        <div class="flex items-center justify-center gap-1.5">
-                            <a href="{{ route('admin.agenda.edit', $agenda['id']) }}"
-                                class="w-8 h-8 bg-emerald-100 hover:bg-emerald-300 text-[#075B3C] rounded-lg flex items-center justify-center transition-colors" title="Edit">
-                                <i class="fa-solid fa-pen text-xs"></i>
-                            </a>
-
-                            <form action="{{ route('admin.agenda.destroy', $agenda['id']) }}" method="POST" class="inline"
-                                data-confirm-message="Hapus agenda ‘{{ $agenda['judul'] }}’? Tindakan ini tidak dapat dibatalkan.">
-                                @csrf @method('DELETE')
-                                <button type="submit"
-                                    class="w-8 h-8 bg-red-50 hover:bg-red-100 text-red-500 rounded-lg flex items-center justify-center transition-colors" title="Hapus">
-                                    <i class="fa-solid fa-trash text-xs"></i>
-                                </button>
-                            </form>
-                        </div>
+                        <x-admin.table-actions
+                            :edit-url="route('admin.agenda.edit', $agenda['id'])"
+                            :delete-url="route('admin.agenda.destroy', $agenda['id'])"
+                            :confirm-message="'Hapus agenda ‘' . $agenda['judul'] . '’? Tindakan ini tidak dapat dibatalkan.'"
+                            align="justify-center"
+                        />
                     </td>
                 </tr>
                 @endforeach

@@ -28,118 +28,121 @@
         @csrf @method('PUT')
 
         {{-- Identitas & Kontak Sekretariat (Sesuai Footer Website) --}}
-        <div class="bg-white rounded-xl border border-gray-200 p-5 sm:p-6 shadow-xs space-y-5">
+        <div class="bg-[#2F9B45] rounded-xl border border-gray-200 p-5 sm:p-6 shadow-xs space-y-5">
             <div class="border-b border-gray-100 pb-3 flex items-center justify-between">
-                <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
-                    <i class="fa-solid fa-address-book text-[#075B3C]"></i>
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-address-book text-white"></i>
                     <span>Informasi Kontak &amp; Identitas Sekretariat</span>
                 </h3>
-                <span class="text-[11px] text-gray-400">Ditampilkan pada Footer Kontak Website</span>
+                <span class="text-[11px] text-white">Ditampilkan pada Footer Kontak Website</span>
             </div>
 
             {{-- 4 Item Kontak Sesuai Footer --}}
             <div class="space-y-4">
                 {{-- 1. Alamat Kantor --}}
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-2">
-                        <i class="fa-solid fa-location-dot text-amber-500 w-4 text-center"></i>
+                    <label class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5 flex items-center gap-2">
+                        <i class="fa-solid fa-location-dot text-white w-4 text-center"></i>
                         <span>Alamat Lengkap Kantor / Sekretariat</span>
                     </label>
                     <input type="text" name="alamat" value="{{ old('alamat', $profil['alamat'] ?? 'Jl. Sunan Giri No.1 Desa Karangtanjung, Kec. Candi, Kab. Sidoarjo, Jawa Timur') }}"
                         placeholder="Contoh: Jl. Sunan Giri No.1 Desa Karangtanjung, Kec. Candi, Kab. Sidoarjo, Jawa Timur (kosongkan untuk menyembunyikan)"
-                        class="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
-                    <p class="text-[11px] text-gray-400 mt-1">Kosongkan jika ingin menyembunyikan baris alamat di footer</p>
+                        class="bg-white w-full border border-gray-800 rounded-lg px-3.5 py-2.5 text-sm font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
+                    <p class="text-[11px] text-[#E8F5E9] mt-1">Kosongkan jika ingin menyembunyikan baris alamat di footer</p>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {{-- 2. Telepon / WhatsApp --}}
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-2">
-                            <i class="fa-solid fa-phone text-amber-500 w-4 text-center"></i>
+                        <label class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5 flex items-center gap-2">
+                            <i class="fa-solid fa-phone text-white w-4 text-center"></i>
                             <span>Telepon / WhatsApp Sekretariat</span>
                         </label>
                         <input type="text" name="telepon" value="{{ old('telepon', $profil['telepon'] ?? '') }}"
-                            placeholder="Contoh: +62 812-3456-7890 (kosongkan jika belum ada)"
-                            class="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
-                        <p class="text-[11px] text-gray-400 mt-1">Kosongkan jika ingin menyembunyikan telepon di footer</p>
+                            placeholder="Contoh: +62 812-3456-7890"
+                            class="bg-white w-full border border-gray-800 rounded-lg px-3.5 py-2.5 text-sm font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
+                        <p class="text-[11px] text-[#E8F5E9] mt-1">Kosongkan jika ingin menyembunyikan telepon di footer</p>
                     </div>
 
                     {{-- 3. Email Resmi --}}
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-2">
-                            <i class="fa-solid fa-envelope text-amber-500 w-4 text-center"></i>
+                        <label class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5 flex items-center gap-2">
+                            <i class="fa-solid fa-envelope text-white w-4 text-center"></i>
                             <span>Email Resmi PKK</span>
                         </label>
                         <input type="email" name="email" value="{{ old('email', $profil['email'] ?? '') }}"
-                            placeholder="Contoh: pkk.desakarangtanjung@gmail.com (kosongkan jika belum ada)"
-                            class="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
-                        <p class="text-[11px] text-gray-400 mt-1">Kosongkan jika ingin menyembunyikan email di footer</p>
+                            placeholder="Contoh: pkk.desakarangtanjung@gmail.com"
+                            class="bg-white w-full border border-gray-800 rounded-lg px-3.5 py-2.5 text-sm font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
+                        <p class="text-[11px] text-[#E8F5E9] mt-1">Kosongkan jika ingin menyembunyikan email di footer</p>
                     </div>
                 </div>
 
                 {{-- 4. Jam Layanan --}}
                 <div>
-                    <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5 flex items-center gap-2">
-                        <i class="fa-solid fa-clock text-amber-500 w-4 text-center"></i>
+                    <label class="block text-xs font-semibold text-white uppercase tracking-wider mb-1.5 flex items-center gap-2">
+                        <i class="fa-solid fa-clock text-white w-4 text-center"></i>
                         <span>Jam Layanan Sekretariat</span>
                     </label>
                     <input type="text" name="jam_layanan" value="{{ old('jam_layanan', $profil['jam_layanan'] ?? 'Senin - Jumat (08.00 - 15.00 WIB)') }}"
-                        placeholder="Contoh: Senin - Jumat (08.00 - 15.00 WIB) (kosongkan untuk menyembunyikan)"
-                        class="w-full border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
+                        placeholder="Contoh: Senin - Jumat (08.00 - 15.00 WIB)"
+                        class="bg-white w-full border border-gray-800 rounded-lg px-3.5 py-2.5 text-sm font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]">
                 </div>
             </div>
 
             {{-- Wilayah Administratif Desa --}}
             <div class="pt-3 border-t border-gray-100">
-                <p class="text-xs font-bold text-gray-600 uppercase tracking-wider mb-3">Wilayah Administratif</p>
+                <p class="text-xs font-bold text-white uppercase tracking-wider mb-3">Wilayah Administratif</p>
                 <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
                     <div>
-                        <label class="block text-[11px] font-medium text-gray-500 mb-1">Nama Desa</label>
+                        <label class="block text-[11px] font-semibold text-white mb-1">Nama Desa</label>
                         <input type="text" name="nama_desa" value="{{ old('nama_desa', $profil['nama_desa'] ?? 'Karangtanjung') }}"
-                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
+                            class="bg-white w-full border border-gray-800 rounded-lg px-3 py-2 text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-medium text-gray-500 mb-1">Kecamatan</label>
+                        <label class="block text-[11px] font-semibold text-white mb-1">Kecamatan</label>
                         <input type="text" name="kecamatan" value="{{ old('kecamatan', $profil['kecamatan'] ?? 'Candi') }}"
-                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
+                            class="bg-white w-full border border-gray-800 rounded-lg px-3 py-2 text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-medium text-gray-500 mb-1">Kabupaten</label>
+                        <label class="block text-[11px] font-semibold text-white mb-1">Kabupaten</label>
                         <input type="text" name="kabupaten" value="{{ old('kabupaten', $profil['kabupaten'] ?? 'Sidoarjo') }}"
-                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
+                            class="bg-white w-full border border-gray-800 rounded-lg px-3 py-2 text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
                     </div>
                     <div>
-                        <label class="block text-[11px] font-medium text-gray-500 mb-1">Provinsi</label>
+                        <label class="block text-[11px] font-semibold text-white mb-1">Provinsi</label>
                         <input type="text" name="provinsi" value="{{ old('provinsi', $profil['provinsi'] ?? 'Jawa Timur') }}"
-                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
+                            class="bg-white w-full border border-gray-800 rounded-lg px-3 py-2 text-xs font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
                     </div>
                 </div>
             </div>
         </div>
 
         {{-- Visi & misi --}}
-        <div class="bg-white rounded-xl border border-gray-200 p-5 sm:p-6 shadow-xs space-y-4">
+        <div class="bg-[#2F9B45] rounded-xl border border-gray-200 p-5 sm:p-6 shadow-xs space-y-4">
             <div class="border-b border-gray-100 pb-3">
-                <h3 class="text-sm font-bold text-gray-800 flex items-center gap-2">
+                <h3 class="text-sm font-bold text-white flex items-center gap-2">
                     <span>VISI &amp; MISI</span>
                 </h3>
             </div>
 
-            <div>
-                <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">Visi</label>
-                <textarea name="visi" rows="2"
-                    class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>{{ old('visi', $profil['visi'] ?? '') }}</textarea>
+            <div class="visi-item bg-[#ECFEF3] border border-gray-200 rounded-xl p-3.5 sm:p-4 space-y-2.5 relative">
+                <span class="visi inline-block text-xs font-bold text-amber-900 px-1 py-0.5 uppercase tracking-wider">
+                    Visi
+                </span>
+                <textarea name="visi" rows="4"
+                    class="bg-white w-full border border-gray-800 rounded-lg px-3.5 py-2.5 text-sm font-medium text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]"
+                    placeholder="Tuliskan uraian visi PKK Desa Karangtanjung..." required>{{ old('visi', $profil['visi'] ?? '') }}</textarea>
             </div>
 
             {{-- Poin-Poin Misi Terstruktur --}}
             <div>
                 <div class="flex items-center justify-between mb-3">
                     <div>
-                        <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider">Poin-Poin Misi</label>
-                        <p class="text-[11px] text-gray-400 mt-0.5">Ubah judul dan uraian deskripsi setiap misi yang tampil di website publik</p>
+                        <label class="block text-xs font-semibold text-white uppercase tracking-wider">Poin-Poin Misi</label>
+                        <p class="font-semibold text-[11px] text-[#E8F5E9] mt-0.5">Ubah judul dan uraian deskripsi setiap misi yang tampil di website publik</p>
                     </div>
                     <button type="button" id="btn-tambah-misi"
-                        class="px-3 py-1.5 bg-[#075B3C] hover:bg-[#087A50] active:bg-[#16A36A] text-white border border-emerald-200 text-xs font-semibold rounded-lg transition-all duration-200 flex items-center gap-1.5 shadow-2xs">
+                        class="px-3 py-1.5 bg-white hover:bg-gray-100 active:bg-gray-300 text-[#075B3C] border border-emerald-200 text-xs font-semibold rounded-lg transition-all duration-200 flex items-center gap-1.5 shadow-2xs">
                         <i class="fa-solid fa-plus text-[10px]"></i>
                         <span>Tambah Misi</span>
                     </button>
@@ -147,13 +150,13 @@
 
                 <div id="misi-container" class="space-y-3.5">
                     @foreach ($profil['misi'] as $idx => $m)
-                    <div class="misi-item bg-gray-50/80 border border-gray-200 rounded-xl p-3.5 sm:p-4 space-y-2.5 relative">
+                    <div class="misi-item bg-[#ECFEF3] border border-gray-200 rounded-xl p-3.5 sm:p-4 space-y-2.5 relative">
                         <div class="flex items-center justify-between">
-                            <span class="misi-badge text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                            <span class="misi-badge text-[11px] font-bold text-[#075B3C] bg-emerald-200 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                                 Misi {{ sprintf('%02d', $loop->iteration) }}
                             </span>
                             <button type="button" onclick="hapusMisi(this)"
-                                class="btn-hapus-misi text-gray-400 hover:text-red-500 text-xs transition-colors flex items-center gap-1">
+                                class="btn-hapus-misi text-red-500 hover:text-red-700 hover:bg-red-50 active:bg-red-100 font-medium text-xs transition-colors flex items-center gap-1 rounded-md px-2 py-1">
                                 <i class="fa-regular fa-trash-can"></i>
                                 <span>Hapus</span>
                             </button>
@@ -162,13 +165,13 @@
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">Judul Misi</label>
                             <input type="text" name="misi[{{ $idx }}][judul]" value="{{ old('misi.'.$idx.'.judul', $m['judul'] ?? '') }}"
                                 placeholder="Contoh: Ketahanan Mental & Gotong Royong"
-                                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
+                                class="bg-white w-full border border-gray-800 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
                         </div>
                         <div>
                             <label class="block text-[11px] font-semibold text-gray-600 mb-1">Deskripsi Misi</label>
                             <textarea name="misi[{{ $idx }}][deskripsi]" rows="2"
                                 placeholder="Tuliskan uraian detail misi ini..."
-                                class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs sm:text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>{{ old('misi.'.$idx.'.deskripsi', $m['deskripsi'] ?? '') }}</textarea>
+                                class="bg-white w-full border border-gray-800 rounded-lg px-3 py-2 text-xs sm:text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>{{ old('misi.'.$idx.'.deskripsi', $m['deskripsi'] ?? '') }}</textarea>
                         </div>
                     </div>
                     @endforeach
@@ -176,19 +179,14 @@
             </div>
         </div>
 
-        {{-- Tombol Simpan & Batal Perubahan --}}
-        <div class="flex items-center justify-end gap-3 pt-2">
-            <button type="button" id="btn-cancel-profil" onclick="resetProfilForm()"
-                class="hidden px-5 py-2.5 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold rounded-lg transition-all text-sm shadow-sm hover:shadow flex items-center gap-1.5 cursor-pointer">
-                <i class="fa-solid fa-rotate-left"></i>
-                <span>Batalkan Perubahan</span>
-            </button>
-            <button type="submit"
-                class="px-6 py-2.5 bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white font-semibold rounded-lg transition-all duration-200 text-sm shadow-sm flex items-center gap-2 cursor-pointer">
-                <i class="fa-solid fa-floppy-disk"></i>
-                <span>Simpan Perubahan Profil</span>
-            </button>
-        </div>
+        {{-- Tombol Simpan & Batal Perubahan (Floating) --}}
+        <x-admin.form-actions
+            :floating="true"
+            submit-id="btn-submit-profil"
+            submit-text="Simpan Perubahan Profil"
+            cancel-id="btn-cancel-profil"
+            cancel-action="resetProfilForm()"
+        />
     </form>
 </div>
 
@@ -298,8 +296,9 @@
     }
 
     function checkProfilDirty() {
+        const submitBtn = document.getElementById('btn-submit-profil');
         const cancelBtn = document.getElementById('btn-cancel-profil');
-        if (!cancelBtn) return;
+        if (!submitBtn) return;
 
         const form = document.getElementById('profil-form');
         let isDirty = false;
@@ -324,10 +323,19 @@
             }
         }
 
+        submitBtn.disabled = !isDirty;
         if (isDirty) {
-            cancelBtn.classList.remove('hidden');
+            submitBtn.className = 'w-full py-2.5 bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white font-semibold rounded-lg transition-all duration-200 text-sm shadow-sm flex items-center justify-center gap-2 cursor-pointer';
         } else {
-            cancelBtn.classList.add('hidden');
+            submitBtn.className = 'w-full py-2.5 bg-gray-300 text-gray-500 cursor-not-allowed font-semibold rounded-lg transition-all duration-200 text-sm flex items-center justify-center gap-2';
+        }
+
+        if (cancelBtn) {
+            if (isDirty) {
+                cancelBtn.classList.remove('hidden');
+            } else {
+                cancelBtn.classList.add('hidden');
+            }
         }
     }
 
@@ -350,11 +358,7 @@
         }
 
         saveInitialProfilState();
-
-        const cancelBtn = document.getElementById('btn-cancel-profil');
-        if (cancelBtn) {
-            cancelBtn.classList.add('hidden');
-        }
+        checkProfilDirty();
     }
 
     document.addEventListener('DOMContentLoaded', () => {

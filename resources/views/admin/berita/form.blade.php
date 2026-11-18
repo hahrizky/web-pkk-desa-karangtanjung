@@ -11,11 +11,7 @@
             <h2 class="text-lg font-bold text-gray-800">{{ isset($berita) ? 'Edit Berita' : 'Tulis Berita Baru' }}</h2>
             <p class="text-xs text-gray-500 mt-0.5">Lengkapi formulir di bawah ini untuk mempublikasikan berita kegiatan</p>
         </div>
-        <a href="{{ route('admin.berita.index') }}"
-            class="inline-flex items-center gap-1.5 text-xs text-white font-semibold bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] border border-transparent px-3 py-1.5 rounded-lg transition-all duration-200 shadow-sm cursor-pointer">
-            <i class="fa-solid fa-arrow-left"></i>
-            <span>Kembali</span>
-        </a>
+        <x-admin.btn-back :href="route('admin.berita.index')" />
     </div>
 
     @if ($errors->any())
@@ -131,25 +127,14 @@
                     </div>
                 </div>
 
-                <div class="pt-3 border-t border-gray-100 space-y-2">
-                    <button type="submit"
-                        class="w-full bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white font-semibold py-2.5 rounded-lg transition-all duration-200 text-sm shadow-sm flex items-center justify-center gap-2 cursor-pointer">
-                        <i class="fa-solid fa-floppy-disk"></i>
-                        <span>{{ isset($berita) ? 'Simpan Perubahan' : 'Publikasikan Berita' }}</span>
-                    </button>
-                    @if(isset($berita))
-                    <button type="button" id="btn-cancel-edit" onclick="resetFormChanges()"
-                        class="hidden w-full text-center bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold py-2 rounded-lg transition-all text-xs shadow-sm hover:shadow flex items-center justify-center gap-1.5 cursor-pointer">
-                        <i class="fa-solid fa-rotate-left"></i>
-                        <span>Batalkan Perubahan</span>
-                    </button>
-                    @else
-                    <a href="{{ route('admin.berita.index') }}"
-                        class="w-full block text-center border border-gray-200 hover:bg-gray-50 text-gray-600 font-medium py-2 rounded-lg transition-all text-xs">
-                        Batal
-                    </a>
-                    @endif
-                </div>
+                <x-admin.form-actions
+                    :is-edit="isset($berita)"
+                    submit-id="btn-submit-berita"
+                    :submit-text="isset($berita) ? 'Simpan Perubahan' : 'Publikasikan Berita'"
+                    cancel-id="btn-cancel-edit"
+                    cancel-action="resetFormChanges()"
+                    :back-url="route('admin.berita.index')"
+                    :full-width="true" />
             </div>
         </div>
     </form>
@@ -160,6 +145,7 @@
 {{-- CKEditor 5 (Local assets untuk loading instan) --}}
 <script src="{{ asset('vendor/ckeditor/ckeditor.js') }}"></script>
 <script>
+    const isEditModeBerita = document.querySelector('input[name="_method"]') !== null;
     let ckEditorInstance = null;
     let initialFormData = {};
 
@@ -183,6 +169,7 @@
                 document.querySelector('#editor-konten').value = editor.getData();
                 checkFormDirty();
             });
+            checkFormDirty();
         })
         .catch(error => {
             console.error('CKEditor gagal dimuat:', error);
@@ -208,6 +195,8 @@
             el.addEventListener('input', checkFormDirty);
             el.addEventListener('change', checkFormDirty);
         });
+
+        checkFormDirty();
     });
 
     function updateRingkasanCounter(text) {
@@ -228,9 +217,10 @@
 
     function checkFormDirty() {
         const cancelBtn = document.getElementById('btn-cancel-edit');
-        if (!cancelBtn) return;
-
+        const submitBtn = document.getElementById('btn-submit-berita');
         const form = document.getElementById('berita-form');
+        if (!form) return;
+
         let isDirty = false;
 
         // Periksa field input/textarea/select biasa
@@ -257,10 +247,21 @@
             }
         }
 
-        if (isDirty) {
-            cancelBtn.classList.remove('hidden');
-        } else {
-            cancelBtn.classList.add('hidden');
+        if (isEditModeBerita && submitBtn) {
+            submitBtn.disabled = !isDirty;
+            if (isDirty) {
+                submitBtn.className = 'w-full bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white font-semibold py-2.5 rounded-lg transition-all duration-200 text-sm shadow-sm flex items-center justify-center gap-2 cursor-pointer';
+            } else {
+                submitBtn.className = 'w-full bg-gray-300 text-gray-500 font-semibold py-2.5 rounded-lg transition-all duration-200 text-sm flex items-center justify-center gap-2 cursor-not-allowed';
+            }
+        }
+
+        if (cancelBtn) {
+            if (isDirty) {
+                cancelBtn.classList.remove('hidden');
+            } else {
+                cancelBtn.classList.add('hidden');
+            }
         }
     }
 
@@ -290,11 +291,7 @@
         if (preview) preview.src = '';
         if (previewWrapper) previewWrapper.classList.add('hidden');
 
-        // Sembunyikan tombol batal lagi
-        const cancelBtn = document.getElementById('btn-cancel-edit');
-        if (cancelBtn) {
-            cancelBtn.classList.add('hidden');
-        }
+        checkFormDirty();
     }
 
     function previewImage(input) {
