@@ -9,10 +9,7 @@
         <h2 class="text-xl font-bold text-gray-800">Daftar Berita</h2>
         <p class="text-sm text-gray-500 mt-0.5">Total <strong>{{ $beritaList->total() }}</strong> berita tersedia</p>
     </div>
-    <a href="{{ route('admin.berita.create') }}"
-       class="inline-flex items-center gap-2 bg-[#2F9B45] active:bg-[#075B3C] text-white font-semibold text-sm px-5 py-2.5 rounded-xl transition-all active:scale-95 duration-50">
-        <i class="fa-solid fa-plus"></i> Tambah Berita
-    </a>
+    <x-admin.btn-add :href="route('admin.berita.create')" text="Tambah Berita" />
 </div>
 
 {{-- Filter & Search Form --}}
@@ -77,23 +74,11 @@
 
                             <td class="px-4 py-4">
                                 <div class="flex items-center justify-center gap-1.5">
-                                    <a href="{{ route('informasi.show', $berita->id) }}" target="_blank"
-                                       class="w-8 h-8 bg-emerald-100 text-gray-500 rounded-lg flex items-center justify-center transition-colors" title="Preview">
-                                        <i class="fa-solid fa-eye text-xs"></i>
-                                    </a>
-
-                                    <a href="{{ route('admin.berita.edit', $berita->id) }}"
-                                       class="w-8 h-8 bg-emerald-100 hover:bg-emerald-300 text-[#075B3C] rounded-lg flex items-center justify-center transition-colors" title="Edit">
-                                        <i class="fa-solid fa-pen text-xs"></i>
-                                    </a>
-                                    <form action="{{ route('admin.berita.destroy', $berita->id) }}" method="POST" class="inline"
-                                          data-confirm-message="Tindakan ini tidak dapat dibatalkan.">
-                                        @csrf @method('DELETE')
-                                        <button type="submit"
-                                                class="w-8 h-8 bg-emerald-100 hover:bg-emerald-300 text-red-500 rounded-lg flex items-center justify-center transition-colors cursor-pointer" title="Hapus">
-                                            <i class="fa-solid fa-trash text-xs"></i>
-                                        </button>
-                                    </form>
+                                    <x-admin.table-actions
+                                        :preview-url="route('informasi.show', $berita->id)"
+                                        :edit-url="route('admin.berita.edit', $berita->id)"
+                                        :delete-url="route('admin.berita.destroy', $berita->id)"
+                                    />
                                 </div>
                             </td>
                         </tr>

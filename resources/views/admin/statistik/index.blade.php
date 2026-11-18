@@ -82,10 +82,10 @@ $defaultCfg = ['icon' => 'fa-solid fa-chart-pie', 'color' => 'text-white', 'bg' 
                         </span>
                     </td>
                     <td class="px-4 py-4 text-center">
-                        <a href="{{ route('admin.statistik.edit', $item['id']) }}"
-                            class="inline-flex w-8 h-8 bg-emerald-100 hover:bg-emerald-200 text-[#075B3C] rounded-lg items-center justify-center transition-colors" title="Edit Jumlah">
-                            <i class="fa-solid fa-pen text-xs"></i>
-                        </a>
+                        <x-admin.table-actions
+                            :edit-url="route('admin.statistik.edit', $item['id'])"
+                            align="justify-center"
+                        />
                     </td>
                 </tr>
                 @endforeach

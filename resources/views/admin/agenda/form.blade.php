@@ -11,10 +11,7 @@
             <h2 class="text-lg font-bold text-gray-800">{{ isset($agenda) ? 'Edit Agenda Kegiatan' : 'Tambah Agenda Baru' }}</h2>
             <p class="text-xs text-gray-500 mt-0.5">Jadwalkan kegiatan TP. PKK Desa Karangtanjung</p>
         </div>
-        <a href="{{ route('admin.agenda.index') }}" class="inline-flex items-center gap-1.5 text-xs text-white font-medium border border-gray-200 bg-[#2F9B45] active:bg-[#075B3C] px-3 py-1.5 rounded-lg transition-all duration-50">
-            <i class="fa-solid fa-arrow-left"></i>
-            <span>Kembali</span>
-        </a>
+        <x-admin.btn-back :href="route('admin.agenda.index')" />
     </div>
 
     @if ($errors->any())
@@ -105,31 +102,21 @@
                           placeholder="Jelaskan agenda kegiatan, sasaran peserta, atau hal yang perlu dibawa...">{{ old('deskripsi', $agenda['deskripsi'] ?? '') }}</textarea>
             </div>
 
-            <div class="pt-4 border-t border-gray-100 flex items-center justify-end gap-3">
-                @if(isset($agenda))
-                    <button type="button" id="btn-cancel-agenda" onclick="resetAgendaForm()"
-                            class="hidden px-4 py-2 bg-red-600 hover:bg-red-700 active:bg-red-800 text-white font-semibold rounded-lg text-xs transition-colors shadow-sm flex items-center gap-1.5 cursor-pointer">
-                        <i class="fa-solid fa-rotate-left"></i>
-                        <span>Batalkan Perubahan</span>
-                    </button>
-                @else
-                    <a href="{{ route('admin.agenda.index') }}"
-                       class="px-4 py-2 border border-gray-300 hover:bg-gray-50 text-gray-600 font-medium rounded-lg text-xs transition-colors">
-                        Batal
-                    </a>
-                @endif
-                <button type="submit"
-                        class="px-5 py-2 bg-[#2F9B45] active:bg-[#075B3C] text-white font-semibold rounded-lg text-xs transition-colors shadow-xs flex items-center gap-2 cursor-pointer">
-                    <i class="fa-solid fa-floppy-disk"></i>
-                    <span>{{ isset($agenda) ? 'Simpan Perubahan' : 'Simpan Agenda' }}</span>
-                </button>
-            </div>
+            <x-admin.form-actions
+                :is-edit="isset($agenda)"
+                submit-id="btn-submit-agenda"
+                :submit-text="isset($agenda) ? 'Simpan Perubahan' : 'Simpan Agenda'"
+                cancel-id="btn-cancel-agenda"
+                cancel-action="resetAgendaForm()"
+                :back-url="route('admin.agenda.index')"
+            />
         </form>
     </div>
 </div>
 
 @push('scripts')
 <script>
+    const isEditModeAgenda = document.querySelector('input[name="_method"]') !== null;
     let initialAgendaValues = {};
 
     document.addEventListener('DOMContentLoaded', () => {
@@ -142,13 +129,16 @@
             el.addEventListener('input', checkAgendaDirty);
             el.addEventListener('change', checkAgendaDirty);
         });
+
+        checkAgendaDirty();
     });
 
     function checkAgendaDirty() {
         const cancelBtn = document.getElementById('btn-cancel-agenda');
-        if (!cancelBtn) return;
-
+        const submitBtn = document.getElementById('btn-submit-agenda');
         const form = document.getElementById('agenda-form');
+        if (!form) return;
+
         let isDirty = false;
 
         const inputs = form.querySelectorAll('input:not([name="_token"]):not([name="_method"]), select, textarea');
@@ -159,10 +149,21 @@
             }
         }
 
-        if (isDirty) {
-            cancelBtn.classList.remove('hidden');
-        } else {
-            cancelBtn.classList.add('hidden');
+        if (isEditModeAgenda && submitBtn) {
+            submitBtn.disabled = !isDirty;
+            if (isDirty) {
+                submitBtn.className = 'px-5 py-2 bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white font-semibold rounded-lg text-xs transition-colors shadow-xs flex items-center gap-2 cursor-pointer';
+            } else {
+                submitBtn.className = 'px-5 py-2 bg-gray-300 text-gray-500 font-semibold rounded-lg text-xs transition-colors flex items-center gap-2 cursor-not-allowed';
+            }
+        }
+
+        if (cancelBtn) {
+            if (isDirty) {
+                cancelBtn.classList.remove('hidden');
+            } else {
+                cancelBtn.classList.add('hidden');
+            }
         }
     }
 
@@ -177,10 +178,7 @@
             }
         });
 
-        const cancelBtn = document.getElementById('btn-cancel-agenda');
-        if (cancelBtn) {
-            cancelBtn.classList.add('hidden');
-        }
+        checkAgendaDirty();
     }
 </script>
 @endpush

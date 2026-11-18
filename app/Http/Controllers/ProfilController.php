@@ -140,18 +140,26 @@ class ProfilController extends Controller
 
         $defaultFoto = file_exists(public_path('images/pengurus/default_pas_foto.jpg')) ? 'pengurus/default_pas_foto.jpg' : null;
 
-        $pembinaFoto = $custom['struktur']['pembina']['foto'] ?? $defaultFoto;
-        $ketuaFoto   = $custom['struktur']['pengurus_inti'][0]['foto'] ?? $defaultFoto;
-        $wakilFoto   = $custom['struktur']['pengurus_inti'][1]['foto'] ?? $defaultFoto;
-        $sekretaris1Foto = $custom['struktur']['pengurus_inti'][2]['foto'] ?? $defaultFoto;
-        $sekretaris2Foto = $custom['struktur']['pengurus_inti'][3]['foto'] ?? $defaultFoto;
-        $bendahara1Foto  = $custom['struktur']['pengurus_inti'][4]['foto'] ?? $defaultFoto;
-        $bendahara2Foto  = $custom['struktur']['pengurus_inti'][5]['foto'] ?? $defaultFoto;
+        // An explicitly stored null means the admin removed this photo. Apply the
+        // placeholder only for legacy records that do not have a foto field yet.
+        $fotoOrDefault = static function ($member) use ($defaultFoto) {
+            return is_array($member) && array_key_exists('foto', $member)
+                ? $member['foto']
+                : $defaultFoto;
+        };
 
-        $pokja1Foto  = $custom['struktur']['pokja'][0]['foto'] ?? $defaultFoto;
-        $pokja2Foto  = $custom['struktur']['pokja'][1]['foto'] ?? $defaultFoto;
-        $pokja3Foto  = $custom['struktur']['pokja'][2]['foto'] ?? $defaultFoto;
-        $pokja4Foto  = $custom['struktur']['pokja'][3]['foto'] ?? $defaultFoto;
+        $pembinaFoto = $fotoOrDefault($custom['struktur']['pembina'] ?? null);
+        $ketuaFoto   = $fotoOrDefault($custom['struktur']['pengurus_inti'][0] ?? null);
+        $wakilFoto   = $fotoOrDefault($custom['struktur']['pengurus_inti'][1] ?? null);
+        $sekretaris1Foto = $fotoOrDefault($custom['struktur']['pengurus_inti'][2] ?? null);
+        $sekretaris2Foto = $fotoOrDefault($custom['struktur']['pengurus_inti'][3] ?? null);
+        $bendahara1Foto  = $fotoOrDefault($custom['struktur']['pengurus_inti'][4] ?? null);
+        $bendahara2Foto  = $fotoOrDefault($custom['struktur']['pengurus_inti'][5] ?? null);
+
+        $pokja1Foto  = $fotoOrDefault($custom['struktur']['pokja'][0] ?? null);
+        $pokja2Foto  = $fotoOrDefault($custom['struktur']['pokja'][1] ?? null);
+        $pokja3Foto  = $fotoOrDefault($custom['struktur']['pokja'][2] ?? null);
+        $pokja4Foto  = $fotoOrDefault($custom['struktur']['pokja'][3] ?? null);
 
         $struktur = [
             'pembina' => [

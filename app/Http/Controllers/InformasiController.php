@@ -118,12 +118,9 @@ class InformasiController extends Controller
         $maxYear = ! empty($dbYears) ? max(max($dbYears), $currentYear) : $currentYear;
         $tahunList = range($maxYear, $minYear);
         $agendaList = $this->getAgendaData();
-        $pengumumanList = [];
-        $infoPenting = [];
 
         return view('informasi.index', compact(
-            'beritaPaginated', 'kategoriList', 'bulanList', 'tahunList',
-            'agendaList', 'pengumumanList', 'infoPenting'
+            'beritaPaginated', 'kategoriList', 'bulanList', 'tahunList', 'agendaList'
         ));
     }
 
@@ -154,15 +151,5 @@ class InformasiController extends Controller
         $agendaLainnya = $allAgenda->where('id', '!=', (int) $id)->take(3);
 
         return view('informasi.agenda-show', compact('agenda', 'agendaLainnya'));
-    }
-
-    public function pengumumanIndex()
-    {
-        return redirect()->route('informasi.index');
-    }
-
-    public function pengumumanShow(int|string $id)
-    {
-        return redirect()->route('informasi.index');
     }
 }

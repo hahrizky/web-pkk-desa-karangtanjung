@@ -89,7 +89,7 @@
                         'field' => 'pembina_foto',
                         'label' => 'Foto Profil Pembina',
                         'borderColor' => 'border-amber-200',
-                        'iconClass' => 'fa-user-tie text-amber-700',
+                        'iconClass' => 'fa-user-large text-amber-700',
                     ])
                 </div>
 
@@ -132,7 +132,7 @@
                     'field' => 'wakil_foto',
                     'label' => 'Foto Profil Wakil Ketua',
                     'borderColor' => 'border-emerald-200',
-                    'iconClass' => 'fa-user text-emerald-700',
+                    'iconClass' => 'fa-user-large text-emerald-700',
                 ])
             </div>
         </div>
@@ -163,7 +163,7 @@
                         'field' => 'sekretaris_1_foto',
                         'label' => 'Foto Profil Sekretaris I',
                         'borderColor' => 'border-blue-200',
-                        'iconClass' => 'fa-user text-blue-600',
+                        'iconClass' => 'fa-user-large text-blue-600',
                     ])
                 </div>
 
@@ -181,7 +181,7 @@
                         'field' => 'sekretaris_2_foto',
                         'label' => 'Foto Profil Sekretaris II',
                         'borderColor' => 'border-blue-200',
-                        'iconClass' => 'fa-user text-blue-600',
+                        'iconClass' => 'fa-user-large text-blue-600',
                     ])
                 </div>
 
@@ -199,7 +199,7 @@
                         'field' => 'bendahara_1_foto',
                         'label' => 'Foto Profil Bendahara I',
                         'borderColor' => 'border-amber-200',
-                        'iconClass' => 'fa-user text-amber-600',
+                        'iconClass' => 'fa-user-large text-amber-600',
                     ])
                 </div>
 
@@ -217,7 +217,7 @@
                         'field' => 'bendahara_2_foto',
                         'label' => 'Foto Profil Bendahara II',
                         'borderColor' => 'border-amber-200',
-                        'iconClass' => 'fa-user text-amber-600',
+                        'iconClass' => 'fa-user-large text-amber-600',
                     ])
                 </div>
             </div>
@@ -261,7 +261,7 @@
                         'field' => $pk['field'] . '_foto',
                         'label' => 'Foto Profil Ketua ' . $pk['kode'],
                         'borderColor' => 'border-emerald-200',
-                        'iconClass' => 'fa-user text-emerald-700',
+                        'iconClass' => 'fa-user-large text-emerald-700',
                     ])
                 </div>
                 @endforeach
@@ -370,6 +370,63 @@
         });
     });
 
+    // Helper untuk membersihkan dan me-reset elemen input file secara total
+    function clearFileInput(input) {
+        if (!input) return null;
+        input.value = '';
+        try { input.value = null; } catch (e) {}
+
+        const clone = input.cloneNode(true);
+        clone.value = '';
+        input.parentNode.replaceChild(clone, input);
+
+        const wrapper = clone.closest('.photo-field-wrapper');
+        const field = wrapper ? wrapper.dataset.field : null;
+        if (field) {
+            clone.addEventListener('change', function() {
+                handlePhotoPreview(this, field);
+            });
+        }
+        clone.addEventListener('input', checkStrukturDirty);
+        clone.addEventListener('change', checkStrukturDirty);
+        return clone;
+    }
+
+    // Reset bidang foto kembali ke kondisi semula
+    function resetPhotoField(field) {
+        const wrapper = document.querySelector(`.photo-field-wrapper[data-field="${field}"]`);
+        if (!wrapper) return;
+
+        const fileInput = wrapper.querySelector('.photo-file-input');
+        clearFileInput(fileInput);
+
+        const deleteFlag = wrapper.querySelector('.delete-flag-input');
+        if (deleteFlag) deleteFlag.value = '0';
+
+        const hasPhoto = wrapper.dataset.hasPhoto === '1';
+        const existingActions = wrapper.querySelector('.photo-existing-actions');
+        const uploadActions = wrapper.querySelector('.photo-upload-actions');
+
+        if (hasPhoto) {
+            if (existingActions) existingActions.classList.remove('hidden');
+            if (uploadActions) uploadActions.classList.add('hidden');
+        } else {
+            if (uploadActions) uploadActions.classList.remove('hidden');
+        }
+
+        const previewBox = wrapper.querySelector('.photo-preview-box');
+        if (previewBox && initialPreviewHTML[field]) {
+            previewBox.innerHTML = initialPreviewHTML[field];
+            const img = previewBox.querySelector('img');
+            if (img) {
+                hideIconShowImage(previewBox);
+            } else {
+                showIconHideImage(previewBox);
+            }
+            previewBox.classList.remove('ring-2', 'ring-emerald-500', 'ring-red-400/50', 'border-red-300');
+        }
+    }
+
     // 1. Konfirmasi Hapus Foto dengan Alert Dialog Modal
     function confirmDeletePhoto(field) {
         if (typeof showAdminConfirm === 'function') {
@@ -473,56 +530,31 @@
         }
     }
 
-    // 4. Reset seluruh form kembali ke kondisi semula
+    // 4. Reset seluruh form kembali ke kondisi semula (Satu tombol Batalkan Perubahan)
     function resetStrukturForm() {
         const form = document.getElementById('struktur-form');
         if (!form) return;
 
-        // Reset semua input ke initial values
+        // Reset native form
+        form.reset();
+
+        // Reset setiap wrapper foto secara total
+        document.querySelectorAll('.photo-field-wrapper').forEach(wrapper => {
+            const field = wrapper.dataset.field;
+            if (field) {
+                resetPhotoField(field);
+            }
+        });
+
+        // Pastikan nilai teks kembali persis ke awal
         const inputs = form.querySelectorAll('input:not([name="_token"]):not([name="_method"])');
         inputs.forEach(el => {
-            if (el.type === 'file') {
-                el.value = '';
-            } else if (initialStrukturValues[el.name] !== undefined) {
+            if (el.type !== 'file' && initialStrukturValues[el.name] !== undefined) {
                 el.value = initialStrukturValues[el.name];
             }
         });
 
-        // Reset tampilan setiap wrapper foto
-        document.querySelectorAll('.photo-field-wrapper').forEach(wrapper => {
-            const field = wrapper.dataset.field;
-            const existingActions = wrapper.querySelector('.photo-existing-actions');
-            const uploadActions = wrapper.querySelector('.photo-upload-actions');
-            const previewBox = wrapper.querySelector('.photo-preview-box');
-
-            if (existingActions) {
-                existingActions.classList.remove('hidden');
-            }
-            if (uploadActions && existingActions) {
-                uploadActions.classList.add('hidden');
-            }
-            if (previewBox && initialPreviewHTML[field]) {
-                previewBox.innerHTML = initialPreviewHTML[field];
-                const img = previewBox.querySelector('img');
-                if (img) {
-                    hideIconShowImage(previewBox);
-                } else {
-                    showIconHideImage(previewBox);
-                }
-                previewBox.classList.remove('ring-2', 'ring-emerald-500', 'ring-red-400/50', 'border-red-300');
-            }
-        });
-
-        const cancelBtn = document.getElementById('btn-cancel-struktur');
-        if (cancelBtn) {
-            cancelBtn.classList.add('hidden');
-        }
-
-        const submitBtn = document.getElementById('btn-submit-struktur');
-        if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.className = 'w-full sm:w-auto px-6 py-2.5 bg-gray-300 text-gray-500 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed';
-        }
+        checkStrukturDirty();
     }
 </script>
 @endpush
