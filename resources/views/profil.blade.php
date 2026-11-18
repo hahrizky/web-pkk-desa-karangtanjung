@@ -33,7 +33,7 @@
             {{-- Foto --}}
             <div class="relative">
                 <div class="relative overflow-hidden rounded-2xl border-4 border-white shadow-xl">
-                    <img src="{{ asset('images/5.webp') }}"
+                    <img src="{{ asset($fotoTim ?? 'images/5.webp') }}"
                         alt="Pengurus TP PKK Desa Karangtanjung"
                         class="w-full h-72 sm:h-80 lg:h-96 object-cover hover:scale-105 transition-transform duration-500">
                     <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-emerald-950/85 to-transparent p-4">

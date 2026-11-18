@@ -378,6 +378,13 @@ class ProfilController extends Controller
 
         $periode = $custom['periode'] ?? '2024 - 2029';
 
+        // Foto tim "Tentang Kami"
+        $fotoTimRaw = $custom['foto_tim_profil'] ?? null;
+        $fotoTim = 'images/5.webp';
+        if (!empty($fotoTimRaw) && \Illuminate\Support\Facades\File::exists(public_path($fotoTimRaw))) {
+            $fotoTim = $fotoTimRaw;
+        }
+
         return view('profil', compact(
             'periode',
             'visi',
@@ -385,7 +392,8 @@ class ProfilController extends Controller
             'struktur',
             'pilar',
             'tugas_fungsi',
-            'program_pokok'
+            'program_pokok',
+            'fotoTim'
         ));
     }
 }
