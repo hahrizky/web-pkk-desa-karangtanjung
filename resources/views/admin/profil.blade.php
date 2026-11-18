@@ -186,7 +186,7 @@
             submit-text="Simpan Perubahan Profil"
             cancel-id="btn-cancel-profil"
             cancel-action="resetProfilForm()"
-        />
+            info-text="Pastikan seluruh informasi profil dan visi misi sudah benar sebelum disimpan." />
     </form>
 </div>
 
@@ -226,14 +226,14 @@
         const num = String(count + 1).padStart(2, '0');
 
         const div = document.createElement('div');
-        div.className = 'misi-item bg-gray-50/80 border border-gray-200 rounded-xl p-3.5 sm:p-4 space-y-2.5 relative';
+        div.className = 'misi-item bg-[#ECFEF3] border border-gray-200 rounded-xl p-3.5 sm:p-4 space-y-2.5 relative';
         div.innerHTML = `
             <div class="flex items-center justify-between">
-                <span class="misi-badge text-[11px] font-bold text-emerald-800 bg-emerald-100 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
+                <span class="misi-badge text-[11px] font-bold text-[#075B3C] bg-emerald-200 px-2.5 py-0.5 rounded-full uppercase tracking-wider">
                     Misi ${num}
                 </span>
                 <button type="button" onclick="hapusMisi(this)"
-                        class="btn-hapus-misi text-gray-400 hover:text-red-500 text-xs transition-colors flex items-center gap-1">
+                    class="btn-hapus-misi text-red-500 hover:text-red-700 hover:bg-red-50 active:bg-red-100 font-medium text-xs transition-colors flex items-center gap-1 rounded-md px-2 py-1">
                     <i class="fa-regular fa-trash-can"></i>
                     <span>Hapus</span>
                 </button>
@@ -242,13 +242,13 @@
                 <label class="block text-[11px] font-semibold text-gray-600 mb-1">Judul Misi</label>
                 <input type="text" name="misi[${count}][judul]" value=""
                        placeholder="Contoh: Program Misi ${num}"
-                       class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
+                       class="bg-white w-full border border-gray-800 rounded-lg px-3 py-2 text-xs sm:text-sm font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required>
             </div>
             <div>
                 <label class="block text-[11px] font-semibold text-gray-600 mb-1">Deskripsi Misi</label>
                 <textarea name="misi[${count}][deskripsi]" rows="2"
                           placeholder="Tuliskan uraian detail misi ini..."
-                          class="w-full border border-gray-300 rounded-lg px-3 py-2 text-xs sm:text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required></textarea>
+                          class="bg-white w-full border border-gray-800 rounded-lg px-3 py-2 text-xs sm:text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C]" required></textarea>
             </div>
         `;
         container.appendChild(div);
@@ -325,9 +325,9 @@
 
         submitBtn.disabled = !isDirty;
         if (isDirty) {
-            submitBtn.className = 'w-full py-2.5 bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white font-semibold rounded-lg transition-all duration-200 text-sm shadow-sm flex items-center justify-center gap-2 cursor-pointer';
+            submitBtn.className = 'w-full sm:w-auto px-6 py-2.5 bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white font-semibold rounded-xl text-sm transition-all duration-200 shadow-sm flex items-center justify-center gap-2 active:scale-95 cursor-pointer';
         } else {
-            submitBtn.className = 'w-full py-2.5 bg-gray-300 text-gray-500 cursor-not-allowed font-semibold rounded-lg transition-all duration-200 text-sm flex items-center justify-center gap-2';
+            submitBtn.className = 'w-full sm:w-auto px-6 py-2.5 bg-gray-300 text-gray-500 font-semibold rounded-xl text-sm transition-all duration-200 flex items-center justify-center gap-2 cursor-not-allowed';
         }
 
         if (cancelBtn) {
