@@ -39,11 +39,107 @@
     display: none;
 }
 
-/* Styling konten artikel berita & pembersihan tag kosong CKEditor */
+/* Styling konten artikel berita & agenda (output CKEditor di halaman publik) */
+.article-body p {
+    margin-bottom: 1rem;
+}
+
+.article-body p:last-child {
+    margin-bottom: 0;
+}
+
 .article-body p:empty,
 .article-body p:has(> br:only-child) {
     display: none;
 }
+
+/* List Bullets & Numbers di Halaman Publik */
+.article-body ul {
+    list-style-type: disc !important;
+    padding-left: 1.5rem !important;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.article-body ol {
+    list-style-type: decimal !important;
+    padding-left: 1.5rem !important;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.article-body ul ul {
+    list-style-type: circle !important;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.article-body ol ol {
+    list-style-type: lower-alpha !important;
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+}
+
+.article-body li {
+    margin-bottom: 0.35rem;
+    line-height: 1.7;
+}
+
+.article-body li:last-child {
+    margin-bottom: 0;
+}
+
+.article-body strong,
+.article-body b {
+    font-weight: 700;
+}
+
+.article-body em,
+.article-body i {
+    font-style: italic;
+}
+
+.article-body blockquote {
+    border-left: 4px solid #075B3C;
+    padding-left: 1rem;
+    font-style: italic;
+    color: #4B5563;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Dukungan Heading & Ukuran Font CKEditor di Halaman Publik */
+.article-body h2 {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #111827;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+}
+
+.article-body h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1F2937;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.article-body h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #374151;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.article-body .text-tiny { font-size: 0.75rem; }
+.article-body .text-small { font-size: 0.875rem; }
+.article-body .text-big { font-size: 1.25rem; }
+.article-body .text-huge { font-size: 1.5rem; }
 
 /* Jika admin / browser menyertakan justify, cegah celah renggang abnormal di mobile */
 .article-body[style*="justify"],

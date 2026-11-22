@@ -10,9 +10,27 @@ class ProfilController extends Controller
     {
         $customPath = storage_path('app/profil_data.json');
         $custom = File::exists($customPath) ? json_decode(File::get($customPath), true) : null;
+        $custom = is_array($custom) ? $custom : [];
+
+        // Normalize CMS data before indexing it so incomplete or malformed
+        // sections fall back to defaults instead of breaking the public page.
+        $custom['struktur'] = is_array($custom['struktur'] ?? null) ? $custom['struktur'] : [];
+        $custom['struktur']['pembina'] = is_array($custom['struktur']['pembina'] ?? null)
+            ? $custom['struktur']['pembina']
+            : [];
+        $custom['struktur']['pengurus_inti'] = array_map(
+            static fn ($member) => is_array($member) ? $member : [],
+            is_array($custom['struktur']['pengurus_inti'] ?? null) ? $custom['struktur']['pengurus_inti'] : []
+        );
+        $custom['struktur']['pokja'] = array_map(
+            static fn ($member) => is_array($member) ? $member : [],
+            is_array($custom['struktur']['pokja'] ?? null) ? $custom['struktur']['pokja'] : []
+        );
 
         // 1. Data Visi & Misi
-        $visi = $custom['visi'] ?? 'Terwujudnya Keluarga Karangtanjung yang Beriman, Berakhlak Mulia, Sehat, Sejahtera, Maju, dan Mandiri Berbasis Ketahanan Desa yang Berkelanjutan';
+        $visi = is_scalar($custom['visi'] ?? null)
+            ? (string) $custom['visi']
+            : 'Terwujudnya Keluarga Karangtanjung yang Beriman, Berakhlak Mulia, Sehat, Sejahtera, Maju, dan Mandiri Berbasis Ketahanan Desa yang Berkelanjutan';
 
         $defaultIcons = [
             'fa-solid fa-hand-holding-heart',
@@ -38,8 +56,12 @@ class ProfilController extends Controller
         if (!empty($misiRaw) && is_array($misiRaw)) {
             $index = 1;
             foreach ($misiRaw as $item) {
-                $judul = trim($item['judul'] ?? '');
-                $deskripsi = trim($item['deskripsi'] ?? '');
+                if (! is_array($item)) {
+                    continue;
+                }
+
+                $judul = is_scalar($item['judul'] ?? null) ? trim((string) $item['judul']) : '';
+                $deskripsi = is_scalar($item['deskripsi'] ?? null) ? trim((string) $item['deskripsi']) : '';
                 if ($judul === '' && $deskripsi === '') {
                     continue;
                 }
@@ -121,7 +143,9 @@ class ProfilController extends Controller
 
         // 2. Data Struktur Organisasi
         $cleanStr = function ($str) {
-            return trim(preg_replace('/[\x{FFFC}\x{FFFD}\x{0000}-\x{001F}\x{007F}]/u', '', (string) $str));
+            $str = is_scalar($str) ? (string) $str : '';
+
+            return trim(preg_replace('/[\x{FFFC}\x{FFFD}\x{0000}-\x{001F}\x{007F}]/u', '', $str));
         };
 
         $pembinaNama = $cleanStr($custom['struktur']['pembina']['nama'] ?? 'Atmo');
@@ -143,9 +167,16 @@ class ProfilController extends Controller
         // An explicitly stored null means the admin removed this photo. Apply the
         // placeholder only for legacy records that do not have a foto field yet.
         $fotoOrDefault = static function ($member) use ($defaultFoto) {
-            return is_array($member) && array_key_exists('foto', $member)
-                ? $member['foto']
-                : $defaultFoto;
+            if (! is_array($member) || ! array_key_exists('foto', $member)) {
+                return $defaultFoto;
+            }
+
+            $foto = $member['foto'];
+            if (! is_string($foto) || ! str_starts_with($foto, 'pengurus/') || str_contains($foto, '..')) {
+                return null;
+            }
+
+            return file_exists(public_path('images/'.$foto)) ? $foto : null;
         };
 
         $pembinaFoto = $fotoOrDefault($custom['struktur']['pembina'] ?? null);
@@ -376,12 +407,15 @@ class ProfilController extends Controller
             ],
         ];
 
-        $periode = $custom['periode'] ?? '2024 - 2029';
+        $periode = is_scalar($custom['periode'] ?? null) ? (string) $custom['periode'] : '2024 - 2029';
 
         // Foto tim "Tentang Kami"
         $fotoTimRaw = $custom['foto_tim_profil'] ?? null;
         $fotoTim = 'images/5.webp';
-        if (!empty($fotoTimRaw) && \Illuminate\Support\Facades\File::exists(public_path($fotoTimRaw))) {
+        if (is_string($fotoTimRaw)
+            && str_starts_with($fotoTimRaw, 'images/profil/')
+            && ! str_contains($fotoTimRaw, '..')
+            && \Illuminate\Support\Facades\File::exists(public_path($fotoTimRaw))) {
             $fotoTim = $fotoTimRaw;
         }
 

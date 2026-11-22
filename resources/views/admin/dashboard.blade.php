@@ -45,7 +45,7 @@
                 <i class="fa-solid {{ $stat['icon'] }} text-sm"></i>
             </div>
         </div>
-        <p class="text-xs text-white mt-3 group-hover:text-[#075B3C] transition-colors">
+        <p class="text-xs text-white mt-3 group-hover:text-white hover:font-bold hover:underline transition-colors">
             Lihat semua <i class="fa-solid fa-arrow-right text-[10px]"></i>
         </p>
     </a>

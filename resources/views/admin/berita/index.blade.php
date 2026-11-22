@@ -66,7 +66,7 @@
                             </td>
 
                             <td class="px-4 py-4 hidden md:table-cell">
-                                <span class="inline-block bg-[#075B3C] text-white px-2.5 py-1 rounded-full text-xs font-medium">{{ $berita->kategori }}</span>
+                                <span class="inline-block bg-[#2F9B45] text-white px-2.5 py-1 rounded-full text-xs font-medium">{{ $berita->kategori }}</span>
                             </td>
 
                             <td class="px-4 py-4 text-[#075B3C] text-xs hidden lg:table-cell">{{ $berita->tanggal_formatted }}

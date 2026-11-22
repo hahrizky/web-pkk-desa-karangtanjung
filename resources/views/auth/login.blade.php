@@ -70,12 +70,6 @@
                     Masuk
                 </button>
             </form>
-
-            <div class="mt-6 pt-5 border-t border-gray-100 text-center">
-                <p class="text-xs text-gray-400">
-                    Default: <span class="font-mono font-semibold text-gray-600">admin</span> / <span class="font-mono font-semibold text-gray-600">pkk2024</span>
-                </p>
-            </div>
         </div>
 
         <p class="text-center text-xs text-green-200 mt-6">

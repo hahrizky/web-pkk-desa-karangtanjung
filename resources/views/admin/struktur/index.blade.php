@@ -476,15 +476,32 @@
         if (!previewBox) return;
 
         const file = input.files && input.files[0];
+        if (file) {
+            const maxBytes = 5 * 1024 * 1024; // 5 MB
+            if (file.size > maxBytes) {
+                const currentMB = (file.size / (1024 * 1024)).toFixed(2);
+                if (typeof showAdminAlert === 'function') {
+                    showAdminAlert({
+                        title: 'Ukuran Foto Terlalu Besar',
+                        message: `Foto pengurus yang Anda pilih berukuran ${currentMB} MB, melebihi batas maksimal yang diizinkan (5 MB). Silakan pilih foto dengan ukuran lebih kecil.`
+                    });
+                } else {
+                    alert(`Ukuran foto (${currentMB} MB) melebihi batas maksimal 5 MB.`);
+                }
+                input.value = '';
+                checkStrukturDirty();
+                return;
+            }
 
-        if (file && file.type.startsWith('image/')) {
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                hideIconShowImage(previewBox, e.target.result);
-                previewBox.classList.remove('ring-red-400/50', 'border-red-300');
-                previewBox.classList.add('ring-2', 'ring-emerald-500');
-            };
-            reader.readAsDataURL(file);
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    hideIconShowImage(previewBox, e.target.result);
+                    previewBox.classList.remove('ring-red-400/50', 'border-red-300');
+                    previewBox.classList.add('ring-2', 'ring-emerald-500');
+                };
+                reader.readAsDataURL(file);
+            }
         }
 
         checkStrukturDirty();
