@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Support\ProfilDataStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -74,6 +75,13 @@ class StrukturController extends Controller
         $path = public_path('images/'.$photo);
         if (File::exists($path)) {
             File::delete($path);
+        }
+    }
+
+    private function deleteUploadedPhotos(array $photos): void
+    {
+        foreach ($photos as $photo) {
+            $this->deleteManagedPhoto($photo);
         }
     }
 
@@ -159,27 +167,14 @@ class StrukturController extends Controller
             'pokja_4_foto' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
         ]);
 
-        $path = $this->getProfilPath();
         $profil = $this->readProfil();
-        $oldPhotos = [
-            $profil['struktur']['pembina']['foto'] ?? null,
-            $profil['struktur']['pengurus_inti'][0]['foto'] ?? null,
-            $profil['struktur']['pengurus_inti'][1]['foto'] ?? null,
-            $profil['struktur']['pengurus_inti'][2]['foto'] ?? null,
-            $profil['struktur']['pengurus_inti'][3]['foto'] ?? null,
-            $profil['struktur']['pengurus_inti'][4]['foto'] ?? null,
-            $profil['struktur']['pengurus_inti'][5]['foto'] ?? null,
-            $profil['struktur']['pokja'][0]['foto'] ?? null,
-            $profil['struktur']['pokja'][1]['foto'] ?? null,
-            $profil['struktur']['pokja'][2]['foto'] ?? null,
-            $profil['struktur']['pokja'][3]['foto'] ?? null,
-        ];
 
         // Helper untuk memproses file upload
         $uploadDir = public_path('images/pengurus');
         File::ensureDirectoryExists($uploadDir);
+        $uploadedPhotos = [];
 
-        $handleUpload = function ($key, $existing) use ($request, $uploadDir) {
+        $handleUpload = function ($key, $existing) use ($request, $uploadDir, &$uploadedPhotos) {
             $deleteKey = 'hapus_'.$key;
             $shouldDelete = $request->input($deleteKey) === '1' || $request->input($deleteKey) === 1;
 
@@ -187,6 +182,7 @@ class StrukturController extends Controller
                 $file = $request->file($key);
                 $filename = $key.'_'.Str::uuid().'.'.$file->getClientOriginalExtension();
                 $file->move($uploadDir, $filename);
+                $uploadedPhotos[] = 'pengurus/'.$filename;
 
                 return 'pengurus/'.$filename;
             }
@@ -198,18 +194,23 @@ class StrukturController extends Controller
             return $existing;
         };
 
-        $pembinaFoto = $handleUpload('pembina_foto', $profil['struktur']['pembina']['foto'] ?? null);
-        $ketuaFoto = $handleUpload('ketua_foto', $profil['struktur']['pengurus_inti'][0]['foto'] ?? null);
-        $wakilFoto = $handleUpload('wakil_foto', $profil['struktur']['pengurus_inti'][1]['foto'] ?? null);
-        $sekretaris1Foto = $handleUpload('sekretaris_1_foto', $profil['struktur']['pengurus_inti'][2]['foto'] ?? null);
-        $sekretaris2Foto = $handleUpload('sekretaris_2_foto', $profil['struktur']['pengurus_inti'][3]['foto'] ?? null);
-        $bendahara1Foto = $handleUpload('bendahara_1_foto', $profil['struktur']['pengurus_inti'][4]['foto'] ?? null);
-        $bendahara2Foto = $handleUpload('bendahara_2_foto', $profil['struktur']['pengurus_inti'][5]['foto'] ?? null);
+        try {
+            $pembinaFoto = $handleUpload('pembina_foto', $profil['struktur']['pembina']['foto'] ?? null);
+            $ketuaFoto = $handleUpload('ketua_foto', $profil['struktur']['pengurus_inti'][0]['foto'] ?? null);
+            $wakilFoto = $handleUpload('wakil_foto', $profil['struktur']['pengurus_inti'][1]['foto'] ?? null);
+            $sekretaris1Foto = $handleUpload('sekretaris_1_foto', $profil['struktur']['pengurus_inti'][2]['foto'] ?? null);
+            $sekretaris2Foto = $handleUpload('sekretaris_2_foto', $profil['struktur']['pengurus_inti'][3]['foto'] ?? null);
+            $bendahara1Foto = $handleUpload('bendahara_1_foto', $profil['struktur']['pengurus_inti'][4]['foto'] ?? null);
+            $bendahara2Foto = $handleUpload('bendahara_2_foto', $profil['struktur']['pengurus_inti'][5]['foto'] ?? null);
 
-        $pokja1Foto = $handleUpload('pokja_1_foto', $profil['struktur']['pokja'][0]['foto'] ?? null);
-        $pokja2Foto = $handleUpload('pokja_2_foto', $profil['struktur']['pokja'][1]['foto'] ?? null);
-        $pokja3Foto = $handleUpload('pokja_3_foto', $profil['struktur']['pokja'][2]['foto'] ?? null);
-        $pokja4Foto = $handleUpload('pokja_4_foto', $profil['struktur']['pokja'][3]['foto'] ?? null);
+            $pokja1Foto = $handleUpload('pokja_1_foto', $profil['struktur']['pokja'][0]['foto'] ?? null);
+            $pokja2Foto = $handleUpload('pokja_2_foto', $profil['struktur']['pokja'][1]['foto'] ?? null);
+            $pokja3Foto = $handleUpload('pokja_3_foto', $profil['struktur']['pokja'][2]['foto'] ?? null);
+            $pokja4Foto = $handleUpload('pokja_4_foto', $profil['struktur']['pokja'][3]['foto'] ?? null);
+        } catch (\Throwable $exception) {
+            $this->deleteUploadedPhotos($uploadedPhotos);
+            throw $exception;
+        }
 
         // Update bagian struktur, foto, dan periode
         $cleanStr = function ($str) {
@@ -240,11 +241,29 @@ class StrukturController extends Controller
             ],
         ];
 
-        File::ensureDirectoryExists(storage_path('app'));
-        $json = json_encode($profil, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_THROW_ON_ERROR);
-        $temporaryPath = $path.'.'.Str::uuid().'.tmp';
-        File::put($temporaryPath, $json);
-        File::move($temporaryPath, $path, true);
+        try {
+            $previous = app(ProfilDataStore::class)->update([
+                'periode' => $profil['periode'],
+                'struktur' => $profil['struktur'],
+            ], $this->getDefaultProfil());
+        } catch (\Throwable $exception) {
+            $this->deleteUploadedPhotos($uploadedPhotos);
+            throw $exception;
+        }
+
+        $oldPhotos = [
+            $previous['struktur']['pembina']['foto'] ?? null,
+            $previous['struktur']['pengurus_inti'][0]['foto'] ?? null,
+            $previous['struktur']['pengurus_inti'][1]['foto'] ?? null,
+            $previous['struktur']['pengurus_inti'][2]['foto'] ?? null,
+            $previous['struktur']['pengurus_inti'][3]['foto'] ?? null,
+            $previous['struktur']['pengurus_inti'][4]['foto'] ?? null,
+            $previous['struktur']['pengurus_inti'][5]['foto'] ?? null,
+            $previous['struktur']['pokja'][0]['foto'] ?? null,
+            $previous['struktur']['pokja'][1]['foto'] ?? null,
+            $previous['struktur']['pokja'][2]['foto'] ?? null,
+            $previous['struktur']['pokja'][3]['foto'] ?? null,
+        ];
 
         // Remove replaced/deleted uploads only after the new profile document is safely in place.
         $newPhotos = [

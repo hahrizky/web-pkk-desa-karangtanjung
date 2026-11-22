@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Support\ProfilDataStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -81,7 +82,9 @@ class ProfilController extends Controller
         $i = 0;
         foreach ($lines as $line) {
             $line = trim($line);
-            if ($line === '') continue;
+            if ($line === '') {
+                continue;
+            }
             $cleanLine = preg_replace('/^\s*(\d+[\.\)]|\-|\*)\s*/', '', $line);
             if (str_contains($cleanLine, ':')) {
                 $parts = explode(':', $cleanLine, 2);
@@ -92,7 +95,7 @@ class ProfilController extends Controller
                 $judul = trim($parts[0]);
                 $deskripsi = trim($parts[1]);
             } else {
-                $judul = $defaultTitles[$i] ?? ('Program Misi ' . sprintf('%02d', $i + 1));
+                $judul = $defaultTitles[$i] ?? ('Program Misi '.sprintf('%02d', $i + 1));
                 $deskripsi = $cleanLine;
             }
 
@@ -110,7 +113,7 @@ class ProfilController extends Controller
             $i++;
         }
 
-        return !empty($converted) ? $converted : $this->getDefaultData()['misi'];
+        return ! empty($converted) ? $converted : $this->getDefaultData()['misi'];
     }
 
     public function index()
@@ -149,12 +152,15 @@ class ProfilController extends Controller
             if ($preserveNewlines) {
                 return trim(preg_replace('/[\x{FFFC}\x{FFFD}\x{0000}-\x{0008}\x{000B}\x{000C}\x{000E}-\x{001F}\x{007F}]/u', '', (string) $str));
             }
+
             return trim(preg_replace('/[\x{FFFC}\x{FFFD}\x{0000}-\x{001F}\x{007F}]/u', '', (string) $str));
         };
 
         $cleaned = [];
         foreach ($validated as $key => $val) {
-            if ($key === 'misi') continue;
+            if ($key === 'misi') {
+                continue;
+            }
             $cleaned[$key] = is_string($val) ? $cleanStr($val, in_array($key, ['visi', 'alamat'])) : $val;
         }
 
@@ -189,15 +195,7 @@ class ProfilController extends Controller
 
         $cleaned['misi'] = $misiList;
 
-        $path = $this->getStoragePath();
-        $data = File::exists($path)
-            ? (json_decode(File::get($path), true) ?? $this->getDefaultData())
-            : $this->getDefaultData();
-
-        $data = array_merge($data, $cleaned);
-
-        File::ensureDirectoryExists(storage_path('app'));
-        File::put($path, json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+        app(ProfilDataStore::class)->update($cleaned, $this->getDefaultData());
 
         return redirect()->route('admin.profil')
             ->with('success', 'Data profil desa & misi berhasil disimpan!');
