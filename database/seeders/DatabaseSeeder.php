@@ -13,18 +13,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // 1. Akun Admin Default
-        $username = env('ADMIN_USERNAME', 'admin');
-        $password = env('ADMIN_PASSWORD', 'pkk2024');
+        // 1. Akun Admin dari Environment (.env)
+        $username = env('ADMIN_USERNAME');
+        $password = env('ADMIN_PASSWORD');
 
-        User::updateOrCreate(
-            ['username' => $username],
-            [
-                'name' => env('ADMIN_NAME', 'Administrator TP. PKK'),
-                'email' => env('ADMIN_EMAIL', 'admin@karangtanjung.desa.id'),
-                'password' => Hash::make($password),
-            ]
-        );
+        if ($username && $password) {
+            User::updateOrCreate(
+                ['username' => $username],
+                [
+                    'name' => env('ADMIN_NAME'),
+                    'email' => env('ADMIN_EMAIL'),
+                    'password' => Hash::make($password),
+                ]
+            );
+        }
 
         // 2. Seeder Berita & Agenda
         $this->call([

@@ -64,6 +64,13 @@
                     </div>
                 </div>
 
+                <div class="flex items-center justify-between text-xs pt-1">
+                    <label class="flex items-center gap-2 text-gray-600 cursor-pointer select-none">
+                        <input type="checkbox" name="remember" class="w-4 h-4 rounded border-gray-300 text-[#075B3C] focus:ring-[#075B3C]/30 accent-[#075B3C]">
+                        <span>Ingat saya di perangkat ini</span>
+                    </label>
+                </div>
+
                 <button type="submit"
                         class="w-full bg-[#075B3C] hover:bg-[#055030] text-white font-semibold py-2.5 rounded-xl transition-all duration-200 active:scale-95 mt-2">
                     <i class="fa-solid fa-right-to-bracket mr-2"></i>

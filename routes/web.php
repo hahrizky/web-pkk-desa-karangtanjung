@@ -42,7 +42,7 @@ Route::get('/informasi/{id}', [InformasiController::class, 'show'])->name('infor
 
 // Auth (tanpa middleware admin)
 Route::get('/admin/login', [AuthController::class, 'showLoginForm'])->name('admin.login');
-Route::post('/admin/login', [AuthController::class, 'login'])->name('admin.login.post');
+Route::post('/admin/login', [AuthController::class, 'login'])->middleware('throttle:15,1')->name('admin.login.post');
 Route::post('/admin/logout', [AuthController::class, 'logout'])->name('admin.logout');
 
 // Admin Panel (dengan middleware admin)

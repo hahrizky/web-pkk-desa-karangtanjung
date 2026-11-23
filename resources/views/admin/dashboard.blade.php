@@ -8,7 +8,7 @@
 <div class="bg-[#2F9B45] rounded-2xl p-6 mb-6 text-white">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-            <h2 class="text-xl font-bold">Selamat Datang, {{ session('admin_name', 'Administrator') }}! 👋</h2>
+            <h2 class="text-xl font-bold">Selamat Datang, {{ Auth::user()->name ?? 'Administrator' }}! 👋</h2>
             <p class="text-green-100 text-sm mt-1">{{ now()->locale('id')->isoFormat('dddd, D MMMM YYYY') }}</p>
         </div>
         <div class="flex gap-2">

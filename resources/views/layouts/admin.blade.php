@@ -96,8 +96,8 @@
                 <i class="fa-solid fa-user text-sm"></i>
             </div>
             <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold truncate">{{ session('admin_name', 'Administrator') }}</p>
-                <p class="text-xs text-white/50 truncate">Admin PKK</p>
+                <p class="text-sm font-semibold truncate">{{ Auth::user()->name ?? 'Administrator' }}</p>
+                <p class="text-xs text-white/50 truncate">{{ Auth::user()->username ?? 'Admin PKK' }}</p>
             </div>
             <a href="{{ route('admin.logout') }}"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"

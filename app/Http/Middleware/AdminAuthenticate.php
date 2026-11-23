@@ -4,16 +4,17 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminAuthenticate
 {
     /**
-     * Handle an incoming request — pastikan admin sudah login.
+     * Handle an incoming request — pastikan admin sudah login via Laravel Auth Guard.
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (! session('admin_logged_in')) {
+        if (! Auth::check()) {
             return redirect()->route('admin.login')
                 ->with('error', 'Silakan login terlebih dahulu.');
         }

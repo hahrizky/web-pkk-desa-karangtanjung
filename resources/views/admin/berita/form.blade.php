@@ -156,7 +156,6 @@
                 'heading', '|',
                 'bold', 'italic', '|',
                 'bulletedList', 'numberedList', '|',
-                'outdent', 'indent', '|',
                 'undo', 'redo'
             ],
             heading: {
