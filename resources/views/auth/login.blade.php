@@ -16,7 +16,7 @@
         {{-- Logo --}}
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-xl mb-4">
-                <img src="{{ asset('images/logo-pkk.png') }}" alt="PKK" class="w-14 h-14 object-contain">
+                <img src="{{ asset('images/logo-pkk.webp') }}" alt="PKK" class="w-14 h-14 object-contain">
             </div>
             <h1 class="text-2xl font-extrabold text-white">TP. PKK Karangtanjung</h1>
             <p class="text-green-200 text-sm mt-1">Panel Manajemen Konten</p>
