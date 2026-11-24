@@ -11,7 +11,7 @@ class PokjaController extends Controller
                 'kode' => 'POKJA I',
                 'nama' => 'Bidang Pembinaan Karakter & Gotong Royong',
                 'deskripsi' => 'Memperkokoh ketahanan mental spiritual keluarga, menanamkan nilai-nilai luhur Pancasila dalam pengasuhan generasi muda, serta menghidupkan kembali tradisi gotong royong di seluruh rukun warga Desa Karangtanjung.',
-                'badge_class' => 'bg-[#e2f5ea] text-[#065f46]',
+                'badge_class' => 'bg-[#075B3C] text-white',
                 'program' => [
                     [
                         'judul' => 'Pola Asuh Anak & Remaja (PAAR)',
@@ -37,7 +37,7 @@ class PokjaController extends Controller
                 'kode' => 'POKJA II',
                 'nama' => 'Bidang Pendidikan dan Peningkatan Ekonomi Keluarga',
                 'deskripsi' => 'Meningkatkan kapasitas kecakapan hidup warga melalui pelatihan vokasi mandiri, tata kelola keuangan rumah tangga, serta pembinaan kelompok UP2K PKK di tingkat basis.',
-                'badge_class' => 'bg-[#dce3fc] text-[#3730a3]',
+                'badge_class' => 'bg-[#075B3C] text-white',
                 'program' => [
                     [
                         'judul' => 'Taman Bacaan Masyarakat dan BKB',
@@ -63,7 +63,7 @@ class PokjaController extends Controller
                 'kode' => 'POKJA III',
                 'nama' => 'Bidang Penguatan Ketahanan Keluarga',
                 'deskripsi' => 'Mewujudkan kemandirian pangan tingkat rumah tangga melalui pemanfaatan lahan pekarangan, pembudayaan konsumsi pangan beragam, bergizi seimbang, dan aman (B2SA), serta tata laksana hunian sehat.',
-                'badge_class' => 'bg-[#fef0cd] text-[#92400e]',
+                'badge_class' => 'bg-[#075B3C] text-white',
                 'program' => [
                     [
                         'judul' => 'Pekarangan Pangan Lestari (P2L)',
@@ -89,7 +89,7 @@ class PokjaController extends Controller
                 'kode' => 'POKJA IV',
                 'nama' => 'Bidang Kesehatan dan Kelestarian Lingkungan',
                 'deskripsi' => 'Memimpin garda depan perlindungan kesehatan keluarga, pencegahan gagal tumbuh pada anak balita (stunting), pelestarian sanitasi air bersih, serta perencanaan keluarga sejahtera berwawasan masa depan.',
-                'badge_class' => 'bg-[#e2f5ea] text-[#065f46]',
+                'badge_class' => 'bg-[#075B3C] text-white',
                 'program' => [
                     [
                         'judul' => 'Posyandu Balita & Lansia di 6 RW',

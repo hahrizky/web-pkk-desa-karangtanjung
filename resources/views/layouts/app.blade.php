@@ -32,12 +32,12 @@
                 <!-- Logo & Identitas Desa -->
                 <a href="{{ route('beranda') }}" class="flex items-center gap-3 group">
                     <!-- Logo PKK -->
-                    <img src="{{ asset('images/logo-pkk.png') }}"
+                    <img src="{{ asset('images/logo-pkk.webp') }}"
                          alt="Logo TP PKK"
                          class="w-11 h-11 object-contain drop-shadow-sm group-hover:scale-105 transition-transform">
 
                     <!-- Logo Kabupaten Sidoarjo -->
-                    <img src="{{ asset('images/logo-kabupaten.png') }}"
+                    <img src="{{ asset('images/logo-kabupaten.webp') }}"
                          alt="Logo Kabupaten Sidoarjo"
                          class="w-11 h-11 object-contain drop-shadow-sm group-hover:scale-105 transition-transform">
 
@@ -109,10 +109,10 @@
                 <!-- Kolom 1: Profil Singkat -->
                 <div>
                     <div class="flex items-center gap-3 mb-4">
-                        <img src="{{ asset('images/logo-pkk.png') }}"
+                        <img src="{{ asset('images/logo-pkk.webp') }}"
                              alt="Logo PKK"
                              class="w-10 h-10 object-contain drop-shadow">
-                        <img src="{{ asset('images/logo-kabupaten.png') }}"
+                        <img src="{{ asset('images/logo-kabupaten.webp') }}"
                              alt="Logo Kabupaten Sidoarjo"
                              class="w-10 h-10 object-contain drop-shadow">
                         <div>

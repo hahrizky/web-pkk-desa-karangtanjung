@@ -10,28 +10,27 @@
 
             <!-- Meta Berita (Kategori, Tanggal, Penulis) -->
             <div class="flex flex-wrap items-center gap-3 mb-4">
-                <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-[#E8F7EF] text-[#075B3C] border border-[#075B3C]/25 shadow-2xs">
+                <span class="px-3 py-0.5 rounded-full text-xs font-semibold bg-[#075B3C] text-white border border-[#075B3C]/25 shadow-2xs">
                     {{ $berita['kategori'] }}
                 </span>
-                <span class="text-xs text-gray-600 flex items-center gap-1.5">
-                    <i class="fa-regular fa-calendar text-[#075B3C]"></i>
+                <span class="text-xs font-medium text-[#075B3C] flex items-center gap-1.5">
+                    <i class="fa-regular fa-calendar-days text-[#075B3C]"></i>
                     {{ $berita['tanggal'] }}
                 </span>
-                <span class="text-xs text-gray-400 hidden sm:inline">•</span>
-                <span class="text-xs text-gray-600 hidden sm:flex items-center gap-1.5">
+                <span class="text-xs font-medium text-[#075B3C] hidden sm:flex items-center gap-1.5">
                     <i class="fa-regular fa-user text-[#075B3C]"></i>
                     {{ $berita['penulis'] }}
                 </span>
             </div>
 
             <!-- Judul Utama Berita -->
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#1F2937] leading-tight mb-6 sm:mb-8">
+            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-gray-900 leading-tight mb-6 sm:mb-8">
                 {{ $berita['judul'] }}
             </h1>
 
             <!-- Gambar Utama Dokumentasi -->
             @if (!empty($berita['gambar']))
-            <div class="rounded-2xl overflow-hidden border border-[#D1D5DB] shadow-sm mb-8 bg-gray-100 max-h-[600px]">
+            <div class="rounded-2xl overflow-hidden border border-gray-200 shadow-sm mb-8 bg-gray-100 max-h-[600px]">
                 <img src="{{ asset('images/' . $berita['gambar']) }}"
                      alt="{{ $berita['judul'] }}"
                      class="w-full h-full object-cover">
@@ -39,14 +38,14 @@
             @endif
 
             <!-- Isi Berita -->
-            <div class="prose prose-sm sm:prose-base max-w-none text-[#1F2937] leading-relaxed mb-10
+            <div class="prose prose-sm sm:prose-base max-w-none text-gray-700 leading-relaxed mb-10
                         prose-headings:text-gray-900 prose-headings:font-bold
                         prose-p:mb-4 prose-p:leading-relaxed prose-a:text-[#075B3C] prose-a:underline
                         prose-ul:list-disc prose-ol:list-decimal
                         prose-blockquote:border-l-4 prose-blockquote:border-[#075B3C] prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600
                         prose-table:border-collapse prose-td:border prose-td:border-gray-200 prose-td:px-3 prose-td:py-2 prose-th:border prose-th:border-gray-200 prose-th:px-3 prose-th:py-2 prose-th:bg-gray-50
                         [&>p:empty]:hidden [&>p>br:only-child]:hidden [&>p]:empty:hidden">
-                <p class="font-medium text-base sm:text-lg text-gray-700 leading-relaxed border-l-4 border-[#075B3C] pl-4 italic bg-[#F3FBF6] py-3 rounded-r-xl">
+                <p class="font-medium text-base sm:text-lg text-gray-700 leading-relaxed border-l-4 border-[#075B3C] pl-4 italic bg-[#F3FBF6] py-3 rounded-r-xl mb-4">
                     {{ $berita['deskripsi'] }}
                 </p>
 
@@ -60,15 +59,15 @@
             <div class="pt-6 flex items-center justify-end mb-12">
                 <a href="{{ route('informasi.index') }}"
                    class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold text-[#075B3C] bg-white border border-[#075B3C] hover:bg-[#075B3C] hover:text-white transition-all shadow-sm">
-                    <i class="fa-solid fa-arrow-left text-xs"></i>
                     <span>Kembali ke Informasi</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
                 </a>
             </div>
 
             <!-- ================= REKOMENDASI BERITA LAINNYA ================= -->
             @if(isset($beritaLainnya) && $beritaLainnya->count() > 0)
                 <div class="pt-8 border-t border-gray-200">
-                    <h3 class="text-lg sm:text-xl font-bold text-[#1F2937] mb-6">
+                    <h3 class="text-lg sm:text-xl font-bold text-gray-900 mb-6">
                         Informasi &amp; Berita Terkait Lainnya
                     </h3>
 
@@ -84,16 +83,16 @@
                                 </div>
                                 <div class="p-4 flex-1 flex flex-col justify-between">
                                     <div>
-                                        <span class="text-[10px] font-semibold text-[#075B3C] uppercase tracking-wider">
+                                        <span class="px-3 py-0.5 text-[10px] font-semibold rounded-full bg-[#075B3C] text-white uppercase tracking-wider">
                                             {{ $bl['kategori'] }}
                                         </span>
-                                        <h4 class="font-bold text-sm text-[#1F2937] leading-snug line-clamp-2 mt-1 mb-2 group-hover:text-[#075B3C] transition-colors">
+                                        <h4 class="font-bold text-sm text-gray-900 leading-snug line-clamp-2 mt-1 mb-2 group-hover:text-[#075B3C] transition-colors">
                                             <a href="{{ route('informasi.show', $bl['id']) }}">
                                                 {{ $bl['judul'] }}
                                             </a>
                                         </h4>
                                     </div>
-                                    <span class="text-[11px] text-gray-500">
+                                    <span class="text-[11px] font-medium text-gray-500">
                                         {{ $bl['tanggal'] }}
                                     </span>
                                 </div>

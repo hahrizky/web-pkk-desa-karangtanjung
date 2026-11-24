@@ -45,7 +45,7 @@
                 <div>
                     <div class="flex items-center justify-between mb-1.5">
                         <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider">
-                            Ringkasan Singkat
+                            Ringkasan Singkat <span class="text-red-500">*</span>
                         </label>
                         <span id="ringkasan-counter" class="text-[11px] font-medium text-gray-400">
                             0 / 160 karakter
@@ -53,7 +53,7 @@
                     </div>
                     <textarea name="ringkasan" id="ringkasan-input" rows="2"
                         class="w-full border border-gray-300 rounded-lg px-3.5 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C] transition-all"
-                        placeholder="Tulis ringkasan singkat untuk preview kartu berita...">{{ old('ringkasan', $berita['ringkasan'] ?? '') }}</textarea>
+                        placeholder="Tulis ringkasan singkat untuk preview kartu berita..." required>{{ old('ringkasan', $berita['ringkasan'] ?? '') }}</textarea>
                 </div>
 
                 <div>
@@ -72,7 +72,7 @@
                     <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
                         Kategori Kegiatan <span class="text-red-500">*</span>
                     </label>
-                    <select name="kategori"
+                    <select name="kategori" required
                         class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C] transition-all">
                         @php
                         $categories = ['Umum', 'Pokja I', 'Pokja II', 'Pokja III', 'Pokja IV'];
@@ -95,18 +95,18 @@
 
                 <div>
                     <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
-                        Penulis / Pelapor
+                        Penulis / Pelapor <span class="text-red-500">*</span>
                     </label>
                     <input type="text" name="penulis" value="{{ old('penulis', $berita['penulis'] ?? 'Sekretariat TP. PKK Karangtanjung') }}"
-                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C] transition-all">
+                        class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#075B3C]/20 focus:border-[#075B3C] transition-all" required>
                 </div>
 
                 <div>
                     <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1.5">
-                        Foto Dokumentasi
+                        Foto Dokumentasi @if(!isset($berita))<span class="text-red-500">*</span>@endif
                     </label>
                     <p class="text-[11px] text-red-600 mb-2">
-                        Ukuran file Maks. 5 MB
+                        Ukuran file Maks. 5 MB @if(!isset($berita))(Wajib diunggah)@endif
                     </p>
 
                     @if(!empty($berita['gambar']))
@@ -119,7 +119,7 @@
 
                     <input type="file" id="gambar-input" name="gambar" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp"
                         class="block w-full text-xs text-gray-500 file:mr-2 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-emerald-50 file:text-[#075B3C] hover:file:bg-emerald-100 cursor-pointer"
-                        onchange="previewImage(this)">
+                        onchange="previewImage(this)" {{ !isset($berita) ? 'required' : '' }}>
 
                     <div id="preview-wrapper" class="hidden mt-2">
                         <span class="block text-[11px] text-emerald-700 font-medium mb-1">Pratinjau foto baru:</span>
@@ -129,11 +129,11 @@
 
                 <x-admin.form-actions
                     :is-edit="isset($berita)"
+                    :disabled="true"
                     submit-id="btn-submit-berita"
                     :submit-text="isset($berita) ? 'Simpan Perubahan' : 'Publikasikan Berita'"
                     cancel-id="btn-cancel-edit"
                     cancel-action="resetFormChanges()"
-                    :back-url="route('admin.berita.index')"
                     :full-width="true" />
             </div>
         </div>
@@ -153,10 +153,19 @@
     ClassicEditor
         .create(document.querySelector('#editor-konten'), {
             toolbar: [
+                'heading', '|',
                 'bold', 'italic', '|',
                 'bulletedList', 'numberedList', '|',
                 'undo', 'redo'
             ],
+            heading: {
+                options: [
+                    { model: 'paragraph', title: 'Paragraf (Normal)', class: 'ck-heading_paragraph' },
+                    { model: 'heading1', view: 'h2', title: 'Judul Besar (H2)', class: 'ck-heading_heading1' },
+                    { model: 'heading2', view: 'h3', title: 'Judul Sedang (H3)', class: 'ck-heading_heading2' },
+                    { model: 'heading3', view: 'h4', title: 'Judul Kecil (H4)', class: 'ck-heading_heading3' }
+                ]
+            },
             language: 'id',
             placeholder: 'Tuliskan berita lengkap kegiatan di sini...'
         })
@@ -167,9 +176,26 @@
             // Sinkronisasi data CKEditor ke textarea sebelum submit & deteksi perubahan
             editor.model.document.on('change:data', () => {
                 document.querySelector('#editor-konten').value = editor.getData();
-                checkFormDirty();
+                updateFormState();
             });
-            checkFormDirty();
+
+            // Menangani tombol Backspace pada bullet/number list kosong agar keluar dari list dan kembali ke paragraf normal
+            editor.editing.view.document.on('delete', (evt, data) => {
+                if (data.direction === 'backward') {
+                    const selection = editor.model.document.selection;
+                    if (selection.isCollapsed) {
+                        const pos = selection.getFirstPosition();
+                        const block = pos ? pos.parent : null;
+                        if (block && block.is('element', 'listItem') && block.isEmpty) {
+                            editor.execute('outdentList');
+                            data.preventDefault();
+                            evt.stop();
+                        }
+                    }
+                }
+            }, { priority: 'high' });
+
+            updateFormState();
         })
         .catch(error => {
             console.error('CKEditor gagal dimuat:', error);
@@ -188,15 +214,17 @@
             });
         }
 
-        // Simpan nilai awal dari semua elemen form non-file
-        const elements = form.querySelectorAll('input:not([type="file"]):not([name="_token"]):not([name="_method"]), textarea:not(#editor-konten), select');
+        // Event listener ke semua input/textarea/select
+        const elements = form.querySelectorAll('input:not([name="_token"]):not([name="_method"]), textarea:not(#editor-konten), select');
         elements.forEach(el => {
-            initialFormData[el.name] = el.value;
-            el.addEventListener('input', checkFormDirty);
-            el.addEventListener('change', checkFormDirty);
+            if (el.type !== 'file') {
+                initialFormData[el.name] = el.value;
+            }
+            el.addEventListener('input', updateFormState);
+            el.addEventListener('change', updateFormState);
         });
 
-        checkFormDirty();
+        updateFormState();
     });
 
     function updateRingkasanCounter(text) {
@@ -212,6 +240,65 @@
             counter.className = 'text-[11px] font-semibold text-emerald-700';
         } else {
             counter.className = 'text-[11px] font-medium text-gray-400';
+        }
+    }
+
+    function checkCreateFormValid() {
+        const cancelBtn = document.getElementById('btn-cancel-edit');
+        const submitBtn = document.getElementById('btn-submit-berita');
+        const form = document.getElementById('berita-form');
+        if (!form || !submitBtn) return;
+
+        const judul = form.querySelector('input[name="judul"]')?.value.trim() || '';
+        const ringkasan = form.querySelector('textarea[name="ringkasan"]')?.value.trim() || '';
+        const kategori = form.querySelector('select[name="kategori"]')?.value.trim() || '';
+        const tanggal = form.querySelector('input[name="tanggal"]')?.value.trim() || '';
+        const penulis = form.querySelector('input[name="penulis"]')?.value.trim() || '';
+
+        // Cek konten CKEditor: bersihkan tag HTML, newline, dan spasi kosong
+        let kontenText = '';
+        if (ckEditorInstance) {
+            const raw = ckEditorInstance.getData();
+            kontenText = raw.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+        } else {
+            const el = form.querySelector('textarea[name="konten"]');
+            kontenText = el ? el.value.trim() : '';
+        }
+
+        // Cek foto dokumentasi: wajib ada file gambar terpilih
+        const fileInput = document.getElementById('gambar-input') || form.querySelector('input[type="file"][name="gambar"]');
+        const hasImage = fileInput && fileInput.files && fileInput.files.length > 0;
+
+        // Cek apakah ada field yang sudah terisi untuk memunculkan tombol batalkan perubahan
+        const isAnyFieldFilled = (judul !== '') ||
+                                 (ringkasan !== '') ||
+                                 (kontenText !== '') ||
+                                 (penulis !== (initialFormData['penulis'] || '')) ||
+                                 (tanggal !== (initialFormData['tanggal'] || '')) ||
+                                 (kategori !== (initialFormData['kategori'] || 'Umum')) ||
+                                 hasImage;
+
+        if (cancelBtn) {
+            if (isAnyFieldFilled) {
+                cancelBtn.classList.remove('hidden');
+            } else {
+                cancelBtn.classList.add('hidden');
+            }
+        }
+
+        const isValid = (judul !== '') &&
+                        (ringkasan !== '') &&
+                        (kontenText !== '') &&
+                        (kategori !== '') &&
+                        (tanggal !== '') &&
+                        (penulis !== '') &&
+                        hasImage;
+
+        submitBtn.disabled = !isValid;
+        if (isValid) {
+            submitBtn.className = 'w-full bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white font-semibold py-2.5 rounded-lg transition-all duration-200 text-sm shadow-sm flex items-center justify-center gap-2 cursor-pointer';
+        } else {
+            submitBtn.className = 'w-full bg-gray-300 text-gray-500 font-semibold py-2.5 rounded-lg transition-all duration-200 text-sm flex items-center justify-center gap-2 cursor-not-allowed';
         }
     }
 
@@ -247,7 +334,7 @@
             }
         }
 
-        if (isEditModeBerita && submitBtn) {
+        if (submitBtn) {
             submitBtn.disabled = !isDirty;
             if (isDirty) {
                 submitBtn.className = 'w-full bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white font-semibold py-2.5 rounded-lg transition-all duration-200 text-sm shadow-sm flex items-center justify-center gap-2 cursor-pointer';
@@ -265,50 +352,113 @@
         }
     }
 
+    function updateFormState() {
+        if (isEditModeBerita) {
+            checkFormDirty();
+        } else {
+            checkCreateFormValid();
+        }
+    }
+
     function resetFormChanges() {
         const form = document.getElementById('berita-form');
         if (!form) return;
 
-        // Kembalikan semua nilai input/textarea/select ke nilai awal
-        const elements = form.querySelectorAll('input:not([type="file"]):not([name="_token"]):not([name="_method"]), textarea:not(#editor-konten), select');
-        elements.forEach(el => {
-            if (initialFormData[el.name] !== undefined) {
-                el.value = initialFormData[el.name];
-            }
-        });
+        if (!isEditModeBerita) {
+            // Mode Tambah Berita: kosongkan seluruh field input
+            const judulInput = form.querySelector('input[name="judul"]');
+            if (judulInput) judulInput.value = '';
 
-        // Kembalikan CKEditor ke konten awal
-        if (ckEditorInstance && initialFormData['konten'] !== undefined) {
-            ckEditorInstance.setData(initialFormData['konten']);
-            document.querySelector('#editor-konten').value = initialFormData['konten'];
+            const ringkasanInput = form.querySelector('textarea[name="ringkasan"]');
+            if (ringkasanInput) {
+                ringkasanInput.value = '';
+                updateRingkasanCounter('');
+            }
+
+            if (ckEditorInstance) {
+                ckEditorInstance.setData('');
+            }
+            const kontenEl = document.querySelector('#editor-konten');
+            if (kontenEl) kontenEl.value = '';
+
+            const kategoriSelect = form.querySelector('select[name="kategori"]');
+            if (kategoriSelect) kategoriSelect.value = initialFormData['kategori'] || 'Umum';
+
+            const tanggalInput = form.querySelector('input[name="tanggal"]');
+            if (tanggalInput) tanggalInput.value = initialFormData['tanggal'] || '';
+
+            const penulisInput = form.querySelector('input[name="penulis"]');
+            if (penulisInput) penulisInput.value = initialFormData['penulis'] || 'Sekretariat TP. PKK Karangtanjung';
+
+            const input = document.getElementById('gambar-input');
+            const previewWrapper = document.getElementById('preview-wrapper');
+            const preview = document.getElementById('preview-img');
+            if (input) input.value = '';
+            if (preview) preview.src = '';
+            if (previewWrapper) previewWrapper.classList.add('hidden');
+        } else {
+            // Mode Edit Berita: kembalikan semua nilai input ke data awal
+            const elements = form.querySelectorAll('input:not([type="file"]):not([name="_token"]):not([name="_method"]), textarea:not(#editor-konten), select');
+            elements.forEach(el => {
+                if (initialFormData[el.name] !== undefined) {
+                    el.value = initialFormData[el.name];
+                }
+            });
+
+            const ringkasanInput = form.querySelector('textarea[name="ringkasan"]');
+            if (ringkasanInput) updateRingkasanCounter(ringkasanInput.value);
+
+            if (ckEditorInstance && initialFormData['konten'] !== undefined) {
+                ckEditorInstance.setData(initialFormData['konten']);
+                document.querySelector('#editor-konten').value = initialFormData['konten'];
+            }
+
+            const input = document.getElementById('gambar-input');
+            const previewWrapper = document.getElementById('preview-wrapper');
+            const preview = document.getElementById('preview-img');
+            if (input) input.value = '';
+            if (preview) preview.src = '';
+            if (previewWrapper) previewWrapper.classList.add('hidden');
         }
 
-        // Batalkan pemilihan foto jika ada
-        const input = document.getElementById('gambar-input');
-        const previewWrapper = document.getElementById('preview-wrapper');
-        const preview = document.getElementById('preview-img');
-        if (input) input.value = '';
-        if (preview) preview.src = '';
-        if (previewWrapper) previewWrapper.classList.add('hidden');
-
-        checkFormDirty();
+        updateFormState();
     }
 
     function previewImage(input) {
         const previewWrapper = document.getElementById('preview-wrapper');
         const preview = document.getElementById('preview-img');
         if (input.files && input.files[0]) {
+            const file = input.files[0];
+            const maxBytes = 5 * 1024 * 1024; // 5 MB
+
+            if (file.size > maxBytes) {
+                const currentMB = (file.size / (1024 * 1024)).toFixed(2);
+                if (typeof showAdminAlert === 'function') {
+                    showAdminAlert({
+                        title: 'Ukuran Foto Terlalu Besar',
+                        message: `Foto dokumentasi yang Anda pilih berukuran ${currentMB} MB, melebihi batas maksimal yang diizinkan (5 MB). Silakan pilih foto dengan ukuran lebih kecil.`
+                    });
+                } else {
+                    alert(`Ukuran foto (${currentMB} MB) melebihi batas maksimal 5 MB.`);
+                }
+                input.value = '';
+                if (previewWrapper) previewWrapper.classList.add('hidden');
+                if (preview) preview.src = '';
+                updateFormState();
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = e => {
                 preview.src = e.target.result;
                 if (previewWrapper) previewWrapper.classList.remove('hidden');
                 preview.classList.remove('hidden');
-                checkFormDirty();
+                updateFormState();
             };
-            reader.readAsDataURL(input.files[0]);
+            reader.readAsDataURL(file);
         } else {
             if (previewWrapper) previewWrapper.classList.add('hidden');
-            checkFormDirty();
+            updateFormState();
         }
     }
 </script>
@@ -320,10 +470,12 @@
         line-height: 1.7;
     }
 
-    /* List bullets/numbers tetap di dalam area editor */
+    /* List bullets/numbers di area editor */
     .ck-editor__editable ul,
     .ck-editor__editable ol {
         padding-left: 1.5em !important;
+        margin-top: 0.5em !important;
+        margin-bottom: 0.5em !important;
     }
 
     .ck-editor__editable ul {
@@ -332,6 +484,25 @@
 
     .ck-editor__editable ol {
         list-style-type: decimal !important;
+    }
+
+    .ck-editor__editable ul ul {
+        list-style-type: circle !important;
+    }
+
+    .ck-editor__editable ol ol {
+        list-style-type: lower-alpha !important;
+    }
+
+    .ck-editor__editable li {
+        margin-bottom: 0.25em !important;
+    }
+
+    /* Paragraf normal di dalam editor TIDAK boleh mewarisi indentasi list */
+    .ck-editor__editable > p {
+        margin-bottom: 0.75em !important;
+        padding-left: 0 !important;
+        margin-left: 0 !important;
     }
 
     .ck-editor__editable strong,

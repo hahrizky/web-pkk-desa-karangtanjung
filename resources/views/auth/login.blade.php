@@ -16,7 +16,7 @@
         {{-- Logo --}}
         <div class="text-center mb-8">
             <div class="inline-flex items-center justify-center w-20 h-20 bg-white rounded-2xl shadow-xl mb-4">
-                <img src="{{ asset('images/logo-pkk.png') }}" alt="PKK" class="w-14 h-14 object-contain">
+                <img src="{{ asset('images/logo-pkk.webp') }}" alt="PKK" class="w-14 h-14 object-contain">
             </div>
             <h1 class="text-2xl font-extrabold text-white">TP. PKK Karangtanjung</h1>
             <p class="text-green-200 text-sm mt-1">Panel Manajemen Konten</p>
@@ -64,18 +64,19 @@
                     </div>
                 </div>
 
+                <div class="flex items-center justify-between text-xs pt-1">
+                    <label class="flex items-center gap-2 text-gray-600 cursor-pointer select-none">
+                        <input type="checkbox" name="remember" class="w-4 h-4 rounded border-gray-300 text-[#075B3C] focus:ring-[#075B3C]/30 accent-[#075B3C]">
+                        <span>Ingat saya di perangkat ini</span>
+                    </label>
+                </div>
+
                 <button type="submit"
                         class="w-full bg-[#075B3C] hover:bg-[#055030] text-white font-semibold py-2.5 rounded-xl transition-all duration-200 active:scale-95 mt-2">
                     <i class="fa-solid fa-right-to-bracket mr-2"></i>
                     Masuk
                 </button>
             </form>
-
-            <div class="mt-6 pt-5 border-t border-gray-100 text-center">
-                <p class="text-xs text-gray-400">
-                    Default: <span class="font-mono font-semibold text-gray-600">admin</span> / <span class="font-mono font-semibold text-gray-600">pkk2024</span>
-                </p>
-            </div>
         </div>
 
         <p class="text-center text-xs text-green-200 mt-6">

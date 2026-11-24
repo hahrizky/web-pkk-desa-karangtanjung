@@ -40,8 +40,7 @@ class InformasiController extends Controller
     private function getAgendaData()
     {
         try {
-            return Agenda::orderBy('tanggal')
-                ->get()
+            return Agenda::getSortedAgendas()
                 ->map(fn ($item) => [
                     'id' => $item->id,
                     'judul' => $item->judul,
@@ -55,13 +54,13 @@ class InformasiController extends Controller
                     'waktu' => $item->waktu,
                     'lokasi' => $item->lokasi,
                     'penyelenggara' => $item->penyelenggara ?? $item->kategori,
-                    'deskripsi' => $item->deskripsi ?? '',
+                    'deskripsi' => strip_tags($item->deskripsi ?? $item->isi ?? ''),
                     'isi' => $item->isi ?? $item->deskripsi ?? '',
                     'status' => $item->status,
                     'icon' => 'fa-solid fa-calendar-check',
                     'icon_color' => 'text-emerald-700',
                     'icon_bg' => 'bg-emerald-50',
-                    'badge_color' => 'bg-emerald-50 text-emerald-800 border-emerald-200',
+                    'badge_color' => 'bg-[#075B3C] text-emerald-800 border-emerald-200',
                 ])->all();
         } catch (\Throwable $e) {
             return [];
@@ -95,14 +94,22 @@ class InformasiController extends Controller
         }
 
         $perPage = 4;
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $beritaPaginated = new LengthAwarePaginator(
+        $totalBerita = $allBerita->count();
+        $lastPageBerita = max(1, (int) ceil($totalBerita / $perPage));
+        $currentPage = (int) LengthAwarePaginator::resolveCurrentPage();
+        if ($currentPage > $lastPageBerita) {
+            $currentPage = $lastPageBerita;
+        }
+        if ($currentPage < 1) {
+            $currentPage = 1;
+        }
+        $beritaPaginated = (new LengthAwarePaginator(
             $allBerita->slice(($currentPage - 1) * $perPage, $perPage)->values(),
-            $allBerita->count(),
+            $totalBerita,
             $perPage,
             $currentPage,
             ['path' => route('informasi.index'), 'query' => $request->query()]
-        );
+        ))->fragment('berita');
 
         $kategoriList = ['Semua', 'Pokja I', 'Pokja II', 'Pokja III', 'Pokja IV', 'Umum'];
         $bulanList = [
@@ -118,10 +125,32 @@ class InformasiController extends Controller
         $minYear = ! empty($dbYears) ? min(min($dbYears), $startYear) : $startYear;
         $maxYear = ! empty($dbYears) ? max(max($dbYears), $currentYear) : $currentYear;
         $tahunList = range($maxYear, $minYear);
-        $agendaList = $this->getAgendaData();
+
+        $agendaData = $this->getAgendaData();
+        $allAgenda = collect($agendaData);
+        $perPageAgenda = 6;
+        $totalAgenda = $allAgenda->count();
+        $lastPageAgenda = max(1, (int) ceil($totalAgenda / $perPageAgenda));
+        $currentPageAgenda = (int) LengthAwarePaginator::resolveCurrentPage('agenda_page');
+        if ($currentPageAgenda > $lastPageAgenda) {
+            $currentPageAgenda = $lastPageAgenda;
+        }
+        if ($currentPageAgenda < 1) {
+            $currentPageAgenda = 1;
+        }
+
+        $agendaPaginated = (new LengthAwarePaginator(
+            $allAgenda->slice(($currentPageAgenda - 1) * $perPageAgenda, $perPageAgenda)->values(),
+            $totalAgenda,
+            $perPageAgenda,
+            $currentPageAgenda,
+            ['path' => route('informasi.index'), 'query' => $request->query(), 'pageName' => 'agenda_page']
+        ))->fragment('agenda');
+
+        $agendaList = $agendaPaginated;
 
         return view('informasi.index', compact(
-            'beritaPaginated', 'kategoriList', 'bulanList', 'tahunList', 'agendaList'
+            'beritaPaginated', 'kategoriList', 'bulanList', 'tahunList', 'agendaList', 'agendaPaginated'
         ));
     }
 
@@ -138,9 +167,7 @@ class InformasiController extends Controller
 
     public function agendaIndex()
     {
-        $agendas = $this->getAgendaData();
-
-        return view('informasi.agenda-index', compact('agendas'));
+        return redirect()->to(route('informasi.index') . '#agenda', 301);
     }
 
     public function agendaShow(int|string $id)

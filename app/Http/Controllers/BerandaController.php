@@ -36,23 +36,27 @@ class BerandaController extends Controller
         $galeri = [];
 
         try {
-            $kegiatan = Berita::where('status', 'published')->latest('tanggal')->get()->map(function ($item) use ($badgeColors) {
-                return [
-                    'id' => $item->id,
-                    'judul' => $item->judul,
-                    'kategori' => $item->kategori,
-                    'badge_color' => $badgeColors[$item->kategori] ?? 'bg-emerald-100 text-emerald-800',
-                    'tanggal' => $item->tanggal_formatted,
-                    'ringkasan' => $item->ringkasan,
-                    'gambar' => $item->gambar,
-                ];
-            })->all();
+            $kegiatan = Berita::where('status', 'published')
+                ->latest('tanggal')
+                ->take(8)
+                ->get(['id', 'judul', 'kategori', 'tanggal', 'ringkasan', 'gambar'])
+                ->map(function ($item) use ($badgeColors) {
+                    return [
+                        'id' => $item->id,
+                        'judul' => $item->judul,
+                        'kategori' => $item->kategori,
+                        'badge_color' => $badgeColors[$item->kategori] ?? 'bg-emerald-100 text-emerald-800',
+                        'tanggal' => $item->tanggal_formatted,
+                        'ringkasan' => $item->ringkasan,
+                        'gambar' => $item->gambar,
+                    ];
+                })->all();
 
             $galeri = Berita::where('status', 'published')
                 ->whereNotNull('gambar')
                 ->latest('tanggal')
                 ->take(8)
-                ->get()
+                ->get(['id', 'gambar', 'judul', 'kategori', 'tanggal'])
                 ->map(function ($item) {
                     return [
                         'id' => $item->id,
@@ -102,8 +106,12 @@ class BerandaController extends Controller
             $profilPath = storage_path('app/profil_data.json');
             if (File::exists($profilPath)) {
                 $profilData = json_decode(File::get($profilPath), true) ?? [];
-                if (!empty($profilData['hero_background']) && File::exists(public_path($profilData['hero_background']))) {
-                    $heroBackground = $profilData['hero_background'];
+                $customHero = $profilData['hero_background'] ?? null;
+                if (is_string($customHero)
+                    && str_starts_with($customHero, 'images/hero/')
+                    && ! str_contains($customHero, '..')
+                    && File::exists(public_path($customHero))) {
+                    $heroBackground = $customHero;
                 }
             }
         } catch (Throwable $e) {

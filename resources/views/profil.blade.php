@@ -211,7 +211,7 @@
                         <div class="flex-shrink-0 w-36 bg-white border-2 {{ $member['cls']['border'] }} rounded-xl p-3 text-center shadow-sm">
                             {{-- Pas Foto --}}
                             <div class="w-16 aspect-[3/4] rounded-lg mx-auto mb-2 overflow-hidden border-2 {{ $member['cls']['border_foto'] }} shadow-sm bg-white p-0.5">
-                                @if (!empty($member['foto']) && file_exists(public_path('images/' . $member['foto'])))
+                                @if (!empty($member['foto']))
                                     <img src="{{ asset('images/' . $member['foto']) }}" alt="{{ $member['nama'] }}" class="w-full h-full object-cover rounded-md">
                                 @else
                                     <div class="w-full h-full bg-[#B91C1C] flex flex-col items-center justify-center text-white rounded-md shadow-inner">
@@ -247,7 +247,7 @@
                 <div class="bg-amber-50 border-2 border-amber-300 rounded-xl px-4 py-3 text-center shadow-sm w-full max-w-[210px] sm:w-56 hover:shadow-md transition-shadow">
                     {{-- Pas Foto Pembina (Ukuran Seragam Formal & Responsif) --}}
                     <div class="w-20 sm:w-24 aspect-[3/4] rounded-lg mx-auto mb-2 overflow-hidden border-2 border-amber-400 shadow-sm bg-white p-0.5">
-                        @if (!empty($struktur['pembina']['foto']) && file_exists(public_path('images/' . $struktur['pembina']['foto'])))
+                        @if (!empty($struktur['pembina']['foto']))
                             <img src="{{ asset('images/' . $struktur['pembina']['foto']) }}" alt="{{ $struktur['pembina']['nama'] }}" class="w-full h-full object-cover rounded-md">
                         @else
                             <div class="w-full h-full bg-[#B91C1C] flex flex-col items-center justify-center text-white rounded-md shadow-inner">
@@ -272,7 +272,7 @@
                 <div class="bg-emerald-700 text-white rounded-xl px-4 py-3 text-center shadow-md w-full max-w-[210px] sm:w-56 hover:shadow-lg transition-shadow">
                     {{-- Pas Foto Ketua (Ukuran Seragam Formal & Responsif) --}}
                     <div class="w-20 sm:w-24 aspect-[3/4] rounded-lg mx-auto mb-2 overflow-hidden border-2 border-emerald-300 shadow-md bg-white p-0.5">
-                        @if (!empty($ketua['foto']) && file_exists(public_path('images/' . $ketua['foto'])))
+                        @if (!empty($ketua['foto']))
                             <img src="{{ asset('images/' . $ketua['foto']) }}" alt="{{ $ketua['nama'] }}" class="w-full h-full object-cover rounded-md">
                         @else
                             <div class="w-full h-full bg-[#B91C1C] flex flex-col items-center justify-center text-white rounded-md shadow-inner">
@@ -298,7 +298,7 @@
                 <div class="bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 text-center shadow-sm w-full max-w-[210px] sm:w-56 hover:shadow-md transition-shadow">
                     {{-- Pas Foto Wakil Ketua (Ukuran Seragam Formal & Responsif) --}}
                     <div class="w-20 sm:w-24 aspect-[3/4] rounded-lg mx-auto mb-2 overflow-hidden border-2 border-emerald-400 shadow-sm bg-white p-0.5">
-                        @if (!empty($wakil['foto']) && file_exists(public_path('images/' . $wakil['foto'])))
+                        @if (!empty($wakil['foto']))
                             <img src="{{ asset('images/' . $wakil['foto']) }}" alt="{{ $wakil['nama'] }}" class="w-full h-full object-cover rounded-md">
                         @else
                             <div class="w-full h-full bg-[#B91C1C] flex flex-col items-center justify-center text-white rounded-md shadow-inner">
@@ -350,7 +350,7 @@
                         <div class="w-full max-w-[210px] sm:max-w-[240px] mx-auto bg-blue-50 border border-blue-200 rounded-xl p-3 text-center hover:shadow-md transition-shadow">
                             {{-- Pas Foto Sekretaris (Ukuran Seragam Formal & Responsif) --}}
                             <div class="w-20 sm:w-24 aspect-[3/4] rounded-lg mx-auto mb-2 overflow-hidden border-2 border-blue-300 shadow-sm bg-white p-0.5">
-                                @if (!empty($sek['foto']) && file_exists(public_path('images/' . $sek['foto'])))
+                                @if (!empty($sek['foto']))
                                     <img src="{{ asset('images/' . $sek['foto']) }}" alt="{{ $sek['nama'] }}" class="w-full h-full object-cover rounded-md">
                                 @else
                                     <div class="w-full h-full bg-[#B91C1C] flex flex-col items-center justify-center text-white rounded-md shadow-inner">
@@ -382,7 +382,7 @@
                         <div class="w-full max-w-[210px] sm:max-w-[240px] mx-auto bg-amber-50 border border-amber-200 rounded-xl p-3 text-center hover:shadow-md transition-shadow">
                             {{-- Pas Foto Bendahara (Ukuran Seragam Formal & Responsif) --}}
                             <div class="w-20 sm:w-24 aspect-[3/4] rounded-lg mx-auto mb-2 overflow-hidden border-2 border-amber-300 shadow-sm bg-white p-0.5">
-                                @if (!empty($ben['foto']) && file_exists(public_path('images/' . $ben['foto'])))
+                                @if (!empty($ben['foto']))
                                     <img src="{{ asset('images/' . $ben['foto']) }}" alt="{{ $ben['nama'] }}" class="w-full h-full object-cover rounded-md">
                                 @else
                                     <div class="w-full h-full bg-[#B91C1C] flex flex-col items-center justify-center text-white rounded-md shadow-inner">
@@ -438,7 +438,7 @@
                     <div class="w-full max-w-[200px] mx-auto bg-white border-2 border-emerald-200 rounded-xl p-2.5 sm:p-3 text-center hover:border-emerald-400 hover:shadow-md transition-all duration-200">
                         {{-- Pas Foto Pokja (Ukuran Seragam Formal & Responsif) --}}
                         <div class="w-20 sm:w-22 aspect-[3/4] rounded-lg mx-auto mb-2 overflow-hidden border-2 border-emerald-300 shadow-sm bg-white p-0.5">
-                            @if (!empty($pk['foto']) && file_exists(public_path('images/' . $pk['foto'])))
+                            @if (!empty($pk['foto']))
                                 <img src="{{ asset('images/' . $pk['foto']) }}" alt="{{ $pk['ketua'] }}" class="w-full h-full object-cover rounded-md">
                             @else
                                 <div class="w-full h-full bg-[#B91C1C] flex flex-col items-center justify-center text-white rounded-md shadow-inner">

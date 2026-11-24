@@ -28,22 +28,12 @@ class DashboardController extends Controller
             ];
         })->all();
 
-        // Agenda mendatang dari database (tanggal >= hari ini, jika kurang dari 4 ambil yang terdekat)
+        // Agenda mendatang saja; jangan isi slot kosong dengan agenda yang sudah lewat.
         $today = now()->startOfDay()->toDateString();
         $upcomingAgenda = Agenda::where('tanggal', '>=', $today)
             ->orderBy('tanggal', 'asc')
             ->take(4)
             ->get();
-
-        // Jika agenda mendatang belum ada 4, lengkapi dengan agenda terbaru
-        if ($upcomingAgenda->count() < 4) {
-            $existingIds = $upcomingAgenda->pluck('id')->all();
-            $moreAgenda = Agenda::whereNotIn('id', $existingIds)
-                ->orderBy('tanggal', 'desc')
-                ->take(4 - $upcomingAgenda->count())
-                ->get();
-            $upcomingAgenda = $upcomingAgenda->concat($moreAgenda);
-        }
 
         $upcomingAgenda = $upcomingAgenda->map(function ($item) {
             return [

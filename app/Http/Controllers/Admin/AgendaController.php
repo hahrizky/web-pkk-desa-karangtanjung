@@ -10,12 +10,7 @@ class AgendaController extends Controller
 {
     public function index()
     {
-        $today = now()->startOfDay()->toDateString();
-
-        $agendaList = Agenda::orderByRaw("CASE WHEN tanggal >= '{$today}' THEN 0 ELSE 1 END")
-            ->orderByRaw("CASE WHEN tanggal >= '{$today}' THEN tanggal END ASC")
-            ->orderByRaw("CASE WHEN tanggal < '{$today}' THEN tanggal END DESC")
-            ->get()
+        $agendaList = Agenda::getSortedAgendas()
             ->map(function ($item) {
                 return [
                     'id' => $item->id,
@@ -42,16 +37,24 @@ class AgendaController extends Controller
     {
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
-            'kategori' => 'nullable|string',
+            'kategori' => 'required|string|max:100',
             'tanggal' => 'required|date',
-            'waktu' => 'nullable|string|max:100',
+            'waktu' => 'required|string|max:100',
             'lokasi' => 'required|string|max:255',
-            'penyelenggara' => 'nullable|string|max:255',
-            'deskripsi' => 'nullable|string',
+            'penyelenggara' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+        ], [
+            'judul.required' => 'Nama kegiatan wajib diisi.',
+            'kategori.required' => 'Kategori kegiatan wajib dipilih.',
+            'tanggal.required' => 'Hari & tanggal wajib diisi.',
+            'waktu.required' => 'Waktu pelaksanaan wajib diisi.',
+            'lokasi.required' => 'Lokasi / tempat wajib diisi.',
+            'penyelenggara.required' => 'Penyelenggara kegiatan wajib diisi.',
+            'deskripsi.required' => 'Rincian & teknis pelaksanaan wajib diisi.',
         ]);
 
-        $validated['kategori'] = $validated['kategori'] ?? 'Umum';
         $validated['status'] = 'Mendatang';
+        $validated['isi'] = $validated['deskripsi'];
 
         Agenda::create($validated);
 
@@ -71,7 +74,7 @@ class AgendaController extends Controller
             'waktu' => $item->waktu,
             'lokasi' => $item->lokasi,
             'penyelenggara' => $item->penyelenggara,
-            'deskripsi' => $item->deskripsi,
+            'deskripsi' => $item->isi ?: $item->deskripsi,
             'status' => $item->status,
         ];
 
@@ -84,13 +87,23 @@ class AgendaController extends Controller
 
         $validated = $request->validate([
             'judul' => 'required|string|max:255',
-            'kategori' => 'nullable|string',
+            'kategori' => 'required|string|max:100',
             'tanggal' => 'required|date',
-            'waktu' => 'nullable|string|max:100',
+            'waktu' => 'required|string|max:100',
             'lokasi' => 'required|string|max:255',
-            'penyelenggara' => 'nullable|string|max:255',
-            'deskripsi' => 'nullable|string',
+            'penyelenggara' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+        ], [
+            'judul.required' => 'Nama kegiatan wajib diisi.',
+            'kategori.required' => 'Kategori kegiatan wajib dipilih.',
+            'tanggal.required' => 'Hari & tanggal wajib diisi.',
+            'waktu.required' => 'Waktu pelaksanaan wajib diisi.',
+            'lokasi.required' => 'Lokasi / tempat wajib diisi.',
+            'penyelenggara.required' => 'Penyelenggara kegiatan wajib diisi.',
+            'deskripsi.required' => 'Rincian & teknis pelaksanaan wajib diisi.',
         ]);
+
+        $validated['isi'] = $validated['deskripsi'];
 
         $item->update($validated);
 

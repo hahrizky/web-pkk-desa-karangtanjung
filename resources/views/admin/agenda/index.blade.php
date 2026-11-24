@@ -28,21 +28,21 @@
             <thead>
                 <tr class="border-b border-gray-100 bg-[#2F9B45]">
                     <th class="text-left font-semibold text-white px-6 py-3.5 text-xs uppercase tracking-wider w-10">No.</th>
-                    <th class="text-left font-semibold text-white px-6 py-3.5 text-xs uppercase tracking-wider">Agenda</th>
-                    <th class="text-left font-semibold text-white px-4 py-3.5 text-xs uppercase tracking-wider hidden md:table-cell">Tanggal</th>
-                    <th class="text-left font-semibold text-white px-4 py-3.5 text-xs uppercase tracking-wider hidden lg:table-cell">Lokasi</th>
+                    <th class="text-left font-semibold text-white px-6 py-3.5 text-xs uppercase tracking-wider">Nama Kegiatan</th>
+                    <th class="text-left font-semibold text-white px-4 py-3.5 text-xs uppercase tracking-wider hidden md:table-cell">Hari &amp; Tanggal</th>
+                    <th class="text-left font-semibold text-white px-4 py-3.5 text-xs uppercase tracking-wider hidden lg:table-cell">Lokasi / Tempat</th>
                     <th class="text-left font-semibold text-white px-4 py-3.5 text-xs uppercase tracking-wider hidden lg:table-cell">Status</th>
                     <th class="text-center font-semibold text-white px-4 py-3.5 text-xs uppercase tracking-wider">Aksi</th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-[#075B3C]" id="table-body">
+            <tbody class="divide-y divide-[#2F9B45]" id="table-body">
                 @foreach($agendaList as $index => $agenda)
                 <tr class="hover:bg-gray-200 transition-colors search-row" data-search="{{ strtolower($agenda['judul'] . ' ' . $agenda['lokasi']) }}">
 
                     <td class="px-6 py-4 text-[#075B3C] text-xs">{{ $index + 1 }}</td>
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-11 h-11 bg-[#075B3C] rounded-xl flex flex-col items-center justify-center flex-shrink-0">
+                            <div class="w-11 h-11 bg-[#2F9B45] rounded-xl flex flex-col items-center justify-center flex-shrink-0">
                                 <span class="text-xs font-bold text-white leading-none">{{ \Carbon\Carbon::parse($agenda['tanggal'])->format('d') }}</span>
                                 <span class="text-[9px] text-white uppercase">{{ \Carbon\Carbon::parse($agenda['tanggal'])->locale('id')->isoFormat('MMM') }}</span>
                             </div>

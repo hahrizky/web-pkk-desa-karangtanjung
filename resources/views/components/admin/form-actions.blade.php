@@ -11,7 +11,12 @@
     'borderTop' => true,
     'floating' => false,
     'infoText' => 'Pastikan seluruh perubahan data sudah sesuai sebelum disimpan.',
+    'disabled' => null,
 ])
+
+@php
+    $isDisabled = $disabled !== null ? (bool)$disabled : (bool)$isEdit;
+@endphp
 
 @if($floating)
 {{-- SUBMIT BAR (Floating Sticky persis seperti Struktur Organisasi) --}}
@@ -58,8 +63,8 @@
     @endif
 
     {{-- Tombol Submit / Simpan --}}
-    <button type="submit" id="{{ $submitId }}" {{ $isEdit ? 'disabled' : '' }}
-        class="{{ $fullWidth ? 'w-full justify-center py-2.5 text-sm' : 'px-5 py-2 text-xs' }} {{ $isEdit ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white shadow-xs cursor-pointer' }} font-semibold rounded-lg transition-all duration-200 flex items-center gap-2">
+    <button type="submit" id="{{ $submitId }}" {{ $isDisabled ? 'disabled' : '' }}
+        class="{{ $fullWidth ? 'w-full justify-center py-2.5 text-sm' : 'px-5 py-2 text-xs' }} {{ $isDisabled ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-[#2F9B45] hover:bg-[#26863A] active:bg-[#075B3C] text-white shadow-xs cursor-pointer' }} font-semibold rounded-lg transition-all duration-200 flex items-center gap-2">
         <i class="fa-solid fa-floppy-disk"></i>
         <span>{{ $submitText }}</span>
     </button>

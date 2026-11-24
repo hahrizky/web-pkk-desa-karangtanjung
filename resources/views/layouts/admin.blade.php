@@ -22,7 +22,7 @@
 <div id="sidebar-overlay" class="fixed inset-0 bg-black/50 z-30 hidden lg:hidden" onclick="toggleSidebar()"></div>
 
 {{-- SIDEBAR --}}
-<aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-[#075B3C] text-white z-40 flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+<aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-[#2F9B45] text-white z-40 flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
     {{-- Logo / Brand --}}
     <div class="flex items-center gap-3 px-5 py-5 border-b border-white/10">
         <img src="{{ asset('images/logo-pkk.png') }}" alt="PKK" class="w-10 h-10 object-contain">
@@ -96,8 +96,8 @@
                 <i class="fa-solid fa-user text-sm"></i>
             </div>
             <div class="flex-1 min-w-0">
-                <p class="text-sm font-semibold truncate">{{ session('admin_name', 'Administrator') }}</p>
-                <p class="text-xs text-white/50 truncate">Admin PKK</p>
+                <p class="text-sm font-semibold truncate">{{ Auth::user()->name ?? 'Administrator' }}</p>
+                <p class="text-xs text-white/50 truncate">{{ Auth::user()->username ?? 'Admin PKK' }}</p>
             </div>
             <a href="{{ route('admin.logout') }}"
                onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
@@ -200,6 +200,27 @@
     </section>
 </div>
 
+{{-- alert popup dialog admin (misal: file melebihi batas maks) --}}
+<div id="admin-alert-modal" class="fixed inset-0 z-[110] hidden items-center justify-center p-4" aria-hidden="true">
+    <button type="button" class="absolute inset-0 bg-slate-950/45 backdrop-blur-[2px]" onclick="closeAdminAlert()" aria-label="Tutup dialog"></button>
+    <section role="dialog" aria-modal="true" aria-labelledby="admin-alert-title" aria-describedby="admin-alert-message"
+             class="relative w-full max-w-sm rounded-2xl bg-white p-6 shadow-2xl ring-1 ring-black/5 transition-all">
+        <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-amber-50 text-amber-600">
+            <i class="fa-solid fa-triangle-exclamation text-lg" aria-hidden="true"></i>
+        </div>
+        <h2 id="admin-alert-title" class="text-center text-lg font-bold text-gray-900">Ukuran Foto Terlalu Besar</h2>
+        <p id="admin-alert-message" class="mt-2 text-center text-sm leading-relaxed text-gray-500">
+            Ukuran file melebihi batas maksimal 5 MB. Silakan pilih foto lain yang lebih kecil.
+        </p>
+        <div class="mt-6">
+            <button type="button" id="admin-alert-close-btn" onclick="closeAdminAlert()"
+                    class="w-full rounded-xl bg-[#075B3C] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#064B32] focus:outline-none focus:ring-2 focus:ring-[#075B3C]/40 focus:ring-offset-2 cursor-pointer shadow-sm">
+                Mengerti
+            </button>
+        </div>
+    </section>
+</div>
+
 <script>
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
@@ -277,8 +298,37 @@
         }
     });
 
+    const alertModal = document.getElementById('admin-alert-modal');
+    const alertTitle = document.getElementById('admin-alert-title');
+    const alertMessage = document.getElementById('admin-alert-message');
+
+    function closeAdminAlert() {
+        if (!alertModal) return;
+        alertModal.classList.add('hidden');
+        alertModal.classList.remove('flex');
+        alertModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function showAdminAlert({ title = 'Perhatian', message = '' }) {
+        if (!alertModal) {
+            alert(message || title);
+            return;
+        }
+        if (alertTitle) alertTitle.textContent = title;
+        if (alertMessage) alertMessage.textContent = message;
+
+        alertModal.classList.remove('hidden');
+        alertModal.classList.add('flex');
+        alertModal.setAttribute('aria-hidden', 'false');
+        const btn = document.getElementById('admin-alert-close-btn');
+        if (btn) btn.focus();
+    }
+
     document.addEventListener('keydown', event => {
-        if (event.key === 'Escape' && (pendingConfirmForm || pendingConfirmCallback)) closeAdminConfirm();
+        if (event.key === 'Escape') {
+            if (pendingConfirmForm || pendingConfirmCallback) closeAdminConfirm();
+            if (alertModal && !alertModal.classList.contains('hidden')) closeAdminAlert();
+        }
     });
 </script>
 @stack('scripts')

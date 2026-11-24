@@ -44,10 +44,21 @@ class BeritaController extends Controller
             'judul' => 'required|string|max:255',
             'kategori' => 'required|string',
             'tanggal' => 'required|date',
-            'ringkasan' => 'nullable|string',
+            'ringkasan' => 'required|string',
             'konten' => 'required|string',
-            'penulis' => 'nullable|string|max:150',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+            'penulis' => 'required|string|max:150',
+            'gambar' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
+        ], [
+            'judul.required' => 'Judul berita wajib diisi.',
+            'kategori.required' => 'Kategori kegiatan wajib dipilih.',
+            'tanggal.required' => 'Tanggal kegiatan wajib diisi.',
+            'ringkasan.required' => 'Ringkasan singkat wajib diisi.',
+            'konten.required' => 'Deskripsi lengkap berita wajib diisi.',
+            'penulis.required' => 'Penulis/pelapor berita wajib diisi.',
+            'gambar.required' => 'Foto dokumentasi wajib diunggah.',
+            'gambar.image' => 'File dokumentasi harus berupa gambar.',
+            'gambar.mimes' => 'Format gambar yang didukung: JPG, JPEG, PNG, atau WEBP.',
+            'gambar.max' => 'Ukuran gambar maksimal 5 MB.',
         ]);
 
         $validated['slug'] = Str::slug($validated['judul']).'-'.time();
@@ -109,10 +120,20 @@ class BeritaController extends Controller
             'judul' => 'required|string|max:255',
             'kategori' => 'required|string',
             'tanggal' => 'required|date',
-            'ringkasan' => 'nullable|string',
+            'ringkasan' => 'required|string',
             'konten' => 'required|string',
-            'penulis' => 'nullable|string|max:150',
+            'penulis' => 'required|string|max:150',
             'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
+        ], [
+            'judul.required' => 'Judul berita wajib diisi.',
+            'kategori.required' => 'Kategori kegiatan wajib dipilih.',
+            'tanggal.required' => 'Tanggal kegiatan wajib diisi.',
+            'ringkasan.required' => 'Ringkasan singkat wajib diisi.',
+            'konten.required' => 'Deskripsi lengkap berita wajib diisi.',
+            'penulis.required' => 'Penulis/pelapor berita wajib diisi.',
+            'gambar.image' => 'File dokumentasi harus berupa gambar.',
+            'gambar.mimes' => 'Format gambar yang didukung: JPG, JPEG, PNG, atau WEBP.',
+            'gambar.max' => 'Ukuran gambar maksimal 5 MB.',
         ]);
 
         $uploadedImage = null;

@@ -21,14 +21,7 @@
         </div>
     </div>
 
-    {{-- Alert Notifikasi --}}
-    @if(session('success'))
-    <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3.5 rounded-xl text-sm flex items-start gap-3 shadow-2xs">
-        <i class="fa-solid fa-circle-check text-emerald-600 mt-0.5 text-base flex-shrink-0"></i>
-        <div class="flex-1 font-medium">{{ session('success') }}</div>
-    </div>
-    @endif
-
+    {{-- Notifikasi sukses/error ditampilkan oleh layout admin. --}}
     @if(session('info'))
     <div class="bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3.5 rounded-xl text-sm flex items-start gap-3 shadow-2xs">
         <i class="fa-solid fa-circle-info text-blue-600 mt-0.5 text-base flex-shrink-0"></i>
@@ -105,7 +98,7 @@
 
         {{-- Kolom Kanan: Form Unggah Foto Baru --}}
         <div id="right-col-hero" class="lg:col-span-5">
-            <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-6 sm:p-6 shadow-xs space-y-6">
+            <div class="bg-[#2F9B45] rounded-2xl border border-gray-100 p-5 sm:p-6 shadow-xs space-y-4">
                 <div class="flex items-center justify-between border-b border-white/20 pb-3">
                     <div>
                         <h3 class="text-sm font-bold text-white">Unggah Background Baru</h3>
@@ -143,17 +136,17 @@
                             </div>
 
                             {{-- Pratinjau File yang Baru Dipilih (Awalnya Sembunyi) --}}
-                            <div id="new-preview-container" class="hidden space-y-1.5">
-                                <div class="w-full h-32 rounded-lg overflow-hidden bg-black/5 relative border border-gray-200">
-                                    <img id="new-preview-img" src="" alt="Pratinjau File Baru" class="w-full h-full object-cover object-top">
+                            <div id="new-preview-container" class="hidden flex items-center gap-3 text-left">
+                                <div class="w-14 h-14 rounded-lg overflow-hidden bg-gray-100 border border-gray-200 flex-shrink-0">
+                                    <img id="new-preview-img" src="" alt="Pratinjau File Baru" class="w-full h-full object-cover">
                                 </div>
-                                <div class="flex items-center justify-between text-xs">
-                                    <span id="new-file-name" class="font-semibold text-gray-800 truncate max-w-[180px]">file.jpg</span>
-                                    <span id="new-file-size" class="text-gray-500 text-[11px]">0 KB</span>
+                                <div class="flex-1 min-w-0 space-y-0.5">
+                                    <div id="new-file-name" class="font-semibold text-gray-800 text-xs truncate">file.jpg</div>
+                                    <div id="new-file-size" class="text-gray-500 text-[11px]">0 KB</div>
+                                    <p class="text-[11px] text-[#075B3C] font-medium flex items-center gap-1">
+                                        <i class="fa-solid fa-arrows-rotate text-[10px]"></i> Klik untuk ganti file
+                                    </p>
                                 </div>
-                                <p class="text-[11px] text-[#075B3C] font-medium">
-                                    <i class="fa-solid fa-arrows-rotate mr-1"></i> Klik untuk mengganti file lain
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -292,17 +285,17 @@
                                 </div>
 
                                 {{-- Pratinjau File yang Baru Dipilih (Awalnya Sembunyi) --}}
-                                <div id="tim-preview-container" class="hidden space-y-1.5">
-                                    <div class="w-full h-32 rounded-lg overflow-hidden bg-black/5 relative border border-gray-200">
-                                        <img id="tim-preview-img" src="" alt="Pratinjau File Baru" class="w-full h-full object-cover object-top">
+                                <div id="tim-preview-container" class="hidden flex items-center gap-3 text-left">
+                                    <div class="w-14 h-14 rounded-lg overflow-hidden bg-gray-100 border border-gray-200 flex-shrink-0">
+                                        <img id="tim-preview-img" src="" alt="Pratinjau File Baru" class="w-full h-full object-cover">
                                     </div>
-                                    <div class="flex items-center justify-between text-xs">
-                                        <span id="tim-file-name" class="font-semibold text-gray-800 truncate max-w-[180px]">file.jpg</span>
-                                        <span id="tim-file-size" class="text-gray-500 text-[11px]">0 KB</span>
+                                    <div class="flex-1 min-w-0 space-y-0.5">
+                                        <div id="tim-file-name" class="font-semibold text-gray-800 text-xs truncate">file.jpg</div>
+                                        <div id="tim-file-size" class="text-gray-500 text-[11px]">0 KB</div>
+                                        <p class="text-[11px] text-[#075B3C] font-medium flex items-center gap-1">
+                                            <i class="fa-solid fa-arrows-rotate text-[10px]"></i> Klik untuk ganti file
+                                        </p>
                                     </div>
-                                    <p class="text-[11px] text-[#075B3C] font-medium">
-                                        <i class="fa-solid fa-arrows-rotate mr-1"></i> Klik untuk mengganti file lain
-                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -385,7 +378,15 @@
                 }
 
                 if (selectedFile.size > 5 * 1024 * 1024) {
-                    alert('Ukuran file melebihi batas maksimal 5 MB. Silakan pilih file lain yang lebih kecil.');
+                    const currentMB = (selectedFile.size / (1024 * 1024)).toFixed(2);
+                    if (typeof showAdminAlert === 'function') {
+                        showAdminAlert({
+                            title: 'Ukuran Foto Terlalu Besar',
+                            message: `Foto yang Anda pilih berukuran ${currentMB} MB, melebihi batas maksimal yang diizinkan (5 MB). Silakan pilih foto dengan ukuran lebih kecil.`
+                        });
+                    } else {
+                        alert(`Ukuran file (${currentMB} MB) melebihi batas maksimal 5 MB. Silakan pilih file lain yang lebih kecil.`);
+                    }
                     reset();
                     return;
                 }
