@@ -28,21 +28,24 @@ class DashboardController extends Controller
             ];
         })->all();
 
-        // Agenda mendatang saja; jangan isi slot kosong dengan agenda yang sudah lewat.
+        // Agenda mendatang: hanya tampilkan yang belum selesai (cek tanggal + waktu via accessor is_selesai)
         $today = now()->startOfDay()->toDateString();
+
         $upcomingAgenda = Agenda::where('tanggal', '>=', $today)
             ->orderBy('tanggal', 'asc')
+            ->get()
+            ->filter(function ($item) {
+                return !$item->is_selesai;
+            })
             ->take(4)
-            ->get();
-
-        $upcomingAgenda = $upcomingAgenda->map(function ($item) {
-            return [
-                'id' => $item->id,
-                'judul' => $item->judul,
-                'tanggal' => $item->tanggal ? $item->tanggal->format('Y-m-d') : date('Y-m-d'),
-                'lokasi' => $item->lokasi,
-            ];
-        })->all();
+            ->map(function ($item) {
+                return [
+                    'id' => $item->id,
+                    'judul' => $item->judul,
+                    'tanggal' => $item->tanggal ? $item->tanggal->format('Y-m-d') : date('Y-m-d'),
+                    'lokasi' => $item->lokasi,
+                ];
+            })->values()->all();
 
         return view('admin.dashboard', compact(
             'totalBerita',

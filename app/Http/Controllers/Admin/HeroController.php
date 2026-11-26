@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Support\PublicImagePath;
 use App\Support\ProfilDataStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -21,7 +22,7 @@ class HeroController extends Controller
             return;
         }
 
-        $path = public_path($hero);
+        $path = PublicImagePath::file($hero);
         if (File::exists($path)) {
             File::delete($path);
         }
@@ -33,7 +34,7 @@ class HeroController extends Controller
             return;
         }
 
-        $path = public_path($foto);
+        $path = PublicImagePath::file($foto);
         if (File::exists($path)) {
             File::delete($path);
         }
@@ -47,14 +48,14 @@ class HeroController extends Controller
         $customHero = $data['hero_background'] ?? null;
         $currentHero = 'images/5.webp';
 
-        if (! empty($customHero) && File::exists(public_path($customHero))) {
+        if (! empty($customHero) && File::exists(PublicImagePath::file($customHero))) {
             $currentHero = $customHero;
         }
 
         // Foto tim profil
         $customFotoTim = $data['foto_tim_profil'] ?? null;
         $currentFotoTim = 'images/5.webp';
-        if (! empty($customFotoTim) && File::exists(public_path($customFotoTim))) {
+        if (! empty($customFotoTim) && File::exists(PublicImagePath::file($customFotoTim))) {
             $currentFotoTim = $customFotoTim;
         }
 
@@ -72,7 +73,7 @@ class HeroController extends Controller
         ]);
 
         if ($request->hasFile('hero_background')) {
-            $uploadDir = public_path('images/hero');
+            $uploadDir = PublicImagePath::directory('hero');
             $file = $request->file('hero_background');
             $extension = $file->getClientOriginalExtension() ?: 'jpg';
             $filename = 'hero_bg_'.Str::uuid().'.'.$extension;
@@ -106,7 +107,7 @@ class HeroController extends Controller
         ]);
 
         if ($request->hasFile('foto_tim')) {
-            $uploadDir = public_path('images/profil');
+            $uploadDir = PublicImagePath::directory('profil');
             $file = $request->file('foto_tim');
             $extension = $file->getClientOriginalExtension() ?: 'jpg';
             $filename = 'foto_tim_'.Str::uuid().'.'.$extension;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\PublicImagePath;
 use App\Http\Controllers\Admin\StatistikController;
 use App\Models\Berita;
 use Illuminate\Support\Facades\File;
@@ -110,7 +111,7 @@ class BerandaController extends Controller
                 if (is_string($customHero)
                     && str_starts_with($customHero, 'images/hero/')
                     && ! str_contains($customHero, '..')
-                    && File::exists(public_path($customHero))) {
+                    && File::exists(PublicImagePath::file($customHero))) {
                     $heroBackground = $customHero;
                 }
             }

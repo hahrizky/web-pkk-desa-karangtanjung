@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Support\PublicImagePath;
 use App\Support\ProfilDataStore;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -72,7 +73,7 @@ class StrukturController extends Controller
             return;
         }
 
-        $path = public_path('images/'.$photo);
+        $path = PublicImagePath::file('images/'.$photo);
         if (File::exists($path)) {
             File::delete($path);
         }
@@ -170,7 +171,7 @@ class StrukturController extends Controller
         $profil = $this->readProfil();
 
         // Helper untuk memproses file upload
-        $uploadDir = public_path('images/pengurus');
+        $uploadDir = PublicImagePath::directory('pengurus');
         File::ensureDirectoryExists($uploadDir);
         $uploadedPhotos = [];
 

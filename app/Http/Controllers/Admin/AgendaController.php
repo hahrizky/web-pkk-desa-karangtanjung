@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use App\Models\Agenda;
 use Illuminate\Http\Request;
@@ -21,7 +22,7 @@ class AgendaController extends Controller
                     'waktu' => $item->waktu,
                     'lokasi' => $item->lokasi,
                     'deskripsi' => $item->deskripsi,
-                    'status' => $item->status,
+                    'status' => $item->is_selesai ? 'Selesai' : 'Mendatang',
                 ];
             })->all();
 
@@ -52,6 +53,11 @@ class AgendaController extends Controller
             'penyelenggara.required' => 'Penyelenggara kegiatan wajib diisi.',
             'deskripsi.required' => 'Rincian & teknis pelaksanaan wajib diisi.',
         ]);
+
+        if (! $this->agendaStartsInFuture($validated['tanggal'], $validated['waktu'])) {
+            return back()->withInput()
+                ->with('error', 'Tanggal dan jam mulai agenda harus berada di waktu mendatang.');
+        }
 
         $validated['status'] = 'Mendatang';
         $validated['isi'] = $validated['deskripsi'];
@@ -118,5 +124,24 @@ class AgendaController extends Controller
 
         return redirect()->route('admin.agenda.index')
             ->with('success', 'Agenda kegiatan berhasil dihapus!');
+    }
+
+    private function agendaStartsInFuture(string $tanggal, string $waktu): bool
+    {
+        if (! preg_match('/(\d{1,2})[:.](\d{2})/', $waktu, $matches)) {
+            return false;
+        }
+
+        try {
+            $waktuMulai = Carbon::createFromFormat(
+                'Y-m-d H:i',
+                sprintf('%s %02d:%02d', $tanggal, (int) $matches[1], (int) $matches[2]),
+                'Asia/Jakarta'
+            );
+        } catch (\Throwable $exception) {
+            return false;
+        }
+
+        return $waktuMulai !== false && $waktuMulai->greaterThan(Carbon::now('Asia/Jakarta'));
     }
 }

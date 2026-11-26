@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\PublicImagePath;
 use Illuminate\Support\Facades\File;
 
 class ProfilController extends Controller
@@ -162,7 +163,7 @@ class ProfilController extends Controller
         $pokja3Ketua = $cleanStr($custom['struktur']['pokja'][2]['ketua'] ?? 'Jazil Laturohmah');
         $pokja4Ketua = $cleanStr($custom['struktur']['pokja'][3]['ketua'] ?? 'Lilik Mutammimah');
 
-        $defaultFoto = file_exists(public_path('images/pengurus/default_pas_foto.jpg')) ? 'pengurus/default_pas_foto.jpg' : null;
+        $defaultFoto = file_exists(PublicImagePath::file('images/pengurus/default_pas_foto.jpg')) ? 'pengurus/default_pas_foto.jpg' : null;
 
         // An explicitly stored null means the admin removed this photo. Apply the
         // placeholder only for legacy records that do not have a foto field yet.
@@ -176,7 +177,7 @@ class ProfilController extends Controller
                 return null;
             }
 
-            return file_exists(public_path('images/'.$foto)) ? $foto : null;
+            return file_exists(PublicImagePath::file('images/'.$foto)) ? $foto : null;
         };
 
         $pembinaFoto = $fotoOrDefault($custom['struktur']['pembina'] ?? null);
@@ -415,7 +416,7 @@ class ProfilController extends Controller
         if (is_string($fotoTimRaw)
             && str_starts_with($fotoTimRaw, 'images/profil/')
             && ! str_contains($fotoTimRaw, '..')
-            && \Illuminate\Support\Facades\File::exists(public_path($fotoTimRaw))) {
+            && \Illuminate\Support\Facades\File::exists(PublicImagePath::file($fotoTimRaw))) {
             $fotoTim = $fotoTimRaw;
         }
 

@@ -56,7 +56,7 @@
 <div class="grid lg:grid-cols-3 gap-6">
 
     {{-- Recent Berita --}}
-    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+    <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
         <div class="bg-[#2F9B45] flex items-center justify-between px-6 py-4 border-b border-gray-100">
             <div class="flex items-center gap-2">
                 <div class="w-1 h-5 bg-white rounded-full"></div>
@@ -64,8 +64,8 @@
             </div>
             <a href="{{ route('admin.berita.index') }}" class="text-xs text-white font-semibold hover:underline">Lihat Semua</a>
         </div>
-        <div class="divide-y divide-gray-50">
-            @foreach($recentBerita as $berita)
+        <div class="divide-y divide-gray-50 flex-1 flex flex-col">
+            @forelse($recentBerita as $berita)
             <div class="flex items-start gap-4 px-6 py-4 hover:bg-gray-50 transition-colors">
                 <img src="{{ asset('images/' . $berita['gambar']) }}" alt="{{ $berita['judul'] }}"
                     class="w-14 h-14 rounded-xl object-cover flex-shrink-0 bg-gray-100">
@@ -78,14 +78,20 @@
                     <p class="text-xs text-gray-500 mt-1 line-clamp-1">{{ $berita['ringkasan'] }}</p>
                 </div>
             </div>
-            @endforeach
+            @empty
+            <div class="flex-1 flex flex-col items-center justify-center py-12 text-center">
+                <i class="fa-solid fa-newspaper text-3xl text-gray-300 mb-3"></i>
+                <p class="text-sm text-gray-400">Belum ada berita terbaru</p>
+                <a href="{{ route('admin.berita.create') }}" class="text-xs text-[#075B3C] font-semibold hover:underline mt-2 inline-block">+ Tambah Berita Baru</a>
+            </div>
+            @endforelse
         </div>
     </div>
 
     {{-- Right Panel --}}
     <div class="space-y-6">
-        {{-- Agenda Upcoming --}}
-        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+        {{-- Agenda Mendatang --}}
+        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden flex flex-col">
             <div class="bg-[#2F9B45] flex items-center justify-between px-5 py-4 border-b border-gray-100">
                 <div class="flex items-center gap-2">
                     <div class="w-1 h-5 bg-white rounded-full"></div>
@@ -93,8 +99,8 @@
                 </div>
                 <a href="{{ route('admin.agenda.index') }}" class="text-xs text-white font-semibold hover:underline">Semua</a>
             </div>
-            <div class="divide-y divide-gray-50">
-                @foreach($upcomingAgenda as $agenda)
+            <div class="divide-y divide-gray-50 flex-1 flex flex-col">
+                @forelse($upcomingAgenda as $agenda)
                 <div class="flex items-start gap-3 px-5 py-3.5 hover:bg-gray-50 transition-colors">
                     <div class="w-10 h-10 bg-[#075B3C] rounded-xl flex flex-col items-center justify-center flex-shrink-0 shadow-2xs">
                         <span class="text-xs font-bold text-white leading-none">{{ \Carbon\Carbon::parse($agenda['tanggal'])->format('d') }}</span>
@@ -105,7 +111,13 @@
                         <p class="text-[11px] text-gray-400 mt-0.5 truncate">{{ $agenda['lokasi'] }}</p>
                     </div>
                 </div>
-                @endforeach
+                @empty
+                <div class="flex-1 flex flex-col items-center justify-center py-8 text-center">
+                    <i class="fa-solid fa-calendar-check text-2xl text-gray-300 mb-3"></i>
+                    <p class="text-sm text-gray-400">Semua agenda sudah selesai</p>
+                    <a href="{{ route('admin.agenda.create') }}" class="text-xs text-[#075B3C] font-semibold hover:underline mt-2 inline-block">+ Tambah Agenda Baru</a>
+                </div>
+                @endforelse
             </div>
         </div>
 

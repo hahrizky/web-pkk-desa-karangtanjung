@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Support\PublicImagePath;
 use App\Models\Berita;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -40,33 +41,14 @@ class BeritaController extends Controller
 
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'judul' => 'required|string|max:255',
-            'kategori' => 'required|string',
-            'tanggal' => 'required|date',
-            'ringkasan' => 'required|string',
-            'konten' => 'required|string',
-            'penulis' => 'required|string|max:150',
-            'gambar' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120',
-        ], [
-            'judul.required' => 'Judul berita wajib diisi.',
-            'kategori.required' => 'Kategori kegiatan wajib dipilih.',
-            'tanggal.required' => 'Tanggal kegiatan wajib diisi.',
-            'ringkasan.required' => 'Ringkasan singkat wajib diisi.',
-            'konten.required' => 'Deskripsi lengkap berita wajib diisi.',
-            'penulis.required' => 'Penulis/pelapor berita wajib diisi.',
-            'gambar.required' => 'Foto dokumentasi wajib diunggah.',
-            'gambar.image' => 'File dokumentasi harus berupa gambar.',
-            'gambar.mimes' => 'Format gambar yang didukung: JPG, JPEG, PNG, atau WEBP.',
-            'gambar.max' => 'Ukuran gambar maksimal 5 MB.',
-        ]);
+        $validated = $request->validate($this->validationRules(true), $this->validationMessages());
 
         $validated['slug'] = Str::slug($validated['judul']).'-'.time();
         $validated['penulis'] = $validated['penulis'] ?? 'Sekretariat TP. PKK Karangtanjung';
         $validated['status'] = 'published';
 
         // Bersihkan tag paragraf kosong / &nbsp; dari editor
-        $validated['konten'] = preg_replace('/<p[^>]*>(\s|&nbsp;|<br\s*\/?>)*<\/p>/i', '', $validated['konten']);
+        $validated['konten'] = $this->cleanContent($validated['konten']);
 
         // Upload gambar jika ada
         $uploadedImage = null;
@@ -80,8 +62,9 @@ class BeritaController extends Controller
 
         try {
             if ($uploadFile) {
-                File::ensureDirectoryExists(public_path('images'));
-                $uploadFile->move(public_path('images'), $uploadedImage);
+                $uploadDir = PublicImagePath::directory();
+                File::ensureDirectoryExists($uploadDir);
+                $uploadFile->move($uploadDir, $uploadedImage);
             }
             Berita::create($validated);
         } catch (\Throwable $exception) {
@@ -91,6 +74,40 @@ class BeritaController extends Controller
 
         return redirect()->route('admin.berita.index')
             ->with('success', 'Berita berhasil dipublikasikan!');
+    }
+
+    private function validationRules(bool $imageRequired): array
+    {
+        return [
+            'judul' => 'required|string|max:255',
+            'kategori' => 'required|string',
+            'tanggal' => 'required|date',
+            'ringkasan' => 'required|string',
+            'konten' => 'required|string',
+            'penulis' => 'required|string|max:150',
+            'gambar' => ($imageRequired ? 'required' : 'nullable').'|image|mimes:jpeg,png,jpg,webp|max:5120',
+        ];
+    }
+
+    private function validationMessages(): array
+    {
+        return [
+            'judul.required' => 'Judul berita wajib diisi.',
+            'kategori.required' => 'Kategori kegiatan wajib dipilih.',
+            'tanggal.required' => 'Tanggal kegiatan wajib diisi.',
+            'ringkasan.required' => 'Ringkasan singkat wajib diisi.',
+            'konten.required' => 'Deskripsi lengkap berita wajib diisi.',
+            'penulis.required' => 'Penulis/pelapor berita wajib diisi.',
+            'gambar.required' => 'Foto dokumentasi wajib diunggah.',
+            'gambar.image' => 'File dokumentasi harus berupa gambar.',
+            'gambar.mimes' => 'Format gambar yang didukung: JPG, JPEG, PNG, atau WEBP.',
+            'gambar.max' => 'Ukuran gambar maksimal 5 MB.',
+        ];
+    }
+
+    private function cleanContent(string $content): string
+    {
+        return preg_replace('/<p[^>]*>(\s|&nbsp;|<br\s*\/?\s*>)*<\/p>/i', '', $content) ?? $content;
     }
 
     public function edit(int|string $id)
@@ -116,25 +133,7 @@ class BeritaController extends Controller
     {
         $item = Berita::findOrFail($id);
 
-        $validated = $request->validate([
-            'judul' => 'required|string|max:255',
-            'kategori' => 'required|string',
-            'tanggal' => 'required|date',
-            'ringkasan' => 'required|string',
-            'konten' => 'required|string',
-            'penulis' => 'required|string|max:150',
-            'gambar' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
-        ], [
-            'judul.required' => 'Judul berita wajib diisi.',
-            'kategori.required' => 'Kategori kegiatan wajib dipilih.',
-            'tanggal.required' => 'Tanggal kegiatan wajib diisi.',
-            'ringkasan.required' => 'Ringkasan singkat wajib diisi.',
-            'konten.required' => 'Deskripsi lengkap berita wajib diisi.',
-            'penulis.required' => 'Penulis/pelapor berita wajib diisi.',
-            'gambar.image' => 'File dokumentasi harus berupa gambar.',
-            'gambar.mimes' => 'Format gambar yang didukung: JPG, JPEG, PNG, atau WEBP.',
-            'gambar.max' => 'Ukuran gambar maksimal 5 MB.',
-        ]);
+        $validated = $request->validate($this->validationRules(false), $this->validationMessages());
 
         $uploadedImage = null;
         $uploadFile = null;
@@ -147,12 +146,13 @@ class BeritaController extends Controller
         }
 
         // Bersihkan tag paragraf kosong / &nbsp; dari editor
-        $validated['konten'] = preg_replace('/<p[^>]*>(\s|&nbsp;|<br\s*\/?>)*<\/p>/i', '', $validated['konten']);
+        $validated['konten'] = $this->cleanContent($validated['konten']);
 
         try {
             if ($uploadFile) {
-                File::ensureDirectoryExists(public_path('images'));
-                $uploadFile->move(public_path('images'), $uploadedImage);
+                $uploadDir = PublicImagePath::directory();
+                File::ensureDirectoryExists($uploadDir);
+                $uploadFile->move($uploadDir, $uploadedImage);
             }
             $item->update($validated);
         } catch (\Throwable $exception) {
@@ -186,9 +186,10 @@ class BeritaController extends Controller
             return;
         }
 
-        $path = public_path('images/'.$image);
+        $path = PublicImagePath::file('images/'.$image);
         if (File::exists($path)) {
             File::delete($path);
         }
     }
+
 }

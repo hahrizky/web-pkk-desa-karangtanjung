@@ -25,7 +25,7 @@
 <aside id="sidebar" class="fixed top-0 left-0 h-full w-64 bg-[#2F9B45] text-white z-40 flex flex-col transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
     {{-- Logo / Brand --}}
     <div class="flex items-center gap-3 px-5 py-5 border-b border-white/10">
-        <img src="{{ asset('images/logo-pkk.png') }}" alt="PKK" class="w-10 h-10 object-contain">
+        <img src="{{ asset('images/logo-pkk.webp') }}" alt="PKK" class="w-10 h-10 object-contain">
         <div>
             <p class="font-bold text-sm leading-tight">PKK Karangtanjung</p>
             <p class="text-xs text-white/60 leading-tight">Panel Administrator</p>

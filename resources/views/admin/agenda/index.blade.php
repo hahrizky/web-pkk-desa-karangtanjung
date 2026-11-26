@@ -60,11 +60,8 @@
                     </td>
 
                     <td class="px-4 py-4 text hidden lg:table-cell">
-                        @php
-                        $isPast = \Carbon\Carbon::parse($agenda['tanggal_raw'])->isBefore(now()->startOfDay());
-                        @endphp
-                        <span class="inline-block px-2.5 py-1 rounded-full text-xs font-medium {{ $isPast ? 'bg-green-500 text-white' : 'bg-emerald-600 text-white' }}">
-                            {{ $isPast ? 'Selesai' : 'Mendatang' }}
+                        <span class="inline-block px-2.5 py-1 rounded-full text-xs font-medium {{ $agenda['status'] === 'Selesai' ? 'bg-green-500 text-white' : 'bg-emerald-600 text-white' }}">
+                            {{ $agenda['status'] }}
                         </span>
                     </td>
 
